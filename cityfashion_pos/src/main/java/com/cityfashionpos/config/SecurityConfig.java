@@ -34,6 +34,7 @@ public class SecurityConfig {
                 .antMatchers("/api/inventory/**").permitAll()
                 .antMatchers("/api/inventory/**/**").permitAll()
                 .antMatchers("/api/purchases/**").permitAll()
+                .antMatchers("/api/barcode/**").permitAll()
                 .anyRequest().authenticated() // Protect other endpoints
             )
             .httpBasic(Customizer.withDefaults()); // Optional: enable basic auth
