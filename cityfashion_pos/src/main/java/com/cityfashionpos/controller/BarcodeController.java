@@ -66,7 +66,7 @@ public class BarcodeController {
      * Get all barcodes
      * GET /api/barcodes
      */
-    @GetMapping
+    @GetMapping("/getAllBarcodes")
     public ResponseEntity<BarcodeResponse> getAllBarcodes() {
         try {
             BarcodeResponse response = barcodeService.getAllBarcodes();

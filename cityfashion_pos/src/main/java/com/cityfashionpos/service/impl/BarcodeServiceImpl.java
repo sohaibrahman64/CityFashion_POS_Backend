@@ -55,8 +55,9 @@ public class BarcodeServiceImpl implements BarcodeService {
 			for (BarcodeRequest.BarcodeData barcodeData : request.getBarcodes()) {
 				// Check if product code already exists
 				if (barcodeRepository.existsByProductCode(barcodeData.getProductCode())) {
-					return new BarcodeResponse(false,
-							"Product code '" + barcodeData.getProductCode() + "' already exists");
+					//return new BarcodeResponse(false,
+							//"Product code '" + barcodeData.getProductCode() + "' already exists");
+					continue;
 				}
 
 				// Create new barcode entity
