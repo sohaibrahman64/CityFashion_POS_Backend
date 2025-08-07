@@ -82,7 +82,7 @@ public class BarcodeController {
      * Get barcode by ID
      * GET /api/barcodes/{id}
      */
-    @GetMapping("/{id}")
+    @GetMapping("/getBarcodeById/{id}")
     public ResponseEntity<BarcodeResponse> getBarcodeById(@PathVariable Long id) {
         try {
             BarcodeResponse response = barcodeService.getBarcodeById(id);
@@ -124,7 +124,7 @@ public class BarcodeController {
      * Update barcode
      * PUT /api/barcodes/{id}
      */
-    @PutMapping("/{id}")
+    @PutMapping("/updateBarcode/{id}")
     public ResponseEntity<BarcodeResponse> updateBarcode(
             @PathVariable Long id, 
             @RequestBody BarcodeRequest.BarcodeData barcodeData) {
@@ -147,7 +147,7 @@ public class BarcodeController {
      * Delete barcode by ID
      * DELETE /api/barcodes/{id}
      */
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/deleteBarcode/{id}")
     public ResponseEntity<BarcodeResponse> deleteBarcodeById(@PathVariable Long id) {
         try {
             BarcodeResponse response = barcodeService.deleteBarcodeById(id);
