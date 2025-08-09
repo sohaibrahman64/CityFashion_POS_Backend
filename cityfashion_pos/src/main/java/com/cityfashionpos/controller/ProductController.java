@@ -249,7 +249,7 @@ public class ProductController {
     /**
      * Update product
      */
-    @PutMapping("/updateProduct/{id}")
+    @PutMapping("/updateProductNew/{id}")
     public ResponseEntity<Map<String, Object>> updateProduct(@PathVariable Long id, @RequestBody ProductRequestDTO requestDTO) {
         Map<String, Object> response = new HashMap<>();
         

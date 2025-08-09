@@ -3,6 +3,8 @@ package com.cityfashionpos.dto;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+import com.cityfashionpos.dto.ProductRequestDTO.PurchasePriceTaxesDTO;
+
 public class ProductResponseDTO {
 	private Long id;
 	private String name;
@@ -14,6 +16,7 @@ public class ProductResponseDTO {
 
 	private PricingDTO pricing;
 	private StockDTO stock;
+	private PurchasePriceTaxesDTO purchasePriceTaxes;
 
 	private LocalDateTime createdAt;
 	private LocalDateTime updatedAt;
@@ -120,6 +123,45 @@ public class ProductResponseDTO {
 		}
 	}
 
+	public static class PurchasePriceTaxesDTO {
+		private Long productId;
+		private BigDecimal purchasePrice;
+		private String purchasePriceType;
+		private String taxType;
+
+		public Long getProductId() {
+			return productId;
+		}
+
+		public void setProductId(Long productId) {
+			this.productId = productId;
+		}
+
+		public BigDecimal getPurchasePrice() {
+			return purchasePrice;
+		}
+
+		public void setPurchasePrice(BigDecimal purchasePrice) {
+			this.purchasePrice = purchasePrice;
+		}
+
+		public String getPurchasePriceType() {
+			return purchasePriceType;
+		}
+
+		public void setPurchasePriceType(String purchasePriceType) {
+			this.purchasePriceType = purchasePriceType;
+		}
+
+		public String getTaxType() {
+			return taxType;
+		}
+
+		public void setTaxType(String taxType) {
+			this.taxType = taxType;
+		}
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -222,6 +264,14 @@ public class ProductResponseDTO {
 
 	public void setUpdatedBy(String updatedBy) {
 		this.updatedBy = updatedBy;
+	}
+
+	public PurchasePriceTaxesDTO getPurchasePriceTaxes() {
+		return purchasePriceTaxes;
+	}
+
+	public void setPurchasePriceTaxes(PurchasePriceTaxesDTO purchasePriceTaxes) {
+		this.purchasePriceTaxes = purchasePriceTaxes;
 	}
 	
 }

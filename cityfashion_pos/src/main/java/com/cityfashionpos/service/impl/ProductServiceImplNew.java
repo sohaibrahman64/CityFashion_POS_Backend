@@ -14,6 +14,9 @@ import org.springframework.stereotype.Service;
 import com.cityfashionpos.dto.ProductRequestDTO;
 import com.cityfashionpos.dto.ProductResponseDTO;
 import com.cityfashionpos.entity.ProductEntityNew;
+import com.cityfashionpos.model.DiscountType;
+import com.cityfashionpos.model.PriceType;
+import com.cityfashionpos.model.TaxType;
 import com.cityfashionpos.repository.ProductRepositoryNew;
 import com.cityfashionpos.service.ProductServiceNew;
 
@@ -72,10 +75,10 @@ public class ProductServiceImplNew implements ProductServiceNew {
 
 			if (requestDTO.getPricing().getSalePriceType() != null) {
 				try {
-					product.setSalePriceType(ProductEntityNew.SalePriceType
+					product.setSalePriceType(PriceType
 							.valueOf(requestDTO.getPricing().getSalePriceType().toUpperCase()));
 				} catch (IllegalArgumentException e) {
-					product.setSalePriceType(ProductEntityNew.SalePriceType.WITHOUT_TAX);
+					product.setSalePriceType(PriceType.WITHOUT_TAX);
 				}
 			}
 
@@ -85,10 +88,10 @@ public class ProductServiceImplNew implements ProductServiceNew {
 
 			if (requestDTO.getPricing().getDiscountType() != null) {
 				try {
-					product.setDiscountType(ProductEntityNew.DiscountType
+					product.setDiscountType(DiscountType
 							.valueOf(requestDTO.getPricing().getDiscountType().toUpperCase()));
 				} catch (IllegalArgumentException e) {
-					product.setDiscountType(ProductEntityNew.DiscountType.PERCENTAGE);
+					product.setDiscountType(DiscountType.PERCENTAGE);
 				}
 			}
 		}
@@ -106,6 +109,28 @@ public class ProductServiceImplNew implements ProductServiceNew {
 					: LocalDateTime.now());
 
 			product.setMinStock(requestDTO.getStock().getMinStock() != null ? requestDTO.getStock().getMinStock() : 0);
+		}
+		
+		// Set purchase price and taxes
+		if (requestDTO.getPurchasePriceTaxes() != null) {
+			product.setPurchasePrice(requestDTO.getPurchasePriceTaxes().getPurchasePrice() != null ? requestDTO.getPurchasePriceTaxes().getPurchasePrice() : null);
+			//product.setPurchasePriceType(PriceType.valueOf(requestDTO.getPurchasePriceTaxes().getPurchasePriceType() != null ? requestDTO.getPurchasePriceTaxes().getPurchasePriceType() : null));
+			if (requestDTO.getPurchasePriceTaxes().getPurchasePriceType() != null) {
+				try {
+					product.setPurchasePriceType(PriceType.valueOf(requestDTO.getPurchasePriceTaxes().getPurchasePriceType().toUpperCase()));
+				} catch (IllegalArgumentException e) {
+					product.setPurchasePriceType(PriceType.WITHOUT_TAX);
+				}
+			}
+			//product.setTaxType(TaxType.valueOf(requestDTO.getPurchasePriceTaxes().getTaxType() != null ? requestDTO.getPurchasePriceTaxes().getTaxType() : null));
+			if (requestDTO.getPurchasePriceTaxes().getTaxType() != null) {
+				try {
+					product.setTaxType(TaxType.valueOf(requestDTO.getPurchasePriceTaxes().getTaxType().toUpperCase()));
+				} catch (IllegalArgumentException e) {
+					product.setTaxType(TaxType.GST_0);
+				}
+			}
+			product.setUpdatedAt(LocalDateTime.now());
 		}
 
 		// Set audit fields
@@ -245,7 +270,7 @@ public class ProductServiceImplNew implements ProductServiceNew {
         responseDTO.setId(product.getId());
         responseDTO.setName(product.getName());
         responseDTO.setHsn(product.getHsn());
-        responseDTO.setCategory(product.getCategory());
+        responseDTO.setCategory(product.getCategory().getName());
         responseDTO.setCode(product.getCode());
         responseDTO.setImageUrl(product.getImageUrl());
         responseDTO.setCreatedAt(product.getCreatedAt());
@@ -278,6 +303,13 @@ public class ProductServiceImplNew implements ProductServiceNew {
         stockDTO.setAsOfDate(product.getAsOfDate());
         stockDTO.setMinStock(product.getMinStock());
         responseDTO.setStock(stockDTO);
+        
+        // Set purchase and tax information
+        ProductResponseDTO.PurchasePriceTaxesDTO purchasePriceTaxesDTO = new ProductResponseDTO.PurchasePriceTaxesDTO();
+        purchasePriceTaxesDTO.setPurchasePrice(product.getPurchasePrice());
+        purchasePriceTaxesDTO.setPurchasePriceType(product.getPurchasePriceType() != null ? product.getPurchasePriceType().name() : null);
+        purchasePriceTaxesDTO.setTaxType(product.getTaxType() != null ? product.getTaxType().name() : null);
+        
         
         return responseDTO;
     }

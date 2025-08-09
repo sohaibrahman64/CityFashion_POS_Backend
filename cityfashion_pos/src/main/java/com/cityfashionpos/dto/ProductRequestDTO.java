@@ -3,16 +3,51 @@ package com.cityfashionpos.dto;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+import com.cityfashionpos.entity.ProductCategoryEntityNew;
+
 public class ProductRequestDTO {
 	private String name;
 	private String hsn;
-	private String category;
+	private ProductCategoryEntityNew category;
 	private String code;
 	private UnitDTO unit;
 	private String imageData;
 
 	private PricingDTO pricing;
 	private StockDTO stock;
+	private PurchasePriceTaxesDTO purchasePriceTaxes;
+	
+	
+	public static class PurchasePriceTaxesDTO {
+	    private Long productId;
+	    private BigDecimal purchasePrice;
+	    private String purchasePriceType;
+	    private String taxType;
+		public Long getProductId() {
+			return productId;
+		}
+		public void setProductId(Long productId) {
+			this.productId = productId;
+		}
+		public BigDecimal getPurchasePrice() {
+			return purchasePrice;
+		}
+		public void setPurchasePrice(BigDecimal purchasePrice) {
+			this.purchasePrice = purchasePrice;
+		}
+		public String getPurchasePriceType() {
+			return purchasePriceType;
+		}
+		public void setPurchasePriceType(String purchasePriceType) {
+			this.purchasePriceType = purchasePriceType;
+		}
+		public String getTaxType() {
+			return taxType;
+		}
+		public void setTaxType(String taxType) {
+			this.taxType = taxType;
+		}	
+	}
 
 	// Nested DTOs
 	public static class UnitDTO {
@@ -130,11 +165,11 @@ public class ProductRequestDTO {
 		this.hsn = hsn;
 	}
 
-	public String getCategory() {
+	public ProductCategoryEntityNew getCategory() {
 		return category;
 	}
 
-	public void setCategory(String category) {
+	public void setCategory(ProductCategoryEntityNew category) {
 		this.category = category;
 	}
 
@@ -176,6 +211,14 @@ public class ProductRequestDTO {
 
 	public void setStock(StockDTO stock) {
 		this.stock = stock;
+	}
+
+	public PurchasePriceTaxesDTO getPurchasePriceTaxes() {
+		return purchasePriceTaxes;
+	}
+
+	public void setPurchasePriceTaxes(PurchasePriceTaxesDTO purchasePriceTaxes) {
+		this.purchasePriceTaxes = purchasePriceTaxes;
 	}
 	
 }
