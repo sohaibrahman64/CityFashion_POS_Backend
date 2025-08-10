@@ -1,11 +1,17 @@
 package com.cityfashionpos.controller;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -16,12 +22,14 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.cityfashionpos.dto.ProductRequestDTO;
 import com.cityfashionpos.dto.ProductResponseDTO;
 import com.cityfashionpos.entity.ProductEntity;
+import com.cityfashionpos.service.ImageStorageService;
 import com.cityfashionpos.service.ProductService;
 import com.cityfashionpos.service.ProductServiceNew;
 
@@ -35,6 +43,9 @@ public class ProductController {
 
 	@Autowired
 	private ProductServiceNew productServiceNew;
+	
+	@Autowired
+	private ImageStorageService imageStorageService;
 
 	@PostMapping("/saveProduct")
 	public ResponseEntity<ProductEntity> saveProduct(@RequestBody ProductEntity product) {
@@ -75,11 +86,19 @@ public class ProductController {
 		}
 	}
 
-	@PostMapping("/saveProductNew")
-	public ResponseEntity<Map<String, Object>> saveProductNew(@RequestBody ProductRequestDTO requestDTO) {
+	@PostMapping(value="/saveProductNew", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	public ResponseEntity<Map<String, Object>> saveProductNew(
+			@RequestPart("product") ProductRequestDTO requestDTO,
+			@RequestPart("imageFile") MultipartFile imageFile) {
 		Map<String, Object> response = new HashMap<>();
 
 		try {
+			// Save image to disk or cloud
+	        String imageUrl = imageStorageService.saveImage(imageFile);
+	        
+	        // Attach image URL to DTO
+	        requestDTO.setImageUrl(imageUrl);
+
 			ProductResponseDTO savedProduct = productServiceNew.saveProduct(requestDTO);
 
 			response.put("success", true);
@@ -321,5 +340,20 @@ public class ProductController {
             response.put("message", "Error generating product code: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
-    }    
+    }
+    
+    @PostMapping("/uploadImage")
+    public ResponseEntity<String> uploadImage(@RequestParam("file") MultipartFile file) {
+        try {
+            String uploadDir = "uploads/";
+            String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
+            Path filePath = Paths.get(uploadDir + fileName);
+            Files.createDirectories(filePath.getParent());
+            Files.write(filePath, file.getBytes());
+
+            return ResponseEntity.ok("Image uploaded successfully: " + fileName);
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Upload failed");
+        }
+    }
 }

@@ -61,11 +61,9 @@ public class ProductServiceImplNew implements ProductServiceNew {
 			product.setUnitLabel(requestDTO.getUnit().getLabel());
 		}
 
-		// Set image data
-		if (requestDTO.getImageData() != null && !requestDTO.getImageData().trim().isEmpty()) {
-			product.setImageData(requestDTO.getImageData());
-			// You might want to save image to file system and store URL instead
-			// product.setImageUrl(generateImageUrl(requestDTO.getImageData()));
+		// Set image URL
+		if (requestDTO.getImageUrl() != null && !requestDTO.getImageUrl().trim().isEmpty()) {
+			product.setImageUrl(requestDTO.getImageUrl());
 		}
 
 		// Set pricing information
@@ -114,7 +112,6 @@ public class ProductServiceImplNew implements ProductServiceNew {
 		// Set purchase price and taxes
 		if (requestDTO.getPurchasePriceTaxes() != null) {
 			product.setPurchasePrice(requestDTO.getPurchasePriceTaxes().getPurchasePrice() != null ? requestDTO.getPurchasePriceTaxes().getPurchasePrice() : null);
-			//product.setPurchasePriceType(PriceType.valueOf(requestDTO.getPurchasePriceTaxes().getPurchasePriceType() != null ? requestDTO.getPurchasePriceTaxes().getPurchasePriceType() : null));
 			if (requestDTO.getPurchasePriceTaxes().getPurchasePriceType() != null) {
 				try {
 					product.setPurchasePriceType(PriceType.valueOf(requestDTO.getPurchasePriceTaxes().getPurchasePriceType().toUpperCase()));

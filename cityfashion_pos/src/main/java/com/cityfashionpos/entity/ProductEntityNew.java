@@ -96,9 +96,6 @@ public class ProductEntityNew {
 	@Column(name = "updated_at")
 	private LocalDateTime updatedAt;
 	
-	@Column(name = "image_data", columnDefinition = "LONGTEXT")
-    private String imageData;
-	
     @Column(name = "created_by")
     private String createdBy;
     
@@ -294,14 +291,6 @@ public class ProductEntityNew {
 
 	public void setUnitLabel(String unitLabel) {
 		this.unitLabel = unitLabel;
-	}
-
-	public String getImageData() {
-		return imageData;
-	}
-
-	public void setImageData(String imageData) {
-		this.imageData = imageData;
 	}
 
 	public String getCreatedBy() {

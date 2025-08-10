@@ -11,7 +11,7 @@ public class ProductRequestDTO {
 	private ProductCategoryEntityNew category;
 	private String code;
 	private UnitDTO unit;
-	private String imageData;
+	private String imageUrl;
 
 	private PricingDTO pricing;
 	private StockDTO stock;
@@ -189,12 +189,12 @@ public class ProductRequestDTO {
 		this.unit = unit;
 	}
 
-	public String getImageData() {
-		return imageData;
+	public String getImageUrl() {
+		return imageUrl;
 	}
 
-	public void setImageData(String imageData) {
-		this.imageData = imageData;
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
 	}
 
 	public PricingDTO getPricing() {
