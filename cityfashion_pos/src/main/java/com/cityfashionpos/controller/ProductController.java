@@ -89,15 +89,19 @@ public class ProductController {
 	@PostMapping(value="/saveProductNew", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	public ResponseEntity<Map<String, Object>> saveProductNew(
 			@RequestPart("product") ProductRequestDTO requestDTO,
-			@RequestPart("imageFile") MultipartFile imageFile) {
+			@RequestPart(value="imageFile", required=false) MultipartFile imageFile) {
 		Map<String, Object> response = new HashMap<>();
 
 		try {
 			// Save image to disk or cloud
-	        String imageUrl = imageStorageService.saveImage(imageFile);
+	        //String imageUrl = imageStorageService.saveImage(imageFile);
 	        
 	        // Attach image URL to DTO
-	        requestDTO.setImageUrl(imageUrl);
+	        if (imageFile != null && !imageFile.isEmpty()) {
+	            String imageUrl = imageStorageService.saveImage(imageFile);
+	            requestDTO.setImageUrl(imageUrl);
+	        }
+
 
 			ProductResponseDTO savedProduct = productServiceNew.saveProduct(requestDTO);
 
