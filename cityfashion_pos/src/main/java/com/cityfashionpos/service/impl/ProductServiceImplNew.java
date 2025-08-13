@@ -306,6 +306,7 @@ public class ProductServiceImplNew implements ProductServiceNew {
         purchasePriceTaxesDTO.setPurchasePrice(product.getPurchasePrice());
         purchasePriceTaxesDTO.setPurchasePriceType(product.getPurchasePriceType() != null ? product.getPurchasePriceType().name() : null);
         purchasePriceTaxesDTO.setTaxType(product.getTaxType() != null ? product.getTaxType().name() : null);
+        responseDTO.setPurchasePriceTaxes(purchasePriceTaxesDTO);
         
         
         return responseDTO;
