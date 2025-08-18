@@ -15,12 +15,12 @@ import com.cityfashionpos.service.ImageStorageService;
 
 @Service
 public class ImageStorageServiceImpl implements ImageStorageService {
-	@Value("${product.image.upload-dir}")
+    @Value("${product.image.upload-dir}")
     private String uploadDir;
 
-	@Override
-	public String saveImage(MultipartFile file) throws IOException {
-		if (file.isEmpty()) {
+    @Override
+    public String saveImage(MultipartFile file) throws IOException {
+        if (file.isEmpty()) {
             throw new IllegalArgumentException("Image file is empty");
         }
 
@@ -41,8 +41,8 @@ public class ImageStorageServiceImpl implements ImageStorageService {
 
         // Return relative or full path (adjust as needed)
         return "/images/products/" + uniqueFilename;
-	}
-	
+    }
+
     private String getFileExtension(String filename) {
         int dotIndex = filename.lastIndexOf('.');
         return (dotIndex >= 0) ? filename.substring(dotIndex) : "";

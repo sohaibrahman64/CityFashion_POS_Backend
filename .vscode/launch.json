@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-CityfashionPosBackendApplication<cityfashion_pos>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.cityfashionpos.CityfashionPosBackendApplication",
+            "projectName": "cityfashion_pos",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}

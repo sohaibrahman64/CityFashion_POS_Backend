@@ -38,144 +38,143 @@ import com.cityfashionpos.service.ProductServiceNew;
 @CrossOrigin(origins = "*")
 
 public class ProductController {
-	@Autowired
-	private ProductService productService;
+    @Autowired
+    private ProductService productService;
 
-	@Autowired
-	private ProductServiceNew productServiceNew;
-	
-	@Autowired
-	private ImageStorageService imageStorageService;
+    @Autowired
+    private ProductServiceNew productServiceNew;
 
-	@PostMapping("/saveProduct")
-	public ResponseEntity<ProductEntity> saveProduct(@RequestBody ProductEntity product) {
-		ProductEntity saved = productService.saveProduct(product);
-		return ResponseEntity.ok(saved);
-	}
+    @Autowired
+    private ImageStorageService imageStorageService;
 
-	@GetMapping("/getAllProducts")
-	public ResponseEntity<List<ProductEntity>> getAllProducts() {
-		return ResponseEntity.ok(productService.getAllProducts());
-	}
+    @PostMapping("/saveProduct")
+    public ResponseEntity<ProductEntity> saveProduct(@RequestBody ProductEntity product) {
+        ProductEntity saved = productService.saveProduct(product);
+        return ResponseEntity.ok(saved);
+    }
 
-	@PutMapping("/updateProduct/{id}")
-	public ResponseEntity<ProductEntity> updateProduct(@PathVariable Long id, @RequestBody ProductEntity product) {
-		product.setId(id);
-		return ResponseEntity.ok(productService.saveProduct(product));
-	}
+    @GetMapping("/getAllProducts")
+    public ResponseEntity<List<ProductEntity>> getAllProducts() {
+        return ResponseEntity.ok(productService.getAllProducts());
+    }
 
-	@DeleteMapping("/deleteProduct/{id}")
-	public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
-		productService.deleteProduct(id);
-		return ResponseEntity.noContent().build();
-	}
+    @PutMapping("/updateProduct/{id}")
+    public ResponseEntity<ProductEntity> updateProduct(@PathVariable Long id, @RequestBody ProductEntity product) {
+        product.setId(id);
+        return ResponseEntity.ok(productService.saveProduct(product));
+    }
 
-	@GetMapping("/getProductByBarcode/{barcode}")
-	public ResponseEntity<ProductEntity> getProductByBarcode(@PathVariable String barcode) {
-		return productService.getProductByBarcode(barcode).map(ResponseEntity::ok)
-				.orElse(ResponseEntity.notFound().build());
-	}
+    @DeleteMapping("/deleteProduct/{id}")
+    public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
+        productService.deleteProduct(id);
+        return ResponseEntity.noContent().build();
+    }
 
-	@PostMapping("/bulkImport")
-	public ResponseEntity<?> importProducts(@RequestParam("file") MultipartFile file) {
-		try {
-			productService.importFromExcel(file);
-			return ResponseEntity.ok("Products imported successfully.");
-		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to import: " + e.getMessage());
-		}
-	}
+    @GetMapping("/getProductByBarcode/{barcode}")
+    public ResponseEntity<ProductEntity> getProductByBarcode(@PathVariable String barcode) {
+        return productService.getProductByBarcode(barcode).map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
 
-	@PostMapping(value="/saveProductNew", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-	public ResponseEntity<Map<String, Object>> saveProductNew(
-			@RequestPart("product") ProductRequestDTO requestDTO,
-			@RequestPart(value="imageFile", required=false) MultipartFile imageFile) {
-		Map<String, Object> response = new HashMap<>();
+    @PostMapping("/bulkImport")
+    public ResponseEntity<?> importProducts(@RequestParam("file") MultipartFile file) {
+        try {
+            productService.importFromExcel(file);
+            return ResponseEntity.ok("Products imported successfully.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to import: " + e.getMessage());
+        }
+    }
 
-		try {
-			// Save image to disk or cloud
-	        //String imageUrl = imageStorageService.saveImage(imageFile);
-	        
-	        // Attach image URL to DTO
-	        if (imageFile != null && !imageFile.isEmpty()) {
-	            String imageUrl = imageStorageService.saveImage(imageFile);
-	            requestDTO.setImageUrl(imageUrl);
-	        }
+    @PostMapping(value = "/saveProductNew", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Map<String, Object>> saveProductNew(
+            @RequestPart("product") ProductRequestDTO requestDTO,
+            @RequestPart(value = "imageFile", required = false) MultipartFile imageFile) {
+        Map<String, Object> response = new HashMap<>();
 
+        try {
+            // Save image to disk or cloud
+            // String imageUrl = imageStorageService.saveImage(imageFile);
 
-			ProductResponseDTO savedProduct = productServiceNew.saveProduct(requestDTO);
+            // Attach image URL to DTO
+            if (imageFile != null && !imageFile.isEmpty()) {
+                String imageUrl = imageStorageService.saveImage(imageFile);
+                requestDTO.setImageUrl(imageUrl);
+            }
 
-			response.put("success", true);
-			response.put("message", "Product saved successfully");
-			response.put("product", savedProduct);
+            ProductResponseDTO savedProduct = productServiceNew.saveProduct(requestDTO);
 
-			return ResponseEntity.ok(response);
+            response.put("success", true);
+            response.put("message", "Product saved successfully");
+            response.put("product", savedProduct);
 
-		} catch (IllegalArgumentException e) {
-			response.put("success", false);
-			response.put("message", e.getMessage());
-			return ResponseEntity.badRequest().body(response);
+            return ResponseEntity.ok(response);
 
-		} catch (Exception e) {
-			response.put("success", false);
-			response.put("message", "Error saving product: " + e.getMessage());
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
-		}
-	}
+        } catch (IllegalArgumentException e) {
+            response.put("success", false);
+            response.put("message", e.getMessage());
+            return ResponseEntity.badRequest().body(response);
 
-	/**
-	 * Get product by ID
-	 */
-	@GetMapping("/getProductById/{id}")
-	public ResponseEntity<Map<String, Object>> getProductById(@PathVariable Long id) {
-		Map<String, Object> response = new HashMap<>();
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("message", "Error saving product: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
 
-		try {
-			ProductResponseDTO product = productServiceNew.getProductById(id);
+    /**
+     * Get product by ID
+     */
+    @GetMapping("/getProductById/{id}")
+    public ResponseEntity<Map<String, Object>> getProductById(@PathVariable Long id) {
+        Map<String, Object> response = new HashMap<>();
 
-			response.put("success", true);
-			response.put("product", product);
+        try {
+            ProductResponseDTO product = productServiceNew.getProductById(id);
 
-			return ResponseEntity.ok(response);
+            response.put("success", true);
+            response.put("product", product);
 
-		} catch (IllegalArgumentException e) {
-			response.put("success", false);
-			response.put("message", e.getMessage());
-			return ResponseEntity.notFound().build();
+            return ResponseEntity.ok(response);
 
-		} catch (Exception e) {
-			response.put("success", false);
-			response.put("message", "Error retrieving product: " + e.getMessage());
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
-		}
-	}
+        } catch (IllegalArgumentException e) {
+            response.put("success", false);
+            response.put("message", e.getMessage());
+            return ResponseEntity.notFound().build();
 
-	/**
-	 * Get product by code
-	 */
-	@GetMapping("/getProductByCode/{code}")
-	public ResponseEntity<Map<String, Object>> getProductByCode(@PathVariable String code) {
-		Map<String, Object> response = new HashMap<>();
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("message", "Error retrieving product: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
 
-		try {
-			ProductResponseDTO product = productServiceNew.getProductByCode(code);
+    /**
+     * Get product by code
+     */
+    @GetMapping("/getProductByCode/{code}")
+    public ResponseEntity<Map<String, Object>> getProductByCode(@PathVariable String code) {
+        Map<String, Object> response = new HashMap<>();
 
-			response.put("success", true);
-			response.put("product", product);
+        try {
+            ProductResponseDTO product = productServiceNew.getProductByCode(code);
 
-			return ResponseEntity.ok(response);
+            response.put("success", true);
+            response.put("product", product);
 
-		} catch (IllegalArgumentException e) {
-			response.put("success", false);
-			response.put("message", e.getMessage());
-			return ResponseEntity.notFound().build();
+            return ResponseEntity.ok(response);
 
-		} catch (Exception e) {
-			response.put("success", false);
-			response.put("message", "Error retrieving product: " + e.getMessage());
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
-		}
-	}
+        } catch (IllegalArgumentException e) {
+            response.put("success", false);
+            response.put("message", e.getMessage());
+            return ResponseEntity.notFound().build();
+
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("message", "Error retrieving product: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
 
     /**
      * Get all products
@@ -183,169 +182,179 @@ public class ProductController {
     @GetMapping("/getAllProductsNew")
     public ResponseEntity<Map<String, Object>> getAllProductsNew() {
         Map<String, Object> response = new HashMap<>();
-        
+
         try {
             List<ProductResponseDTO> products = productServiceNew.getAllProducts();
-            
+
             response.put("success", true);
             response.put("products", products);
             response.put("count", products.size());
-            
+
             return ResponseEntity.ok(response);
-            
+
         } catch (Exception e) {
             response.put("success", false);
             response.put("message", "Error retrieving products: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
-    
+
     /**
      * Search products by name
      */
     @GetMapping("/search")
     public ResponseEntity<Map<String, Object>> searchProductsByName(@RequestParam String name) {
         Map<String, Object> response = new HashMap<>();
-        
+
         try {
             List<ProductResponseDTO> products = productServiceNew.searchProductsByName(name);
-            
+
             response.put("success", true);
             response.put("products", products);
             response.put("count", products.size());
-            
+
             return ResponseEntity.ok(response);
-            
+
         } catch (Exception e) {
             response.put("success", false);
             response.put("message", "Error searching products: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
-    
+
     /**
      * Get products by category
      */
     @GetMapping("/getProductsByCategory/{category}")
     public ResponseEntity<Map<String, Object>> getProductsByCategory(@PathVariable String category) {
         Map<String, Object> response = new HashMap<>();
-        
+
         try {
             List<ProductResponseDTO> products = productServiceNew.getProductsByCategory(category);
-            
+
             response.put("success", true);
             response.put("products", products);
             response.put("count", products.size());
-            
+
             return ResponseEntity.ok(response);
-            
+
         } catch (Exception e) {
             response.put("success", false);
             response.put("message", "Error retrieving products by category: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
-    
+
     /**
      * Get products with low stock
      */
     @GetMapping("/getProductsWithLowStock")
     public ResponseEntity<Map<String, Object>> getProductsWithLowStock() {
         Map<String, Object> response = new HashMap<>();
-        
+
         try {
             List<ProductResponseDTO> products = productServiceNew.getProductsWithLowStock();
-            
+
             response.put("success", true);
             response.put("products", products);
             response.put("count", products.size());
-            
+
             return ResponseEntity.ok(response);
-            
+
         } catch (Exception e) {
             response.put("success", false);
             response.put("message", "Error retrieving low stock products: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
-    
+
     /**
      * Update product
      */
-    @PutMapping("/updateProductNew/{id}")
-    public ResponseEntity<Map<String, Object>> updateProduct(@PathVariable Long id, @RequestBody ProductRequestDTO requestDTO) {
+    @PutMapping(value = "/updateProductNew/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Map<String, Object>> updateProductNew(@PathVariable Long id,
+            @RequestPart("product") ProductRequestDTO requestDTO,
+            @RequestPart(value = "imageFile", required = false) MultipartFile imageFile) {
         Map<String, Object> response = new HashMap<>();
-        
+
         try {
+            // Save image to disk or cloud
+            // String imageUrl = imageStorageService.saveImage(imageFile);
+
+            // Attach image URL to DTO
+            if (imageFile != null && !imageFile.isEmpty()) {
+                String imageUrl = imageStorageService.saveImage(imageFile);
+                requestDTO.setImageUrl(imageUrl);
+            }
             ProductResponseDTO updatedProduct = productServiceNew.updateProduct(id, requestDTO);
-            
+
             response.put("success", true);
             response.put("message", "Product updated successfully");
             response.put("product", updatedProduct);
-            
+
             return ResponseEntity.ok(response);
-            
+
         } catch (IllegalArgumentException e) {
             response.put("success", false);
             response.put("message", e.getMessage());
             return ResponseEntity.badRequest().body(response);
-            
+
         } catch (Exception e) {
             response.put("success", false);
             response.put("message", "Error updating product: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
-    
+
     /**
      * Delete product
      */
     @DeleteMapping("/deleteProductNew/{id}")
     public ResponseEntity<Map<String, Object>> deleteProductNew(@PathVariable Long id) {
         Map<String, Object> response = new HashMap<>();
-        
+
         try {
-            productService.deleteProduct(id);
-            
+            productServiceNew.deleteProduct(id);
+
             response.put("success", true);
             response.put("message", "Product deleted successfully");
-            
+
             return ResponseEntity.ok(response);
-            
+
         } catch (IllegalArgumentException e) {
             response.put("success", false);
             response.put("message", e.getMessage());
             return ResponseEntity.badRequest().body(response);
-            
+
         } catch (Exception e) {
             response.put("success", false);
             response.put("message", "Error deleting product: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
-    
+
     /**
      * Generate unique product code
      */
     @GetMapping("/generateProductCode")
     public ResponseEntity<Map<String, Object>> generateProductCode() {
         Map<String, Object> response = new HashMap<>();
-        
+
         try {
             String code = productServiceNew.generateProductCode();
-            
+
             response.put("success", true);
             response.put("code", code);
-            
+
             return ResponseEntity.ok(response);
-            
+
         } catch (Exception e) {
             response.put("success", false);
             response.put("message", "Error generating product code: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
-    
+
     @PostMapping("/uploadImage")
     public ResponseEntity<String> uploadImage(@RequestParam("file") MultipartFile file) {
         try {

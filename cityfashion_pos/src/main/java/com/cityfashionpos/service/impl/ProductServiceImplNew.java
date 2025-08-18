@@ -108,18 +108,22 @@ public class ProductServiceImplNew implements ProductServiceNew {
 
 			product.setMinStock(requestDTO.getStock().getMinStock() != null ? requestDTO.getStock().getMinStock() : 0);
 		}
-		
+
 		// Set purchase price and taxes
 		if (requestDTO.getPurchasePriceTaxes() != null) {
-			product.setPurchasePrice(requestDTO.getPurchasePriceTaxes().getPurchasePrice() != null ? requestDTO.getPurchasePriceTaxes().getPurchasePrice() : null);
+			product.setPurchasePrice(requestDTO.getPurchasePriceTaxes().getPurchasePrice() != null
+					? requestDTO.getPurchasePriceTaxes().getPurchasePrice()
+					: null);
 			if (requestDTO.getPurchasePriceTaxes().getPurchasePriceType() != null) {
 				try {
-					product.setPurchasePriceType(PriceType.valueOf(requestDTO.getPurchasePriceTaxes().getPurchasePriceType().toUpperCase()));
+					product.setPurchasePriceType(
+							PriceType.valueOf(requestDTO.getPurchasePriceTaxes().getPurchasePriceType().toUpperCase()));
 				} catch (IllegalArgumentException e) {
 					product.setPurchasePriceType(PriceType.WITHOUT_TAX);
 				}
 			}
-			//product.setTaxType(TaxType.valueOf(requestDTO.getPurchasePriceTaxes().getTaxType() != null ? requestDTO.getPurchasePriceTaxes().getTaxType() : null));
+			// product.setTaxType(TaxType.valueOf(requestDTO.getPurchasePriceTaxes().getTaxType()
+			// != null ? requestDTO.getPurchasePriceTaxes().getTaxType() : null));
 			if (requestDTO.getPurchasePriceTaxes().getTaxType() != null) {
 				try {
 					product.setTaxType(TaxType.valueOf(requestDTO.getPurchasePriceTaxes().getTaxType().toUpperCase()));
@@ -200,126 +204,161 @@ public class ProductServiceImplNew implements ProductServiceNew {
 		List<ProductEntityNew> products = productRepository.findProductsWithLowStock();
 		return products.stream().map(this::convertToResponseDTO).collect(Collectors.toList());
 	}
-	
-    /**
-     * Update product
-     */
+
+	/**
+	 * Update product
+	 */
 	@Override
 	public ProductResponseDTO updateProduct(Long id, ProductRequestDTO requestDTO) {
-        Optional<ProductEntityNew> existingProduct = productRepository.findById(id);
-        if (!existingProduct.isPresent()) {
-            throw new IllegalArgumentException("Product not found with ID: " + id);
-        }
-        
-        ProductEntityNew product = existingProduct.get();
-        
-        // Update fields (similar to save but for existing product)
-        if (requestDTO.getName() != null) {
-            product.setName(requestDTO.getName().trim());
-        }
-        
-        if (requestDTO.getHsn() != null) {
-            product.setHsn(requestDTO.getHsn());
-        }
-        
-        if (requestDTO.getCategory() != null) {
-            product.setCategory(requestDTO.getCategory());
-        }
-        
-        // Update other fields as needed...
-        product.setUpdatedAt(LocalDateTime.now());
-        product.setUpdatedBy("system");
-        
-        ProductEntityNew updatedProduct = productRepository.save(product);
-        return convertToResponseDTO(updatedProduct);
+		Optional<ProductEntityNew> existingProduct = productRepository.findById(id);
+		if (!existingProduct.isPresent()) {
+			throw new IllegalArgumentException("Product not found with ID: " + id);
+		}
+
+		ProductEntityNew product = existingProduct.get();
+
+		// Update fields (similar to save but for existing product)
+		if (requestDTO.getName() != null) {
+			product.setName(requestDTO.getName().trim());
+		}
+
+		if (requestDTO.getHsn() != null) {
+			product.setHsn(requestDTO.getHsn());
+		}
+
+		if (requestDTO.getCategory() != null) {
+			product.setCategory(requestDTO.getCategory());
+		}
+
+		if (requestDTO.getImageUrl() != null) {
+			product.setImageUrl(requestDTO.getImageUrl());
+		}
+
+		if (requestDTO.getUnit() != null) {
+			product.setUnitValue(requestDTO.getUnit().getValue());
+			product.setUnitLabel(requestDTO.getUnit().getLabel());
+		}
+
+		if (requestDTO.getPricing() != null) {
+			product.setSalePrice(requestDTO.getPricing().getSalePrice() != null ? requestDTO.getPricing().getSalePrice()
+					: BigDecimal.ZERO);
+		}
+
+		if (requestDTO.getStock() != null) {
+			product.setOpeningQuantity(
+					requestDTO.getStock().getOpeningQuantity() != null ? requestDTO.getStock().getOpeningQuantity()
+							: 0);
+			product.setAtPrice(
+					requestDTO.getStock().getAtPrice() != null ? requestDTO.getStock().getAtPrice() : BigDecimal.ZERO);
+			product.setAsOfDate(requestDTO.getStock().getAsOfDate() != null ? requestDTO.getStock().getAsOfDate()
+					: LocalDateTime.now());
+			product.setMinStock(requestDTO.getStock().getMinStock() != null ? requestDTO.getStock().getMinStock() : 0);
+		}
+
+		if (requestDTO.getPurchasePriceTaxes() != null) {
+			product.setPurchasePrice(requestDTO.getPurchasePriceTaxes().getPurchasePrice() != null
+					? requestDTO.getPurchasePriceTaxes().getPurchasePrice()
+					: null);
+			product.setPurchasePriceType(requestDTO.getPurchasePriceTaxes().getPurchasePriceType() != null
+					? PriceType.valueOf(requestDTO.getPurchasePriceTaxes().getPurchasePriceType().toUpperCase())
+					: PriceType.WITHOUT_TAX);
+			product.setTaxType(requestDTO.getPurchasePriceTaxes().getTaxType() != null
+					? TaxType.valueOf(requestDTO.getPurchasePriceTaxes().getTaxType().toUpperCase())
+					: TaxType.GST_0);
+		}
+
+		// Update other fields as needed...
+		product.setUpdatedAt(LocalDateTime.now());
+		product.setUpdatedBy("system");
+
+		ProductEntityNew updatedProduct = productRepository.save(product);
+		return convertToResponseDTO(updatedProduct);
 	}
 
-	 /**
-     * Delete product
-     */
+	/**
+	 * Delete product
+	 */
 	@Override
 	public void deleteProduct(Long id) {
-        if (!productRepository.existsById(id)) {
-            throw new IllegalArgumentException("Product not found with ID: " + id);
-        }
-        productRepository.deleteById(id);
+		if (!productRepository.existsById(id)) {
+			throw new IllegalArgumentException("Product not found with ID: " + id);
+		}
+		productRepository.deleteById(id);
 	}
-	
-    /**
-     * Generate unique product code
-     */
+
+	/**
+	 * Generate unique product code
+	 */
 	@Override
 	public String generateProductCode() {
-        String code;
-        do {
-            code = generateRandomCode();
-        } while (productRepository.existsByCode(code));
-        
-        return code;
+		String code;
+		do {
+			code = generateRandomCode();
+		} while (productRepository.existsByCode(code));
+
+		return code;
 	}
-	
-    /**
-     * Convert Product entity to ProductResponseDTO
-     */
-    private ProductResponseDTO convertToResponseDTO(ProductEntityNew product) {
-        ProductResponseDTO responseDTO = new ProductResponseDTO();
-        
-        responseDTO.setId(product.getId());
-        responseDTO.setName(product.getName());
-        responseDTO.setHsn(product.getHsn());
-        responseDTO.setCategory(product.getCategory().getName());
-        responseDTO.setCode(product.getCode());
-        responseDTO.setImageUrl(product.getImageUrl());
-        responseDTO.setCreatedAt(product.getCreatedAt());
-        responseDTO.setUpdatedAt(product.getUpdatedAt());
-        responseDTO.setCreatedBy(product.getCreatedBy());
-        responseDTO.setUpdatedBy(product.getUpdatedBy());
-        
-        // Set unit information
-        if (product.getUnitValue() != null || product.getUnitLabel() != null) {
-            ProductResponseDTO.UnitDTO unitDTO = new ProductResponseDTO.UnitDTO();
-            unitDTO.setValue(product.getUnitValue());
-            unitDTO.setLabel(product.getUnitLabel());
-            responseDTO.setUnit(unitDTO);
-        }
-        
-        // Set pricing information
-        ProductResponseDTO.PricingDTO pricingDTO = new ProductResponseDTO.PricingDTO();
-        pricingDTO.setSalePrice(product.getSalePrice());
-        pricingDTO.setSalePriceType(product.getSalePriceType() != null ? 
-            product.getSalePriceType().name() : null);
-        pricingDTO.setDiscountAmount(product.getDiscountAmount());
-        pricingDTO.setDiscountType(product.getDiscountType() != null ? 
-            product.getDiscountType().name() : null);
-        responseDTO.setPricing(pricingDTO);
-        
-        // Set stock information
-        ProductResponseDTO.StockDTO stockDTO = new ProductResponseDTO.StockDTO();
-        stockDTO.setOpeningQuantity(product.getOpeningQuantity());
-        stockDTO.setAtPrice(product.getAtPrice());
-        stockDTO.setAsOfDate(product.getAsOfDate());
-        stockDTO.setMinStock(product.getMinStock());
-        responseDTO.setStock(stockDTO);
-        
-        // Set purchase and tax information
-        ProductResponseDTO.PurchasePriceTaxesDTO purchasePriceTaxesDTO = new ProductResponseDTO.PurchasePriceTaxesDTO();
-        purchasePriceTaxesDTO.setPurchasePrice(product.getPurchasePrice());
-        purchasePriceTaxesDTO.setPurchasePriceType(product.getPurchasePriceType() != null ? product.getPurchasePriceType().name() : null);
-        purchasePriceTaxesDTO.setTaxType(product.getTaxType() != null ? product.getTaxType().name() : null);
-        responseDTO.setPurchasePriceTaxes(purchasePriceTaxesDTO);
-        
-        
-        return responseDTO;
-    }
-    
-    /**
-     * Generate random 11-digit product code
-     */
-    private String generateRandomCode() {
-        long min = 10000000000L;
-        long max = 99999999999L;
-        long randomCode = min + (long) (Math.random() * (max - min + 1));
-        return String.valueOf(randomCode);
-    }
+
+	/**
+	 * Convert Product entity to ProductResponseDTO
+	 */
+	private ProductResponseDTO convertToResponseDTO(ProductEntityNew product) {
+		ProductResponseDTO responseDTO = new ProductResponseDTO();
+
+		responseDTO.setId(product.getId());
+		responseDTO.setName(product.getName());
+		responseDTO.setHsn(product.getHsn());
+		responseDTO.setCategory(product.getCategory().getName());
+		responseDTO.setCode(product.getCode());
+		responseDTO.setImageUrl(product.getImageUrl());
+		responseDTO.setCreatedAt(product.getCreatedAt());
+		responseDTO.setUpdatedAt(product.getUpdatedAt());
+		responseDTO.setCreatedBy(product.getCreatedBy());
+		responseDTO.setUpdatedBy(product.getUpdatedBy());
+
+		// Set unit information
+		if (product.getUnitValue() != null || product.getUnitLabel() != null) {
+			ProductResponseDTO.UnitDTO unitDTO = new ProductResponseDTO.UnitDTO();
+			unitDTO.setValue(product.getUnitValue());
+			unitDTO.setLabel(product.getUnitLabel());
+			responseDTO.setUnit(unitDTO);
+		}
+
+		// Set pricing information
+		ProductResponseDTO.PricingDTO pricingDTO = new ProductResponseDTO.PricingDTO();
+		pricingDTO.setSalePrice(product.getSalePrice());
+		pricingDTO.setSalePriceType(product.getSalePriceType() != null ? product.getSalePriceType().name() : null);
+		pricingDTO.setDiscountAmount(product.getDiscountAmount());
+		pricingDTO.setDiscountType(product.getDiscountType() != null ? product.getDiscountType().name() : null);
+		responseDTO.setPricing(pricingDTO);
+
+		// Set stock information
+		ProductResponseDTO.StockDTO stockDTO = new ProductResponseDTO.StockDTO();
+		stockDTO.setOpeningQuantity(product.getOpeningQuantity());
+		stockDTO.setAtPrice(product.getAtPrice());
+		stockDTO.setAsOfDate(product.getAsOfDate());
+		stockDTO.setMinStock(product.getMinStock());
+		responseDTO.setStock(stockDTO);
+
+		// Set purchase and tax information
+		ProductResponseDTO.PurchasePriceTaxesDTO purchasePriceTaxesDTO = new ProductResponseDTO.PurchasePriceTaxesDTO();
+		purchasePriceTaxesDTO.setPurchasePrice(product.getPurchasePrice());
+		purchasePriceTaxesDTO.setPurchasePriceType(
+				product.getPurchasePriceType() != null ? product.getPurchasePriceType().name() : null);
+		purchasePriceTaxesDTO.setTaxType(product.getTaxType() != null ? product.getTaxType().name() : null);
+		responseDTO.setPurchasePriceTaxes(purchasePriceTaxesDTO);
+
+		return responseDTO;
+	}
+
+	/**
+	 * Generate random 11-digit product code
+	 */
+	private String generateRandomCode() {
+		long min = 10000000000L;
+		long max = 99999999999L;
+		long randomCode = min + (long) (Math.random() * (max - min + 1));
+		return String.valueOf(randomCode);
+	}
 
 }

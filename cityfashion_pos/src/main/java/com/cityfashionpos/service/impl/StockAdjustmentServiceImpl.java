@@ -14,9 +14,11 @@ import com.cityfashionpos.dto.StockAdjustmentRequest;
 import com.cityfashionpos.entity.ProductEntityNew;
 import com.cityfashionpos.entity.StockAdjustmentsEntity;
 import com.cityfashionpos.model.AdjustmentType;
+import com.cityfashionpos.model.TransactionType;
 import com.cityfashionpos.repository.ProductRepositoryNew;
 import com.cityfashionpos.repository.StockAdjustmentRepository;
 import com.cityfashionpos.response.StockAdjustmentResponse;
+import com.cityfashionpos.service.ProductTransactionService;
 import com.cityfashionpos.service.StockAdjustmentService;
 
 @Service
@@ -27,6 +29,9 @@ public class StockAdjustmentServiceImpl implements StockAdjustmentService {
 
 	@Autowired
 	private ProductRepositoryNew productRepository;
+
+	@Autowired
+	private ProductTransactionService productTransactionService;
 
 	@Override
 	public StockAdjustmentResponse createStockAdjustment(StockAdjustmentRequest request) {
@@ -58,6 +63,26 @@ public class StockAdjustmentServiceImpl implements StockAdjustmentService {
 
 		// Update product stock
 		updateProductStock(product, adjustmentType, request.getQuantity());
+
+		// Create product transaction record
+		try {
+			TransactionType transactionType = adjustmentType == AdjustmentType.ADD_STOCK
+					? TransactionType.STOCK_ADJUSTMENT
+					: TransactionType.STOCK_ADJUSTMENT;
+
+			productTransactionService.createFromStockAdjustment(
+					product.getId(),
+					transactionType,
+					request.getQuantity().doubleValue(),
+					request.getAtPrice().doubleValue(),
+					request.getDescription(),
+					savedAdjustment.getId(),
+					"STOCK_ADJUSTMENT",
+					"ADJ-" + savedAdjustment.getId());
+		} catch (Exception e) {
+			// Log the error but don't fail the stock adjustment
+			System.err.println("Failed to create product transaction: " + e.getMessage());
+		}
 
 		// Create response
 		return createResponse(savedAdjustment, product);
@@ -176,35 +201,56 @@ public class StockAdjustmentServiceImpl implements StockAdjustmentService {
 
 		return response;
 	}
-	
-	  /**
-     * Summary class for adjustment statistics
-     */
-    public static class StockAdjustmentSummary {
-        private Long productId;
-        private BigDecimal totalValue;
-        private Long addStockCount;
-        private Long reduceStockCount;
-        
-        public StockAdjustmentSummary(Long productId, BigDecimal totalValue, Long addStockCount, Long reduceStockCount) {
-            this.productId = productId;
-            this.totalValue = totalValue;
-            this.addStockCount = addStockCount;
-            this.reduceStockCount = reduceStockCount;
-        }
-        
-        // Getters and Setters
-        public Long getProductId() { return productId; }
-        public void setProductId(Long productId) { this.productId = productId; }
-        
-        public BigDecimal getTotalValue() { return totalValue; }
-        public void setTotalValue(BigDecimal totalValue) { this.totalValue = totalValue; }
-        
-        public Long getAddStockCount() { return addStockCount; }
-        public void setAddStockCount(Long addStockCount) { this.addStockCount = addStockCount; }
-        
-        public Long getReduceStockCount() { return reduceStockCount; }
-        public void setReduceStockCount(Long reduceStockCount) { this.reduceStockCount = reduceStockCount; }
-    }
+
+	/**
+	 * Summary class for adjustment statistics
+	 */
+	public static class StockAdjustmentSummary {
+		private Long productId;
+		private BigDecimal totalValue;
+		private Long addStockCount;
+		private Long reduceStockCount;
+
+		public StockAdjustmentSummary(Long productId, BigDecimal totalValue, Long addStockCount,
+				Long reduceStockCount) {
+			this.productId = productId;
+			this.totalValue = totalValue;
+			this.addStockCount = addStockCount;
+			this.reduceStockCount = reduceStockCount;
+		}
+
+		// Getters and Setters
+		public Long getProductId() {
+			return productId;
+		}
+
+		public void setProductId(Long productId) {
+			this.productId = productId;
+		}
+
+		public BigDecimal getTotalValue() {
+			return totalValue;
+		}
+
+		public void setTotalValue(BigDecimal totalValue) {
+			this.totalValue = totalValue;
+		}
+
+		public Long getAddStockCount() {
+			return addStockCount;
+		}
+
+		public void setAddStockCount(Long addStockCount) {
+			this.addStockCount = addStockCount;
+		}
+
+		public Long getReduceStockCount() {
+			return reduceStockCount;
+		}
+
+		public void setReduceStockCount(Long reduceStockCount) {
+			this.reduceStockCount = reduceStockCount;
+		}
+	}
 
 }

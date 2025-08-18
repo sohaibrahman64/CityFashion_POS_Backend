@@ -1,6 +1,5 @@
 package com.cityfashionpos.service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import com.cityfashionpos.dto.InvoiceRequest;
@@ -13,7 +12,7 @@ public interface InvoiceService {
 
 	List<PastInvoiceResponse> getFilteredInvoices(Long customerId, String invoiceNumber, String fromDate,
 			String toDate, Integer paymentModeId, String paymentStatus);
-	
+
 	InvoicePrintResponse getInvoicePrintDetails(Long invoiceId);
 
 }
