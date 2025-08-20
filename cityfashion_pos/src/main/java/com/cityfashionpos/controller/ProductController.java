@@ -223,6 +223,29 @@ public class ProductController {
     }
 
     /**
+     * Search products by name starting with search term
+     */
+    @GetMapping("/searchStartsWith")
+    public ResponseEntity<Map<String, Object>> searchProductsByNameStartingWith(@RequestParam String searchTerm) {
+        Map<String, Object> response = new HashMap<>();
+
+        try {
+            List<ProductResponseDTO> products = productServiceNew.searchProductsByNameStartingWith(searchTerm);
+
+            response.put("success", true);
+            response.put("products", products);
+            response.put("count", products.size());
+
+            return ResponseEntity.ok(response);
+
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("message", "Error searching products: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+
+    /**
      * Get products by category
      */
     @GetMapping("/getProductsByCategory/{category}")

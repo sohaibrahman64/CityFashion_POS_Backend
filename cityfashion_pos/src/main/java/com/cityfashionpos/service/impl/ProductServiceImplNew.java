@@ -188,6 +188,15 @@ public class ProductServiceImplNew implements ProductServiceNew {
 	}
 
 	/**
+	 * Search products by name starting with search term
+	 */
+	@Override
+	public List<ProductResponseDTO> searchProductsByNameStartingWith(String name) {
+		List<ProductEntityNew> products = productRepository.findByNameStartingWithIgnoreCase(name);
+		return products.stream().map(this::convertToResponseDTO).collect(Collectors.toList());
+	}
+
+	/**
 	 * Get products by category
 	 */
 	@Override
