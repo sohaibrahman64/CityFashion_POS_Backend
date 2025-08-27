@@ -5,42 +5,40 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name= "sales_invoice_items")
+@Table(name = "sales_invoice_items")
 public class InvoiceItemEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
-    @Column(name = "invoice_id")
-    private Long invoiceId;    // Reference to Invoice
 
-    @Column(name = "product_id")
-    private Long productId;    // Reference to Product
-    
-//    @ManyToOne
-//    @JoinColumn(name = "product_id")
-//    private ProductEntity product;
-    
-//    @ManyToOne
-//    @JoinColumn(name = "invoice_id")
-//    private InvoiceEntity invoice;
+	@Column(name = "invoice_id")
+	private Long invoiceId; // Reference to Invoice
 
-    @Column(name = "quantity")
-    private Integer quantity;
+	@Column(name = "product_id")
+	private Long productId; // Reference to Product
 
-    @Column(name = "price")
-    private Double price;      // Unit price at the time of sale
+	// @ManyToOne
+	// @JoinColumn(name = "product_id")
+	// private ProductEntity product;
 
-    @Column(name = "total_price")
-    private Double total;      // price * quantity
-    
-    @Column(name = "tax_percent")
-    private Double taxPercent;
+	// @ManyToOne
+	// @JoinColumn(name = "invoice_id")
+	// private InvoiceEntity invoice;
+
+	@Column(name = "quantity")
+	private Integer quantity;
+
+	@Column(name = "price")
+	private Double price; // Unit price at the time of sale
+
+	@Column(name = "total_price")
+	private Double total; // price * quantity
+
+	@Column(name = "tax_percent")
+	private Double taxPercent;
 
 	public Long getId() {
 		return id;
@@ -98,20 +96,20 @@ public class InvoiceItemEntity {
 		this.taxPercent = taxPercent;
 	}
 
-//	public ProductEntity getProduct() {
-//		return product;
-//	}
-//
-//	public void setProduct(ProductEntity product) {
-//		this.product = product;
-//	}
+	// public ProductEntity getProduct() {
+	// return product;
+	// }
+	//
+	// public void setProduct(ProductEntity product) {
+	// this.product = product;
+	// }
 
-//	public InvoiceEntity getInvoice() {
-//		return invoice;
-//	}
-//
-//	public void setInvoice(InvoiceEntity invoice) {
-//		this.invoice = invoice;
-//	}
-    
+	// public InvoiceEntity getInvoice() {
+	// return invoice;
+	// }
+	//
+	// public void setInvoice(InvoiceEntity invoice) {
+	// this.invoice = invoice;
+	// }
+
 }

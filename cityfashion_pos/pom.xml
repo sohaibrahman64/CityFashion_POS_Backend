@@ -78,18 +78,21 @@
 		<dependency>
     		<groupId>com.mysql</groupId>
     		<artifactId>mysql-connector-j</artifactId>
-    		<version>8.0.33</version>
+    		<!-- <version>8.0.33</version> -->
+			<version>8.2.0</version>
     		<scope>runtime</scope>		
 		</dependency>
 		<dependency>
     		<groupId>org.apache.poi</groupId>
 		    <artifactId>poi</artifactId>
-		    <version>5.2.5</version> <!-- or latest stable -->
+		    <!-- <version>5.2.5</version> -->
+			<version>5.4.0</version>
 		</dependency>
 		<dependency>
 		    <groupId>org.apache.poi</groupId>
 		    <artifactId>poi-ooxml</artifactId>
-		    <version>5.2.5</version>
+		    <!-- <version>5.2.5</version> -->
+			<version>5.4.0</version>
 		</dependency>
 
 		<!--<dependency>
