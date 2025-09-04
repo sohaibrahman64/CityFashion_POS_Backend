@@ -1,43 +1,41 @@
--- Database Schema Updates for New Sales Invoice Functionality
--- Run these SQL commands to update your existing database
+-- Tax Rates Table Creation
+-- This script creates the tax_rates table for dynamic tax rate selection
 
--- 1. Add discount fields to sales_invoice_items table
-ALTER TABLE sales_invoice_items 
-ADD COLUMN discount_percent DECIMAL(5,2) DEFAULT 0.00 COMMENT 'Percentage discount for the item',
-ADD COLUMN discount_amount DECIMAL(10,2) DEFAULT 0.00 COMMENT 'Calculated discount amount for the item';
+-- Create tax_rates table
+CREATE TABLE IF NOT EXISTS tax_rates (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    label VARCHAR(50) NOT NULL COMMENT 'Display label for tax rate (e.g., "GST@18%")',
+    type ENUM('GST', 'IGST') NOT NULL COMMENT 'Tax type: GST or IGST',
+    rate DECIMAL(5,2) NOT NULL COMMENT 'Tax rate percentage (e.g., 18.00)',
+    active BOOLEAN NOT NULL DEFAULT TRUE COMMENT 'Whether the rate is usable',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
 
--- 2. Add indexes for better performance (optional but recommended)
-CREATE INDEX idx_invoice_items_invoice_id ON sales_invoice_items(invoice_id);
-CREATE INDEX idx_invoice_items_product_id ON sales_invoice_items(product_id);
-CREATE INDEX idx_invoice_customer_id ON sales_invoice(customer_id);
-CREATE INDEX idx_invoice_invoice_number ON sales_invoice(invoice_number);
-CREATE INDEX idx_customers_phone ON customers(phone);
+-- Add tax_rate_id column to new_sales_invoice_items table
+ALTER TABLE new_sales_invoice_items 
+ADD COLUMN tax_rate_id BIGINT NULL COMMENT 'Reference to tax_rates table',
+ADD CONSTRAINT fk_invoice_item_tax_rate 
+    FOREIGN KEY (tax_rate_id) REFERENCES tax_rates(id) ON DELETE SET NULL;
 
--- 3. Verify the table structure
-DESCRIBE sales_invoice_items;
-DESCRIBE sales_invoice;
-DESCRIBE customers;
+-- Modify tax_percent column to use DECIMAL for better precision
+ALTER TABLE new_sales_invoice_items 
+MODIFY COLUMN tax_percent DECIMAL(5,2) NULL COMMENT 'Snapshot of applied tax rate for historical accuracy';
 
--- 4. Sample data insertion for testing (optional)
--- Insert sample payment statuses if they don't exist
-INSERT IGNORE INTO payment_status (status_name, description) VALUES 
-('Paid', 'Full payment received'),
-('Partially Paid', 'Partial payment received'),
-('Pending', 'No payment received');
+-- Insert sample tax rates
+INSERT INTO tax_rates (label, type, rate, active) VALUES
+('GST@0%', 'GST', 0.00, TRUE),
+('GST@5%', 'GST', 5.00, TRUE),
+('GST@12%', 'GST', 12.00, TRUE),
+('GST@18%', 'GST', 18.00, TRUE),
+('GST@28%', 'GST', 28.00, TRUE),
+('IGST@0%', 'IGST', 0.00, TRUE),
+('IGST@5%', 'IGST', 5.00, TRUE),
+('IGST@12%', 'IGST', 12.00, TRUE),
+('IGST@18%', 'IGST', 18.00, TRUE),
+('IGST@28%', 'IGST', 28.00, TRUE);
 
--- 5. Verify payment statuses
-SELECT * FROM payment_status;
-
--- 6. Sample customer insertion for testing (optional)
-INSERT IGNORE INTO customers (name, phone, email, address) VALUES 
-('Test Customer', '9876543210', 'test@example.com', 'Test Address');
-
--- 7. Verify customer insertion
-SELECT * FROM customers WHERE phone = '9876543210';
-
--- Notes:
--- - The discount_percent field stores percentage values (e.g., 10.00 for 10%)
--- - The discount_amount field stores calculated monetary values (e.g., 59.90 for ₹59.90)
--- - Both fields default to 0.00 to maintain backward compatibility
--- - The indexes will improve query performance for large datasets
--- - Run these commands in your MySQL database after backing up your data
+-- Create index for better performance
+CREATE INDEX idx_tax_rates_active_type ON tax_rates(active, type);
+CREATE INDEX idx_tax_rates_rate ON tax_rates(rate);
+CREATE INDEX idx_invoice_items_tax_rate ON new_sales_invoice_items(tax_rate_id);

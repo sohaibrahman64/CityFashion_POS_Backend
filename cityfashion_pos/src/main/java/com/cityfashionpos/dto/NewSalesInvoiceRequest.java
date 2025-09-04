@@ -21,6 +21,7 @@ public class NewSalesInvoiceRequest {
         private Double discount;
         private Double total;
         private Long productId;
+        private Long taxRateId; // Reference to selected tax rate
 
         public Long getId() {
             return id;
@@ -76,6 +77,14 @@ public class NewSalesInvoiceRequest {
 
         public void setProductId(Long productId) {
             this.productId = productId;
+        }
+
+        public Long getTaxRateId() {
+            return taxRateId;
+        }
+
+        public void setTaxRateId(Long taxRateId) {
+            this.taxRateId = taxRateId;
         }
     }
 

@@ -1,11 +1,7 @@
 package com.cityfashionpos.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.math.BigDecimal;
 
 @Entity
 @Table(name = "new_sales_invoice_items")
@@ -29,8 +25,12 @@ public class NewSalesInvoiceItemEntity {
     @Column(name = "total_price")
     private Double total; // price * quantity
 
-    @Column(name = "tax_percent")
-    private Double taxPercent;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "tax_rate_id")
+    private TaxRateEntity taxRate;
+
+    @Column(name = "tax_percent", precision = 5, scale = 2)
+    private BigDecimal taxPercent; // snapshot of applied rate
 
     @Column(name = "discount_percent")
     private Double discountPercent;
@@ -86,11 +86,19 @@ public class NewSalesInvoiceItemEntity {
         this.total = total;
     }
 
-    public Double getTaxPercent() {
+    public TaxRateEntity getTaxRate() {
+        return taxRate;
+    }
+
+    public void setTaxRate(TaxRateEntity taxRate) {
+        this.taxRate = taxRate;
+    }
+
+    public BigDecimal getTaxPercent() {
         return taxPercent;
     }
 
-    public void setTaxPercent(Double taxPercent) {
+    public void setTaxPercent(BigDecimal taxPercent) {
         this.taxPercent = taxPercent;
     }
 

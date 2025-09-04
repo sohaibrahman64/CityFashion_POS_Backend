@@ -13,9 +13,11 @@ import com.cityfashionpos.dto.NewSalesInvoiceResponse;
 import com.cityfashionpos.entity.CustomerEntity;
 import com.cityfashionpos.entity.NewSalesInvoiceEntity;
 import com.cityfashionpos.entity.NewSalesInvoiceItemEntity;
+import com.cityfashionpos.entity.TaxRateEntity;
 import com.cityfashionpos.repository.CustomerRepository;
 import com.cityfashionpos.repository.NewSalesInvoiceItemRepository;
 import com.cityfashionpos.repository.NewSalesInvoiceRepository;
+import com.cityfashionpos.service.TaxRateService;
 import com.cityfashionpos.utils.NumberToWordsConverter;
 
 @Service
@@ -29,6 +31,9 @@ public class NewSalesInvoiceService {
 
     @Autowired
     private CustomerRepository customerRepository;
+
+    @Autowired
+    private TaxRateService taxRateService;
 
     @Transactional
     public NewSalesInvoiceResponse createNewSalesInvoice(NewSalesInvoiceRequest request) {
@@ -67,6 +72,22 @@ public class NewSalesInvoiceService {
 
             for (NewSalesInvoiceRequest.NewSalesInvoiceItemRequest itemRequest : request.getItems()) {
                 if (itemRequest.getItemName() != null && !itemRequest.getItemName().trim().isEmpty()) {
+                    // Validate and get tax rate if provided
+                    TaxRateEntity taxRate = null;
+                    java.math.BigDecimal taxPercent = java.math.BigDecimal.ZERO;
+
+                    if (itemRequest.getTaxRateId() != null) {
+                        // Validate that tax rate exists and is active
+                        if (!taxRateService.isTaxRateActive(itemRequest.getTaxRateId())) {
+                            throw new IllegalArgumentException(
+                                    "Invalid or inactive tax rate ID: " + itemRequest.getTaxRateId());
+                        }
+                        taxRate = taxRateService.getTaxRateById(itemRequest.getTaxRateId());
+                        if (taxRate != null) {
+                            taxPercent = taxRate.getRate();
+                        }
+                    }
+
                     // Calculate item totals
                     double itemSubtotal = (itemRequest.getQuantity() != null ? itemRequest.getQuantity() : 0) *
                             (itemRequest.getPrice() != null ? itemRequest.getPrice() : 0);
@@ -88,6 +109,10 @@ public class NewSalesInvoiceService {
                     invoiceItem.setDiscountPercent(itemRequest.getDiscount());
                     invoiceItem.setDiscountAmount(itemDiscountAmount);
                     invoiceItem.setTotal(itemTotal);
+
+                    // Set tax rate information
+                    invoiceItem.setTaxRate(taxRate);
+                    invoiceItem.setTaxPercent(taxPercent);
 
                     // Save invoice item
                     invoiceItemRepository.save(invoiceItem);

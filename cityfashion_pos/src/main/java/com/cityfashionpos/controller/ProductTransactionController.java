@@ -33,11 +33,13 @@ public class ProductTransactionController {
      * Create a new product transaction
      * POST /api/product-transactions
      */
-    @PostMapping
-    public ResponseEntity<ProductTransactionDTO> createTransaction(@RequestBody ProductTransactionDTO transactionDTO) {
+    @PostMapping("/createTransaction")
+    public ResponseEntity<List<ProductTransactionDTO>> createTransaction(
+            @RequestBody List<ProductTransactionDTO> transactionDTOs) {
         try {
-            ProductTransactionDTO createdTransaction = productTransactionService.createTransaction(transactionDTO);
-            return ResponseEntity.status(HttpStatus.CREATED).body(createdTransaction);
+            List<ProductTransactionDTO> createdTransactions = productTransactionService
+                    .createTransactions(transactionDTOs);
+            return ResponseEntity.status(HttpStatus.CREATED).body(createdTransactions);
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().build();
         }

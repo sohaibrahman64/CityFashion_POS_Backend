@@ -8,44 +8,47 @@ import com.cityfashionpos.model.TransactionType;
 
 public interface ProductTransactionService {
 
-    // Create a new product transaction
-    ProductTransactionDTO createTransaction(ProductTransactionDTO transactionDTO);
+        // Create a new product transaction
+        ProductTransactionDTO createTransaction(ProductTransactionDTO transactionDTO);
 
-    // Get all transactions for a specific product
-    List<ProductTransactionDTO> getTransactionsByProduct(Long productId);
+        // Create multiple product transactions
+        List<ProductTransactionDTO> createTransactions(List<ProductTransactionDTO> transactionDTOs);
 
-    // Get transactions by product and date range
-    List<ProductTransactionDTO> getTransactionsByProductAndDateRange(Long productId, LocalDateTime startDate,
-            LocalDateTime endDate);
+        // Get all transactions for a specific product
+        List<ProductTransactionDTO> getTransactionsByProduct(Long productId);
 
-    // Get transactions by transaction type
-    List<ProductTransactionDTO> getTransactionsByType(TransactionType transactionType);
+        // Get transactions by product and date range
+        List<ProductTransactionDTO> getTransactionsByProductAndDateRange(Long productId, LocalDateTime startDate,
+                        LocalDateTime endDate);
 
-    // Get transactions by date range
-    List<ProductTransactionDTO> getTransactionsByDateRange(LocalDateTime startDate, LocalDateTime endDate);
+        // Get transactions by transaction type
+        List<ProductTransactionDTO> getTransactionsByType(TransactionType transactionType);
 
-    // Get transaction by ID
-    ProductTransactionDTO getTransactionById(Long transactionId);
+        // Get transactions by date range
+        List<ProductTransactionDTO> getTransactionsByDateRange(LocalDateTime startDate, LocalDateTime endDate);
 
-    // Update transaction
-    ProductTransactionDTO updateTransaction(Long transactionId, ProductTransactionDTO transactionDTO);
+        // Get transaction by ID
+        ProductTransactionDTO getTransactionById(Long transactionId);
 
-    // Delete transaction
-    void deleteTransaction(Long transactionId);
+        // Update transaction
+        ProductTransactionDTO updateTransaction(Long transactionId, ProductTransactionDTO transactionDTO);
 
-    // Get transaction summary for a product
-    Object getTransactionSummary(Long productId, LocalDateTime startDate, LocalDateTime endDate);
+        // Delete transaction
+        void deleteTransaction(Long transactionId);
 
-    // Create transaction from stock adjustment
-    ProductTransactionDTO createFromStockAdjustment(Long productId, TransactionType type,
-            Double quantity, Double unitPrice, String description,
-            Long referenceId, String referenceType, String referenceNumber);
+        // Get transaction summary for a product
+        Object getTransactionSummary(Long productId, LocalDateTime startDate, LocalDateTime endDate);
 
-    // Create transaction from sale
-    ProductTransactionDTO createFromSale(Long productId, Double quantity, Double unitPrice,
-            String description, Long invoiceId, String invoiceNumber);
+        // Create transaction from stock adjustment
+        ProductTransactionDTO createFromStockAdjustment(Long productId, TransactionType type,
+                        Double quantity, Double unitPrice, String description,
+                        Long referenceId, String referenceType, String referenceNumber);
 
-    // Create transaction from purchase
-    ProductTransactionDTO createFromPurchase(Long productId, Double quantity, Double unitPrice,
-            String description, Long purchaseId, String purchaseNumber);
+        // Create transaction from sale
+        ProductTransactionDTO createFromSale(Long productId, Double quantity, Double unitPrice,
+                        String description, Long invoiceId, String invoiceNumber);
+
+        // Create transaction from purchase
+        ProductTransactionDTO createFromPurchase(Long productId, Double quantity, Double unitPrice,
+                        String description, Long purchaseId, String purchaseNumber);
 }

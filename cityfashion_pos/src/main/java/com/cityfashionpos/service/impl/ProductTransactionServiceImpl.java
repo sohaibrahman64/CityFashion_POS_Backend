@@ -32,16 +32,46 @@ public class ProductTransactionServiceImpl implements ProductTransactionService 
 
         ProductTransactionEntity entity = new ProductTransactionEntity();
         entity.setProduct(product);
-        entity.setTransactionType(transactionDTO.getTransactionType());
+
+        // Handle transaction type - ensure it's valid
+        TransactionType transactionType = transactionDTO.getTransactionType();
+        if (transactionType == null) {
+            throw new RuntimeException("Transaction type is required");
+        }
+        entity.setTransactionType(transactionType);
+
         entity.setReferenceId(transactionDTO.getReferenceId());
         entity.setReferenceType(transactionDTO.getReferenceType());
         entity.setReferenceNumber(transactionDTO.getReferenceNumber());
-        entity.setQuantity(BigDecimal.valueOf(transactionDTO.getQuantity().doubleValue()));
-        entity.setUnitPrice(BigDecimal.valueOf(transactionDTO.getUnitPrice().doubleValue()));
+
+        // Handle quantity and unit price conversion
+        if (transactionDTO.getQuantity() == null) {
+            throw new RuntimeException("Quantity is required");
+        }
+        entity.setQuantity(transactionDTO.getQuantity());
+
+        if (transactionDTO.getUnitPrice() == null) {
+            throw new RuntimeException("Unit price is required");
+        }
+        entity.setUnitPrice(transactionDTO.getUnitPrice());
+
         entity.setDescription(transactionDTO.getDescription());
-        entity.setTransactionDate(transactionDTO.getTransactionDate() != null ? transactionDTO.getTransactionDate()
-                : LocalDateTime.now());
-        entity.setCreatedBy(transactionDTO.getCreatedBy() != null ? transactionDTO.getCreatedBy() : "system");
+
+        // Handle transaction date - use provided date or current time
+        LocalDateTime transactionDate = transactionDTO.getTransactionDate();
+        if (transactionDate == null) {
+            transactionDate = LocalDateTime.now();
+        }
+        entity.setTransactionDate(transactionDate);
+
+        // Handle created date - use provided date or current time
+        LocalDateTime createdAt = transactionDTO.getCreatedAt();
+        if (createdAt == null) {
+            createdAt = LocalDateTime.now();
+        }
+        entity.setCreatedAt(createdAt);
+
+        entity.setCreatedBy(transactionDTO.getCreatedBy() != null ? transactionDTO.getCreatedBy() : "SYSTEM");
         entity.setNotes(transactionDTO.getNotes());
         entity.setStatus(transactionDTO.getStatus() != null ? transactionDTO.getStatus() : "COMPLETED");
 
@@ -49,6 +79,13 @@ public class ProductTransactionServiceImpl implements ProductTransactionService 
 
         ProductTransactionEntity savedEntity = productTransactionRepository.save(entity);
         return convertToDTO(savedEntity);
+    }
+
+    @Override
+    public List<ProductTransactionDTO> createTransactions(List<ProductTransactionDTO> transactionDTOs) {
+        return transactionDTOs.stream()
+                .map(this::createTransaction)
+                .collect(Collectors.toList());
     }
 
     @Override
