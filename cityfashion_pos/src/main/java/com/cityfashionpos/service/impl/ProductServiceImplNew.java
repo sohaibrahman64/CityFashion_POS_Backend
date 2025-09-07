@@ -16,9 +16,9 @@ import com.cityfashionpos.dto.ProductResponseDTO;
 import com.cityfashionpos.entity.ProductEntityNew;
 import com.cityfashionpos.model.DiscountType;
 import com.cityfashionpos.model.PriceType;
-import com.cityfashionpos.model.TaxType;
 import com.cityfashionpos.repository.ProductRepositoryNew;
 import com.cityfashionpos.service.ProductServiceNew;
+import com.cityfashionpos.service.TaxRateService;
 
 @Service
 @Transactional
@@ -26,6 +26,9 @@ public class ProductServiceImplNew implements ProductServiceNew {
 
 	@Autowired
 	private ProductRepositoryNew productRepository;
+
+	@Autowired
+	private TaxRateService taxRateService;
 
 	/**
 	 * Save a new product
@@ -122,14 +125,9 @@ public class ProductServiceImplNew implements ProductServiceNew {
 					product.setPurchasePriceType(PriceType.WITHOUT_TAX);
 				}
 			}
-			// product.setTaxType(TaxType.valueOf(requestDTO.getPurchasePriceTaxes().getTaxType()
-			// != null ? requestDTO.getPurchasePriceTaxes().getTaxType() : null));
-			if (requestDTO.getPurchasePriceTaxes().getTaxType() != null) {
-				try {
-					product.setTaxType(TaxType.valueOf(requestDTO.getPurchasePriceTaxes().getTaxType().toUpperCase()));
-				} catch (IllegalArgumentException e) {
-					product.setTaxType(TaxType.GST_0);
-				}
+			// Set tax rate from the DTO
+			if (requestDTO.getPurchasePriceTaxes().getTaxRate() != null) {
+				product.setTaxRate(requestDTO.getPurchasePriceTaxes().getTaxRate());
 			}
 			product.setUpdatedAt(LocalDateTime.now());
 		}
@@ -271,9 +269,10 @@ public class ProductServiceImplNew implements ProductServiceNew {
 			product.setPurchasePriceType(requestDTO.getPurchasePriceTaxes().getPurchasePriceType() != null
 					? PriceType.valueOf(requestDTO.getPurchasePriceTaxes().getPurchasePriceType().toUpperCase())
 					: PriceType.WITHOUT_TAX);
-			product.setTaxType(requestDTO.getPurchasePriceTaxes().getTaxType() != null
-					? TaxType.valueOf(requestDTO.getPurchasePriceTaxes().getTaxType().toUpperCase())
-					: TaxType.GST_0);
+			// Set tax rate from the DTO
+			if (requestDTO.getPurchasePriceTaxes().getTaxRate() != null) {
+				product.setTaxRate(requestDTO.getPurchasePriceTaxes().getTaxRate());
+			}
 		}
 
 		// Update other fields as needed...
@@ -354,7 +353,7 @@ public class ProductServiceImplNew implements ProductServiceNew {
 		purchasePriceTaxesDTO.setPurchasePrice(product.getPurchasePrice());
 		purchasePriceTaxesDTO.setPurchasePriceType(
 				product.getPurchasePriceType() != null ? product.getPurchasePriceType().name() : null);
-		purchasePriceTaxesDTO.setTaxType(product.getTaxType() != null ? product.getTaxType().name() : null);
+		purchasePriceTaxesDTO.setTaxRate(product.getTaxRate());
 		responseDTO.setPurchasePriceTaxes(purchasePriceTaxesDTO);
 
 		return responseDTO;

@@ -3,7 +3,7 @@ package com.cityfashionpos.dto;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-import com.cityfashionpos.dto.ProductRequestDTO.PurchasePriceTaxesDTO;
+import com.cityfashionpos.entity.TaxRateEntity;
 
 public class ProductResponseDTO {
 	private Long id;
@@ -127,7 +127,7 @@ public class ProductResponseDTO {
 		private Long productId;
 		private BigDecimal purchasePrice;
 		private String purchasePriceType;
-		private String taxType;
+		private TaxRateEntity taxRate;
 
 		public Long getProductId() {
 			return productId;
@@ -153,12 +153,12 @@ public class ProductResponseDTO {
 			this.purchasePriceType = purchasePriceType;
 		}
 
-		public String getTaxType() {
-			return taxType;
+		public TaxRateEntity getTaxRate() {
+			return taxRate;
 		}
 
-		public void setTaxType(String taxType) {
-			this.taxType = taxType;
+		public void setTaxRate(TaxRateEntity taxRate) {
+			this.taxRate = taxRate;
 		}
 	}
 
@@ -273,5 +273,5 @@ public class ProductResponseDTO {
 	public void setPurchasePriceTaxes(PurchasePriceTaxesDTO purchasePriceTaxes) {
 		this.purchasePriceTaxes = purchasePriceTaxes;
 	}
-	
+
 }

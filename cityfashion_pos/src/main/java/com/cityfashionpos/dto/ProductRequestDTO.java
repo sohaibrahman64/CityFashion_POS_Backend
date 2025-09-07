@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import com.cityfashionpos.entity.ProductCategoryEntityNew;
+import com.cityfashionpos.entity.TaxRateEntity;
 
 public class ProductRequestDTO {
 	private String name;
@@ -16,37 +17,44 @@ public class ProductRequestDTO {
 	private PricingDTO pricing;
 	private StockDTO stock;
 	private PurchasePriceTaxesDTO purchasePriceTaxes;
-	
-	
+
 	public static class PurchasePriceTaxesDTO {
-	    private Long productId;
-	    private BigDecimal purchasePrice;
-	    private String purchasePriceType;
-	    private String taxType;
+		private Long productId;
+		private BigDecimal purchasePrice;
+		private String purchasePriceType;
+		private TaxRateEntity taxRate;
+
 		public Long getProductId() {
 			return productId;
 		}
+
 		public void setProductId(Long productId) {
 			this.productId = productId;
 		}
+
 		public BigDecimal getPurchasePrice() {
 			return purchasePrice;
 		}
+
 		public void setPurchasePrice(BigDecimal purchasePrice) {
 			this.purchasePrice = purchasePrice;
 		}
+
 		public String getPurchasePriceType() {
 			return purchasePriceType;
 		}
+
 		public void setPurchasePriceType(String purchasePriceType) {
 			this.purchasePriceType = purchasePriceType;
 		}
-		public String getTaxType() {
-			return taxType;
+
+		public TaxRateEntity getTaxRate() {
+			return taxRate;
 		}
-		public void setTaxType(String taxType) {
-			this.taxType = taxType;
-		}	
+
+		public void setTaxRate(TaxRateEntity taxRate) {
+			this.taxRate = taxRate;
+		}
 	}
 
 	// Nested DTOs
@@ -220,5 +228,5 @@ public class ProductRequestDTO {
 	public void setPurchasePriceTaxes(PurchasePriceTaxesDTO purchasePriceTaxes) {
 		this.purchasePriceTaxes = purchasePriceTaxes;
 	}
-	
+
 }

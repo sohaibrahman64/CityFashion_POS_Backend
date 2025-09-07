@@ -2,7 +2,6 @@ package com.cityfashionpos.entity;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Locale.Category;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,7 +16,6 @@ import javax.persistence.Table;
 
 import com.cityfashionpos.model.DiscountType;
 import com.cityfashionpos.model.PriceType;
-import com.cityfashionpos.model.TaxType;
 
 @Entity
 @Table(name = "products_new")
@@ -37,9 +35,9 @@ public class ProductEntityNew {
 
 	@Column(name = "unit_value")
 	private String unitValue;
-	
+
 	@Column(name = "unit_label")
-    private String unitLabel;
+	private String unitLabel;
 
 	@Column(name = "image_url")
 	private String imageUrl;
@@ -52,9 +50,9 @@ public class ProductEntityNew {
 	@Column(name = "purchase_price_type")
 	private PriceType purchasePriceType;
 
-	@Enumerated(EnumType.STRING)
-	@Column(name = "tax_type")
-	private TaxType taxType;
+	@ManyToOne
+	@JoinColumn(name = "tax_rate_id")
+	private TaxRateEntity taxRate;
 
 	// Other existing fields...
 	@Column(name = "sale_price", precision = 10, scale = 2)
@@ -95,18 +93,18 @@ public class ProductEntityNew {
 
 	@Column(name = "updated_at")
 	private LocalDateTime updatedAt;
-	
-    @Column(name = "created_by")
-    private String createdBy;
-    
-    @Column(name = "updated_by")
-    private String updatedBy;
-	
+
+	@Column(name = "created_by")
+	private String createdBy;
+
+	@Column(name = "updated_by")
+	private String updatedBy;
+
 	// Constructors
 	public ProductEntityNew() {
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = LocalDateTime.now();
-    }
+		this.createdAt = LocalDateTime.now();
+		this.updatedAt = LocalDateTime.now();
+	}
 
 	// Getters and Setters
 	public Long getId() {
@@ -173,12 +171,12 @@ public class ProductEntityNew {
 		this.purchasePriceType = purchasePriceType;
 	}
 
-	public TaxType getTaxType() {
-		return taxType;
+	public TaxRateEntity getTaxRate() {
+		return taxRate;
 	}
 
-	public void setTaxType(TaxType taxType) {
-		this.taxType = taxType;
+	public void setTaxRate(TaxRateEntity taxRate) {
+		this.taxRate = taxRate;
 	}
 
 	public BigDecimal getSalePrice() {
@@ -308,7 +306,5 @@ public class ProductEntityNew {
 	public void setUpdatedBy(String updatedBy) {
 		this.updatedBy = updatedBy;
 	}
-	
-	
-	
+
 }

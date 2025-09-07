@@ -1,41 +1,18 @@
--- Tax Rates Table Creation
--- This script creates the tax_rates table for dynamic tax rate selection
+-- SQL statement to alter products_new table to add tax_rate_id foreign key
+-- This replaces the tax_type enum column with a foreign key reference to tax_rates table
 
--- Create tax_rates table
-CREATE TABLE IF NOT EXISTS tax_rates (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    label VARCHAR(50) NOT NULL COMMENT 'Display label for tax rate (e.g., "GST@18%")',
-    type ENUM('GST', 'IGST') NOT NULL COMMENT 'Tax type: GST or IGST',
-    rate DECIMAL(5,2) NOT NULL COMMENT 'Tax rate percentage (e.g., 18.00)',
-    active BOOLEAN NOT NULL DEFAULT TRUE COMMENT 'Whether the rate is usable',
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-);
+-- Step 1: Add the new tax_rate_id column
+ALTER TABLE products_new 
+ADD COLUMN tax_rate_id BIGINT;
 
--- Add tax_rate_id column to new_sales_invoice_items table
-ALTER TABLE new_sales_invoice_items 
-ADD COLUMN tax_rate_id BIGINT NULL COMMENT 'Reference to tax_rates table',
-ADD CONSTRAINT fk_invoice_item_tax_rate 
-    FOREIGN KEY (tax_rate_id) REFERENCES tax_rates(id) ON DELETE SET NULL;
+-- Step 2: Add foreign key constraint
+ALTER TABLE products_new 
+ADD CONSTRAINT fk_products_tax_rate 
+FOREIGN KEY (tax_rate_id) REFERENCES tax_rates(id);
 
--- Modify tax_percent column to use DECIMAL for better precision
-ALTER TABLE new_sales_invoice_items 
-MODIFY COLUMN tax_percent DECIMAL(5,2) NULL COMMENT 'Snapshot of applied tax rate for historical accuracy';
+-- Step 3: (Optional) Drop the old tax_type column if it exists
+-- Uncomment the following line if you want to remove the old tax_type column
+-- ALTER TABLE products_new DROP COLUMN tax_type;
 
--- Insert sample tax rates
-INSERT INTO tax_rates (label, type, rate, active) VALUES
-('GST@0%', 'GST', 0.00, TRUE),
-('GST@5%', 'GST', 5.00, TRUE),
-('GST@12%', 'GST', 12.00, TRUE),
-('GST@18%', 'GST', 18.00, TRUE),
-('GST@28%', 'GST', 28.00, TRUE),
-('IGST@0%', 'IGST', 0.00, TRUE),
-('IGST@5%', 'IGST', 5.00, TRUE),
-('IGST@12%', 'IGST', 12.00, TRUE),
-('IGST@18%', 'IGST', 18.00, TRUE),
-('IGST@28%', 'IGST', 28.00, TRUE);
-
--- Create index for better performance
-CREATE INDEX idx_tax_rates_active_type ON tax_rates(active, type);
-CREATE INDEX idx_tax_rates_rate ON tax_rates(rate);
-CREATE INDEX idx_invoice_items_tax_rate ON new_sales_invoice_items(tax_rate_id);
+-- Note: Before dropping the tax_type column, you may want to migrate existing data
+-- by mapping the old enum values to appropriate tax_rate records in the tax_rates table
