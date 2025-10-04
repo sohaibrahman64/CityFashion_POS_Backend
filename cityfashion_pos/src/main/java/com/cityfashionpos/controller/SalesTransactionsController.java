@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cityfashionpos.dto.SalesReportResponse;
 import com.cityfashionpos.dto.SalesTransactionRequest;
 import com.cityfashionpos.dto.SalesTransactionResponse;
 import com.cityfashionpos.dto.SalesTransactionSummaryResponse;
@@ -459,6 +460,27 @@ public class SalesTransactionsController {
             errorResponse.put("success", false);
             errorResponse.put("message", "Error fetching total amounts: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+        }
+    }
+
+    /**
+     * Get sales records for reporting by date range
+     * Returns specific fields: Date, Invoice No, Customer Name, Transaction Type,
+     * Payment Mode, Total Amount, Balance Amount
+     */
+    @GetMapping("/report")
+    public ResponseEntity<List<SalesReportResponse>> getSalesRecordsByDateRange(
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate toDate) {
+        try {
+            logger.info("Fetching sales records for report from {} to {}", fromDate, toDate);
+            List<SalesReportResponse> salesRecords = salesTransactionService.getSalesRecordsByDateRange(fromDate,
+                    toDate);
+            return ResponseEntity.ok(salesRecords);
+        } catch (Exception e) {
+            logger.error("Error fetching sales records for report from {} to {}: {}", fromDate, toDate, e.getMessage(),
+                    e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(List.of());
         }
     }
 }

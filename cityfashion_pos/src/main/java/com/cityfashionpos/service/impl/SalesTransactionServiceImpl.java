@@ -5,6 +5,7 @@ import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +19,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.cityfashionpos.dto.SalesReportResponse;
 import com.cityfashionpos.dto.SalesTransactionRequest;
 import com.cityfashionpos.dto.SalesTransactionResponse;
 import com.cityfashionpos.dto.SalesTransactionSummaryResponse;
@@ -523,6 +525,42 @@ public class SalesTransactionServiceImpl implements SalesTransactionService {
             errorMap.put("totalBalanceAmount", BigDecimal.ZERO);
             return errorMap;
         }
+    }
+
+    @Override
+    public List<SalesReportResponse> getSalesRecordsByDateRange(LocalDate fromDate, LocalDate toDate) {
+        try {
+            logger.info("Fetching sales records for date range: {} to {}", fromDate, toDate);
+
+            List<SalesTransactionEntity> transactions = salesTransactionRepository
+                    .findByTransactionDateBetween(fromDate, toDate);
+
+            List<SalesReportResponse> salesRecords = transactions.stream()
+                    .map(this::mapToSalesReportResponse)
+                    .collect(Collectors.toList());
+
+            logger.info("Found {} sales records for date range {} to {}",
+                    salesRecords.size(), fromDate, toDate);
+
+            return salesRecords;
+        } catch (Exception e) {
+            logger.error("Error fetching sales records for date range {} to {}: {}",
+                    fromDate, toDate, e.getMessage(), e);
+            return Collections.emptyList();
+        }
+    }
+
+    // Helper method to map SalesTransactionEntity to SalesReportResponse
+    private SalesReportResponse mapToSalesReportResponse(SalesTransactionEntity entity) {
+        SalesReportResponse response = new SalesReportResponse();
+        response.setDate(entity.getTransactionDate());
+        response.setInvoiceNo(entity.getInvoiceNumber());
+        response.setCustomerName(entity.getCustomerName());
+        response.setTransactionType(entity.getTransactionType());
+        response.setPaymentMode(entity.getPaymentMode());
+        response.setNetAmount(entity.getNetAmount());
+        response.setBalanceAmount(entity.getBalanceAmount());
+        return response;
     }
 
     // Helper methods

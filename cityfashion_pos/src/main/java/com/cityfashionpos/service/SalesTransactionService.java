@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import com.cityfashionpos.dto.SalesReportResponse;
 import com.cityfashionpos.dto.SalesTransactionRequest;
 import com.cityfashionpos.dto.SalesTransactionResponse;
 import com.cityfashionpos.dto.SalesTransactionSummaryResponse;
@@ -126,4 +127,9 @@ public interface SalesTransactionService {
      * Get total sales, received and balance amounts for a date range
      */
     Map<String, BigDecimal> getTotalAmountsByDateRange(LocalDate fromDate, LocalDate toDate);
+
+    /**
+     * Get sales records for reporting by date range
+     */
+    List<SalesReportResponse> getSalesRecordsByDateRange(LocalDate fromDate, LocalDate toDate);
 }
