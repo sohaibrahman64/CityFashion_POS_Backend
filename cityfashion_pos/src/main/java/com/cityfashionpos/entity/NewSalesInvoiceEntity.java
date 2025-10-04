@@ -23,7 +23,7 @@ public class NewSalesInvoiceEntity {
     private LocalDate invoiceDate;
 
     @Column(name = "customer_id")
-    private Long customerId;
+    private Integer customerId;
 
     @Column(name = "total_amount")
     private Double totalAmount;
@@ -70,11 +70,11 @@ public class NewSalesInvoiceEntity {
         this.invoiceDate = invoiceDate;
     }
 
-    public Long getCustomerId() {
+    public Integer getCustomerId() {
         return customerId;
     }
 
-    public void setCustomerId(Long customerId) {
+    public void setCustomerId(Integer customerId) {
         this.customerId = customerId;
     }
 

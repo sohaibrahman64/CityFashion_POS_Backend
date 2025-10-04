@@ -29,11 +29,12 @@ public class InvoiceEntity {
 	private String invoiceNumber; // Example: CFK-00001
 
 	@Column(name = "customer_id")
-	private Long customerId;
-	
-	//@Column(name = "invoice_date")
-	//private LocalDateTime invoiceDate = LocalDateTime.now(); // Set current timestamp by default
-	
+	private Integer customerId;
+
+	// @Column(name = "invoice_date")
+	// private LocalDateTime invoiceDate = LocalDateTime.now(); // Set current
+	// timestamp by default
+
 	@Column(name = "invoice_date")
 	private LocalDate invoiceDate = LocalDate.now();
 
@@ -55,22 +56,22 @@ public class InvoiceEntity {
 
 	@Column(name = "updated_at")
 	private LocalDateTime updatedAt = LocalDateTime.now();
-	
+
 	@Column(name = "tax_amount")
 	private Double taxAmount;
-	
+
 	@Column(name = "subtotal_amount")
 	private Double subtotalAmount;
-	
+
 	@Column(name = "discount_amount")
 	private Double discountAmount;
-	
-	@Column(name="due_amount")
+
+	@Column(name = "due_amount")
 	private Double dueAmount;
-	
+
 	@OneToMany(mappedBy = "invoiceId", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<InvoiceItemEntity> items;
-	
+
 	@OneToMany(mappedBy = "invoiceId", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<InvoicePaymentEntity> payments;
 
@@ -103,8 +104,6 @@ public class InvoiceEntity {
 	 * public void setInvoiceDate(LocalDateTime invoiceDate) { this.invoiceDate =
 	 * invoiceDate; }
 	 */
-	
-	
 
 	public Double getTotalAmount() {
 		return totalAmount;
@@ -194,13 +193,13 @@ public class InvoiceEntity {
 		this.dueAmount = dueAmount;
 	}
 
-//	public CustomerEntity getCustomer() {
-//		return customer;
-//	}
-//
-//	public void setCustomer(CustomerEntity customer) {
-//		this.customer = customer;
-//	}
+	// public CustomerEntity getCustomer() {
+	// return customer;
+	// }
+	//
+	// public void setCustomer(CustomerEntity customer) {
+	// this.customer = customer;
+	// }
 
 	public List<InvoiceItemEntity> getItems() {
 		return items;
@@ -218,13 +217,12 @@ public class InvoiceEntity {
 		this.payments = payments;
 	}
 
-	public Long getCustomerId() {
+	public Integer getCustomerId() {
 		return customerId;
 	}
 
-	public void setCustomerId(Long customerId) {
+	public void setCustomerId(Integer customerId) {
 		this.customerId = customerId;
 	}
-	
-	
+
 }

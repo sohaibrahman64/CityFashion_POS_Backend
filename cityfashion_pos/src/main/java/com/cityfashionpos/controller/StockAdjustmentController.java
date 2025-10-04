@@ -22,15 +22,14 @@ import com.cityfashionpos.response.StockAdjustmentResponse;
 import com.cityfashionpos.service.StockAdjustmentService;
 import com.cityfashionpos.service.impl.StockAdjustmentServiceImpl;
 
-
 @RestController
 @RequestMapping("/api/stock-adjustments")
 @CrossOrigin(origins = "*")
 public class StockAdjustmentController {
-    
+
     @Autowired
     private StockAdjustmentService stockAdjustmentService;
-    
+
     /**
      * Create a new stock adjustment
      * POST /api/stock-adjustments
@@ -45,7 +44,7 @@ public class StockAdjustmentController {
             return ResponseEntity.badRequest().build();
         }
     }
-    
+
     /**
      * Get all adjustments for a specific product
      * GET /api/stock-adjustments/product/{productId}
@@ -60,7 +59,7 @@ public class StockAdjustmentController {
             return ResponseEntity.notFound().build();
         }
     }
-    
+
     /**
      * Get adjustments by date range
      * GET /api/stock-adjustments/date-range?startDate=2024-01-01&endDate=2024-12-31
@@ -70,13 +69,14 @@ public class StockAdjustmentController {
             @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
             @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate) {
         try {
-            List<StockAdjustmentResponse> adjustments = stockAdjustmentService.getAdjustmentsByDateRange(startDate, endDate);
+            List<StockAdjustmentResponse> adjustments = stockAdjustmentService.getAdjustmentsByDateRange(startDate,
+                    endDate);
             return ResponseEntity.ok(adjustments);
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }
     }
-    
+
     /**
      * Get adjustments by type
      * GET /api/stock-adjustments/type/{adjustmentType}
@@ -91,7 +91,7 @@ public class StockAdjustmentController {
             return ResponseEntity.badRequest().build();
         }
     }
-    
+
     /**
      * Get adjustment by ID
      * GET /api/stock-adjustments/{id}
@@ -105,7 +105,7 @@ public class StockAdjustmentController {
             return ResponseEntity.notFound().build();
         }
     }
-    
+
     /**
      * Delete adjustment
      * DELETE /api/stock-adjustments/{id}
@@ -119,10 +119,11 @@ public class StockAdjustmentController {
             return ResponseEntity.notFound().build();
         }
     }
-    
+
     /**
      * Get adjustment summary for a product
-     * GET /api/stock-adjustments/summary/{productId}?startDate=2024-01-01&endDate=2024-12-31
+     * GET
+     * /api/stock-adjustments/summary/{productId}?startDate=2024-01-01&endDate=2024-12-31
      */
     @GetMapping("/summary/{productId}")
     public ResponseEntity<StockAdjustmentServiceImpl.StockAdjustmentSummary> getAdjustmentSummary(
@@ -130,14 +131,14 @@ public class StockAdjustmentController {
             @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
             @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate) {
         try {
-            StockAdjustmentServiceImpl.StockAdjustmentSummary summary = 
-                stockAdjustmentService.getAdjustmentSummary(productId, startDate, endDate);
+            StockAdjustmentServiceImpl.StockAdjustmentSummary summary = stockAdjustmentService
+                    .getAdjustmentSummary(productId, startDate, endDate);
             return ResponseEntity.ok(summary);
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }
     }
-    
+
     /**
      * Health check endpoint
      * GET /api/stock-adjustments/health

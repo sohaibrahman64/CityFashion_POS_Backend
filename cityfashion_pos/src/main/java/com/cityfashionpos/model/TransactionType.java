@@ -7,6 +7,8 @@ public enum TransactionType {
     STOCK_TRANSFER("Stock Transfer"),
     RETURN_SALE("Return Sale"),
     RETURN_PURCHASE("Return Purchase"),
+    REFUND("Refund"),
+    ADJUSTMENT("Adjustment"),
     DAMAGE_LOSS("Damage/Loss"),
     EXPIRY_WRITEOFF("Expiry Write-off"),
     OPENING_STOCK("Opening Stock"),

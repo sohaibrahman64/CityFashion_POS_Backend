@@ -2,12 +2,10 @@ package com.cityfashionpos.dto;
 
 import java.util.List;
 
-import com.cityfashionpos.entity.CustomerEntity;
-
 public class InvoiceRequest {
 	private String invoiceNumber; // 👈 Add this
-	private Long customerId;
-//	private CustomerEntity customer;
+	private Integer customerId;
+	// private CustomerEntity customer;
 	private Double discountPercent;
 	private Double paidAmount;
 	private Double taxAmount;
@@ -49,25 +47,25 @@ public class InvoiceRequest {
 		this.invoiceNumber = invoiceNumber;
 	}
 
-	public Long getCustomerId() {
+	public Integer getCustomerId() {
 		return customerId;
 	}
 
-	public void setCustomerId(Long customerId) {
+	public void setCustomerId(Integer customerId) {
 		this.customerId = customerId;
 	}
-	
+
 	public Double getDiscountPercent() {
 		return discountPercent;
 	}
 
-//	public CustomerEntity getCustomer() {
-//		return customer;
-//	}
-//
-//	public void setCustomer(CustomerEntity customer) {
-//		this.customer = customer;
-//	}
+	// public CustomerEntity getCustomer() {
+	// return customer;
+	// }
+	//
+	// public void setCustomer(CustomerEntity customer) {
+	// this.customer = customer;
+	// }
 
 	public void setDiscountPercent(Double discountPercent) {
 		this.discountPercent = discountPercent;
@@ -136,6 +134,5 @@ public class InvoiceRequest {
 	public void setPayments(List<PaymentEntry> payments) {
 		this.payments = payments;
 	}
-	
-	
+
 }

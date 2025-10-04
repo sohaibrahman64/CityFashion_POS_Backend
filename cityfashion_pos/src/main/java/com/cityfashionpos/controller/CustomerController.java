@@ -37,7 +37,7 @@ public class CustomerController {
 	}
 
 	@GetMapping("/getCustomer/{id}")
-	public ResponseEntity<CustomerEntity> getCustomer(@PathVariable Long id) {
+	public ResponseEntity<CustomerEntity> getCustomer(@PathVariable Integer id) {
 		return customerService.getCustomerById(id).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
 	}
 
@@ -45,17 +45,17 @@ public class CustomerController {
 	public ResponseEntity<List<CustomerEntity>> searchByName(@RequestParam String keyword) {
 		return ResponseEntity.ok(customerService.searchByName(keyword));
 	}
-	
+
 	@PutMapping("/updateCustomer/{id}")
-	public ResponseEntity<CustomerEntity> updateCustomer(@PathVariable Long id, @RequestBody CustomerEntity updatedCustomer) {
-	    return ResponseEntity.ok(customerService.updateCustomer(id, updatedCustomer));
-	}
-	
-	@DeleteMapping("/deleteCustomer/{id}")
-	public ResponseEntity<Void> deleteCustomer(@PathVariable Long id) {
-	    customerService.deleteCustomer(id);
-	    return ResponseEntity.noContent().build();
+	public ResponseEntity<CustomerEntity> updateCustomer(@PathVariable Integer id,
+			@RequestBody CustomerEntity updatedCustomer) {
+		return ResponseEntity.ok(customerService.updateCustomer(id, updatedCustomer));
 	}
 
+	@DeleteMapping("/deleteCustomer/{id}")
+	public ResponseEntity<Void> deleteCustomer(@PathVariable Integer id) {
+		customerService.deleteCustomer(id);
+		return ResponseEntity.noContent().build();
+	}
 
 }

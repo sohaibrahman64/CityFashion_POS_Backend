@@ -7,9 +7,14 @@ import com.cityfashionpos.entity.CustomerEntity;
 
 public interface CustomerService {
     CustomerEntity saveCustomer(CustomerEntity customer);
+
     List<CustomerEntity> getAllCustomers();
-    Optional<CustomerEntity> getCustomerById(Long id);
+
+    Optional<CustomerEntity> getCustomerById(Integer id);
+
     List<CustomerEntity> searchByName(String name);
-    CustomerEntity updateCustomer(Long id, CustomerEntity updatedCustomer);
-    void deleteCustomer(Long id);
+
+    CustomerEntity updateCustomer(Integer id, CustomerEntity updatedCustomer);
+
+    void deleteCustomer(Integer id);
 }
