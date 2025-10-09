@@ -25,18 +25,17 @@ public class NewSalesInvoiceItemEntity {
     @Column(name = "total_price")
     private Double total; // price * quantity
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "tax_rate_id")
-    private TaxRateEntity taxRate;
-
     @Column(name = "tax_percent", precision = 5, scale = 2)
-    private BigDecimal taxPercent; // snapshot of applied rate
+    private Double taxPercent; // snapshot of applied rate
 
     @Column(name = "discount_percent")
     private Double discountPercent;
 
     @Column(name = "discount_amount")
     private Double discountAmount;
+
+    @Column(name = "tax_amount")
+    private Double taxAmount;
 
     public Long getId() {
         return id;
@@ -86,19 +85,11 @@ public class NewSalesInvoiceItemEntity {
         this.total = total;
     }
 
-    public TaxRateEntity getTaxRate() {
-        return taxRate;
-    }
-
-    public void setTaxRate(TaxRateEntity taxRate) {
-        this.taxRate = taxRate;
-    }
-
-    public BigDecimal getTaxPercent() {
+    public Double getTaxPercent() {
         return taxPercent;
     }
 
-    public void setTaxPercent(BigDecimal taxPercent) {
+    public void setTaxPercent(Double taxPercent) {
         this.taxPercent = taxPercent;
     }
 
@@ -116,6 +107,14 @@ public class NewSalesInvoiceItemEntity {
 
     public void setDiscountAmount(Double discountAmount) {
         this.discountAmount = discountAmount;
+    }
+
+    public Double getTaxAmount() {
+        return taxAmount;
+    }
+
+    public void setTaxAmount(Double taxAmount) {
+        this.taxAmount = taxAmount;
     }
 
 }

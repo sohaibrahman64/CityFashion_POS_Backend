@@ -61,7 +61,7 @@ public class SalesTransactionServiceImpl implements SalesTransactionService {
             SalesTransactionEntity entity = mapRequestToEntity(request);
 
             // Calculate amounts
-            entity.calculateNetAmount();
+            // entity.calculateNetAmount();
             entity.calculateProfitMargin();
 
             // Save entity

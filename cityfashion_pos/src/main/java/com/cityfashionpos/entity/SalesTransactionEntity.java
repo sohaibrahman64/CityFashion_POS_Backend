@@ -132,6 +132,7 @@ public class SalesTransactionEntity {
     public SalesTransactionEntity() {
         this.transactionDate = LocalDate.now();
         this.transactionTime = LocalTime.now();
+        calculatePaymentStatus();
     }
 
     // Constructor with basic fields

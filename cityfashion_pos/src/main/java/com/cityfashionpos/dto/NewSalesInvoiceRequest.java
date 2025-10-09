@@ -10,8 +10,11 @@ public class NewSalesInvoiceRequest {
     private Double totalAmount;
     private Double discountAmount;
     private Double balanceAmount;
+    private Double subtotalAmount;
     private String amountInWords;
     private Boolean isFullyReceived;
+    private Double totalTaxAmount;
+    private Double taxableAmount;
 
     public static class NewSalesInvoiceItemRequest {
         private Long id;
@@ -19,9 +22,13 @@ public class NewSalesInvoiceRequest {
         private Integer quantity;
         private Double price;
         private Double discount;
+        private Double discountAmount;
         private Double total;
         private Long productId;
         private Long taxRateId; // Reference to selected tax rate
+        private Double taxAmount;
+        private Double taxPercent;
+        private Double taxRate;
 
         public Long getId() {
             return id;
@@ -63,6 +70,14 @@ public class NewSalesInvoiceRequest {
             this.discount = discount;
         }
 
+        public Double getDiscountAmount() {
+            return discountAmount;
+        }
+
+        public void setDiscountAmount(Double discountAmount) {
+            this.discountAmount = discountAmount;
+        }
+
         public Double getTotal() {
             return total;
         }
@@ -85,6 +100,30 @@ public class NewSalesInvoiceRequest {
 
         public void setTaxRateId(Long taxRateId) {
             this.taxRateId = taxRateId;
+        }
+
+        public Double getTaxAmount() {
+            return taxAmount;
+        }
+
+        public void setTaxAmount(Double taxAmount) {
+            this.taxAmount = taxAmount;
+        }
+
+        public Double getTaxPercent() {
+            return taxPercent;
+        }
+
+        public void setTaxPercent(Double taxPercent) {
+            this.taxPercent = taxPercent;
+        }
+
+        public Double getTaxRate() {
+            return taxRate;
+        }
+
+        public void setTaxRate(Double taxRate) {
+            this.taxRate = taxRate;
         }
     }
 
@@ -152,12 +191,36 @@ public class NewSalesInvoiceRequest {
         this.balanceAmount = balanceAmount;
     }
 
+    public Double getSubtotalAmount() {
+        return subtotalAmount;
+    }
+
+    public void setSubtotalAmount(Double subtotalAmount) {
+        this.subtotalAmount = subtotalAmount;
+    }
+
     public String getAmountInWords() {
         return amountInWords;
     }
 
     public void setAmountInWords(String amountInWords) {
         this.amountInWords = amountInWords;
+    }
+
+    public Double getTotalTaxAmount() {
+        return totalTaxAmount;
+    }
+
+    public void setTotalTaxAmount(Double totalTaxAmount) {
+        this.totalTaxAmount = totalTaxAmount;
+    }
+
+    public Double getTaxableAmount() {
+        return taxableAmount;
+    }
+
+    public void setTaxableAmount(Double taxableAmount) {
+        this.taxableAmount = taxableAmount;
     }
 
 }

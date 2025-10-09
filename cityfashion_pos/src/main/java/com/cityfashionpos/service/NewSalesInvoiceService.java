@@ -57,9 +57,12 @@ public class NewSalesInvoiceService {
             invoice.setCustomerId(customer.getId());
             invoice.setInvoiceDate(LocalDate.now());
             invoice.setTotalAmount(request.getTotalAmount());
+            invoice.setSubtotalAmount(request.getSubtotalAmount());
             invoice.setReceivedAmount(request.getReceivedAmount() != null ? request.getReceivedAmount() : 0.0);
             invoice.setBalanceAmount(request.getBalanceAmount());
             invoice.setDiscountAmount(request.getDiscountAmount());
+            invoice.setTotalTaxAmount(request.getTotalTaxAmount());
+            invoice.setTaxableAmount(request.getTaxableAmount());
             invoice.setAmountInWords(NumberToWordsConverter.convertToWords(request.getTotalAmount()));
             invoice.setMessage("Sales invoice created successfully");
             invoice.setSuccess(true);
@@ -107,12 +110,13 @@ public class NewSalesInvoiceService {
                     invoiceItem.setQuantity(itemRequest.getQuantity());
                     invoiceItem.setPrice(itemRequest.getPrice());
                     invoiceItem.setDiscountPercent(itemRequest.getDiscount());
-                    invoiceItem.setDiscountAmount(itemDiscountAmount);
-                    invoiceItem.setTotal(itemTotal);
+                    invoiceItem.setDiscountAmount(itemRequest.getDiscountAmount());
+                    invoiceItem.setTotal(itemRequest.getTotal());
+                    invoiceItem.setTaxAmount(itemRequest.getTaxAmount());
 
                     // Set tax rate information
-                    invoiceItem.setTaxRate(taxRate);
-                    invoiceItem.setTaxPercent(taxPercent);
+                    // invoiceItem.setTaxRate(itemRequest.getTaxRate());
+                    invoiceItem.setTaxPercent(itemRequest.getTaxPercent());
 
                     // Save invoice item
                     invoiceItemRepository.save(invoiceItem);
@@ -125,19 +129,23 @@ public class NewSalesInvoiceService {
                     responseItem.setQuantity(itemRequest.getQuantity());
                     responseItem.setPrice(itemRequest.getPrice());
                     responseItem.setDiscount(itemRequest.getDiscount());
-                    responseItem.setDiscountAmount(itemDiscountAmount);
-                    responseItem.setTotal(itemTotal);
+                    responseItem.setDiscountAmount(itemRequest.getDiscountAmount());
+                    responseItem.setTotal(itemRequest.getTotal());
+                    responseItem.setTaxAmount(itemRequest.getTaxAmount());
+                    responseItem.setTaxPercent(itemRequest.getTaxPercent());
+                    responseItem.setTaxRate(itemRequest.getTaxRate());
 
                     responseItems.add(responseItem);
                 }
             }
 
             // Update invoice with calculated totals
-            invoice.setTotalAmount(totalAmount);
+            // invoice.setTotalAmount(totalAmount);
 
-            double receivedAmount = request.getReceivedAmount() != null ? request.getReceivedAmount() : 0.0;
-            double balanceAmount = totalAmount - receivedAmount;
-            invoice.setBalanceAmount(balanceAmount);
+            // double receivedAmount = request.getReceivedAmount() != null ?
+            // request.getReceivedAmount() : 0.0;
+            // double balanceAmount = totalAmount - receivedAmount;
+            // invoice.setBalanceAmount(balanceAmount);
 
             // Save updated invoice
             invoiceRepository.save(invoice);
@@ -149,12 +157,14 @@ public class NewSalesInvoiceService {
             response.setCustomerName(customer.getName());
             response.setCustomerPhone(customer.getPhone());
             response.setItems(responseItems);
-            response.setSubtotalAmount(subtotalAmount);
-            response.setTotalDiscountAmount(totalDiscountAmount);
-            response.setTotalAmount(totalAmount);
-            response.setReceivedAmount(receivedAmount);
-            response.setBalanceAmount(balanceAmount);
-            response.setDiscountAmount(totalDiscountAmount);
+            response.setSubtotalAmount(invoice.getSubtotalAmount());
+            response.setTotalDiscountAmount(invoice.getDiscountAmount());
+            response.setTotalAmount(invoice.getTotalAmount());
+            response.setReceivedAmount(invoice.getReceivedAmount());
+            response.setBalanceAmount(invoice.getBalanceAmount());
+            response.setDiscountAmount(invoice.getDiscountAmount());
+            response.setTotalTaxAmount(invoice.getTotalTaxAmount());
+            response.setTaxableAmount(invoice.getTaxableAmount());
             response.setAmountInWords(NumberToWordsConverter.convertToWords(totalAmount));
             response.setSuccess(true);
             response.setMessage("Sales invoice created successfully");

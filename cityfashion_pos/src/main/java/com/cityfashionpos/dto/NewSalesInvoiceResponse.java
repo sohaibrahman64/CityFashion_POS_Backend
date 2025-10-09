@@ -16,6 +16,8 @@ public class NewSalesInvoiceResponse {
     private Double receivedAmount;
     private Double balanceAmount;
     private Double discountAmount;
+    private Double totalTaxAmount;
+    private Double taxableAmount;
     private String amountInWords;
     private String message;
     private Boolean success;
@@ -29,6 +31,9 @@ public class NewSalesInvoiceResponse {
         private Double discount;
         private Double discountAmount;
         private Double total;
+        private Double taxAmount;
+        private Double taxPercent;
+        private Double taxRate;
 
         public Long getId() {
             return id;
@@ -92,6 +97,30 @@ public class NewSalesInvoiceResponse {
 
         public void setTotal(Double total) {
             this.total = total;
+        }
+
+        public Double getTaxAmount() {
+            return taxAmount;
+        }
+
+        public void setTaxAmount(Double taxAmount) {
+            this.taxAmount = taxAmount;
+        }
+
+        public Double getTaxPercent() {
+            return taxPercent;
+        }
+
+        public void setTaxPercent(Double taxPercent) {
+            this.taxPercent = taxPercent;
+        }
+
+        public Double getTaxRate() {
+            return taxRate;
+        }
+
+        public void setTaxRate(Double taxRate) {
+            this.taxRate = taxRate;
         }
     }
 
@@ -189,6 +218,22 @@ public class NewSalesInvoiceResponse {
 
     public void setDiscountAmount(Double discountAmount) {
         this.discountAmount = discountAmount;
+    }
+
+    public Double getTotalTaxAmount() {
+        return totalTaxAmount;
+    }
+
+    public void setTotalTaxAmount(Double totalTaxAmount) {
+        this.totalTaxAmount = totalTaxAmount;
+    }
+
+    public Double getTaxableAmount() {
+        return taxableAmount;
+    }
+
+    public void setTaxableAmount(Double taxableAmount) {
+        this.taxableAmount = taxableAmount;
     }
 
     public String getAmountInWords() {

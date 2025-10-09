@@ -37,6 +37,15 @@ public class NewSalesInvoiceEntity {
     @Column(name = "discount_amount")
     private Double discountAmount;
 
+    @Column(name = "total_tax_amount")
+    private Double totalTaxAmount;
+
+    @Column(name = "taxable_amount")
+    private Double taxableAmount;
+
+    @Column(name = "subtotal_amount")
+    private Double subtotalAmount;
+
     @Column(name = "amount_in_words")
     private String amountInWords;
 
@@ -110,6 +119,22 @@ public class NewSalesInvoiceEntity {
         this.discountAmount = discountAmount;
     }
 
+    public Double getTotalTaxAmount() {
+        return totalTaxAmount;
+    }
+
+    public void setTotalTaxAmount(Double totalTaxAmount) {
+        this.totalTaxAmount = totalTaxAmount;
+    }
+
+    public Double getTaxableAmount() {
+        return taxableAmount;
+    }
+
+    public void setTaxableAmount(Double taxableAmount) {
+        this.taxableAmount = taxableAmount;
+    }
+
     public String getAmountInWords() {
         return amountInWords;
     }
@@ -132,6 +157,14 @@ public class NewSalesInvoiceEntity {
 
     public void setSuccess(Boolean success) {
         this.success = success;
+    }
+
+    public Double getSubtotalAmount() {
+        return subtotalAmount;
+    }
+
+    public void setSubtotalAmount(Double subtotalAmount) {
+        this.subtotalAmount = subtotalAmount;
     }
 
 }
