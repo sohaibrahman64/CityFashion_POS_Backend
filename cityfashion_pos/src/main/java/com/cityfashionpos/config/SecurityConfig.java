@@ -18,6 +18,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .antMatchers("/api/auth/login").permitAll() // Allow login endpoint
                         .antMatchers("/api/menu/*").permitAll()
+                        .antMatchers("/api/menu/*/**").permitAll()
                         .antMatchers("/api/categories/*").permitAll()
                         .antMatchers("/api/barcode/*").permitAll()
                         .antMatchers("/api/products/*").permitAll()

@@ -9,4 +9,9 @@ import com.cityfashionpos.dto.MenuDto;
 @Service
 public interface MenuService {
 	List<MenuDto> getMenuByRoleId(Long roleId);
+
+	/**
+	 * Get all active menus from menu_new table without permission check
+	 */
+	List<MenuDto> getAllActiveMenus();
 }

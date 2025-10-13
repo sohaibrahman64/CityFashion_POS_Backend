@@ -16,13 +16,22 @@ import com.cityfashionpos.service.MenuService;
 @RequestMapping("/api/menu")
 @CrossOrigin(origins = "*")
 public class MenuController {
-	
+
 	@Autowired
 	private MenuService menuService;
 
 	@GetMapping("/getMenuByRole")
 	public List<MenuDto> getMenuByRole(@RequestParam Long roleId) {
 		return menuService.getMenuByRoleId(roleId);
+	}
+
+	/**
+	 * Get all active menus from menu_new table without permission check
+	 * Only filters by is_active = 1
+	 */
+	@GetMapping("/getAllActiveMenus")
+	public List<MenuDto> getAllActiveMenus() {
+		return menuService.getAllActiveMenus();
 	}
 
 }
