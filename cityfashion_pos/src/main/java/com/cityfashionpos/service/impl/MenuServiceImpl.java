@@ -97,7 +97,8 @@ public class MenuServiceImpl implements MenuService {
 					menu.getId(),
 					menu.getName(),
 					menu.getPath(),
-					menu.getIcon());
+					menu.getIcon(),
+					menu.getFilename());
 			dtoMap.put(menu.getId(), dto);
 		}
 

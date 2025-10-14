@@ -11,10 +11,20 @@ public class MenuDto {
 	private String name;
 	private String path;
 	private String icon;
+	private String filename;
 	List<MenuDto> children;
-	
-	public MenuDto() {}
-	
+
+	public MenuDto() {
+	}
+
+	public MenuDto(Long id, String name, String path, String icon, String filename) {
+		this.id = id;
+		this.name = name;
+		this.path = path;
+		this.icon = icon;
+		this.filename = filename;
+	}
+
 	public MenuDto(Long id, String name, String path, String icon) {
 		this.id = id;
 		this.name = name;
@@ -52,6 +62,14 @@ public class MenuDto {
 
 	public void setIcon(String icon) {
 		this.icon = icon;
+	}
+
+	public String getFilename() {
+		return filename;
+	}
+
+	public void setFilename(String filename) {
+		this.filename = filename;
 	}
 
 	public List<MenuDto> getChildren() {

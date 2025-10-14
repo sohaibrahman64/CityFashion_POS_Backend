@@ -42,11 +42,14 @@ public class MenuNewEntity {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt = LocalDateTime.now();
 
+    @Column(name = "filename")
+    private String filename;
+
     // Constructors
     public MenuNewEntity() {
     }
 
-    public MenuNewEntity(String name, String path, MenuNewEntity parent, String icon) {
+    public MenuNewEntity(String name, String path, MenuNewEntity parent, String icon, String filename) {
         this.name = name;
         this.path = path;
         this.parent = parent;
@@ -54,6 +57,7 @@ public class MenuNewEntity {
         this.isActive = 1;
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
+        this.filename = filename;
     }
 
     // Getters and Setters
@@ -119,5 +123,13 @@ public class MenuNewEntity {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public String getFilename() {
+        return filename;
+    }
+
+    public void setFilename(String filename) {
+        this.filename = filename;
     }
 }
