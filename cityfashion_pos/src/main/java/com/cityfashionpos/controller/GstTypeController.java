@@ -13,7 +13,7 @@ import com.cityfashionpos.dto.GstTypeDto;
 import com.cityfashionpos.service.GstTypeService;
 
 @RestController
-@RequestMapping("/api/gst-type")
+@RequestMapping("/api/gst-types")
 @CrossOrigin(origins = "*")
 public class GstTypeController {
 

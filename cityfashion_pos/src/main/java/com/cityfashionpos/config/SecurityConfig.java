@@ -45,6 +45,12 @@ public class SecurityConfig {
                         .antMatchers("/api/tax-rates/**").permitAll()
                         .antMatchers("/api/sales-transactions/*").permitAll()
                         .antMatchers("/api/sales-transactions/**").permitAll()
+                        .antMatchers("/api/gst-types/*").permitAll()
+                        .antMatchers("/api/gst-types/**").permitAll()
+                        .antMatchers("/api/parties/*").permitAll()
+                        .antMatchers("/api/parties/**").permitAll()
+                        .antMatchers("/api/states/*").permitAll()
+                        .antMatchers("/api/states/**").permitAll()
                         .anyRequest().authenticated() // Protect other endpoints
                 )
                 .httpBasic(Customizer.withDefaults()); // Optional: enable basic auth
