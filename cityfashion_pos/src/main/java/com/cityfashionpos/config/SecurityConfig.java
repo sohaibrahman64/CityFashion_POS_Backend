@@ -49,6 +49,8 @@ public class SecurityConfig {
                         .antMatchers("/api/gst-types/**").permitAll()
                         .antMatchers("/api/parties/*").permitAll()
                         .antMatchers("/api/parties/**").permitAll()
+                        .antMatchers("/api/party-transactions/*").permitAll()
+                        .antMatchers("/api/party-transactions/**").permitAll()
                         .antMatchers("/api/states/*").permitAll()
                         .antMatchers("/api/states/**").permitAll()
                         .anyRequest().authenticated() // Protect other endpoints
