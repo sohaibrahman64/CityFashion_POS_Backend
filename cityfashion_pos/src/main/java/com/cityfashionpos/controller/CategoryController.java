@@ -22,14 +22,14 @@ import com.cityfashionpos.service.CategoryService;
 @CrossOrigin(origins = "*")
 public class CategoryController {
 
-	@Autowired
-	private CategoryService categoryService;
-	
-	@GetMapping("/getAllCategories")
-	public List<ProductCategoryEntity> getAllCategories() {
-		return categoryService.getActiveCategories();
-	}
-	
+    @Autowired
+    private CategoryService categoryService;
+
+    @GetMapping("/getAllCategories")
+    public List<ProductCategoryEntity> getAllCategories() {
+        return categoryService.getActiveCategories();
+    }
+
     @PostMapping("/addCategory")
     public ProductCategoryEntity addCategory(@RequestBody Map<String, String> request) {
         return categoryService.addCategory(request.get("name"));

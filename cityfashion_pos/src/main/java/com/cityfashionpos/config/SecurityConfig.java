@@ -14,6 +14,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+                .cors(Customizer.withDefaults()) // Enable CORS with default configuration
                 .csrf(csrf -> csrf.disable()) // Disable CSRF for testing/API calls
                 .authorizeHttpRequests(auth -> auth
                         .antMatchers("/api/auth/login").permitAll() // Allow login endpoint
@@ -53,6 +54,12 @@ public class SecurityConfig {
                         .antMatchers("/api/party-transactions/**").permitAll()
                         .antMatchers("/api/states/*").permitAll()
                         .antMatchers("/api/states/**").permitAll()
+                        .antMatchers("/api/tax-types/*").permitAll()
+                        .antMatchers("/api/tax-types/**").permitAll()
+                        .antMatchers("/api/discount-types/*").permitAll()
+                        .antMatchers("/api/discount-types/**").permitAll()
+                        .antMatchers("/api/units/*").permitAll()
+                        .antMatchers("/api/units/**").permitAll()
                         .anyRequest().authenticated() // Protect other endpoints
                 )
                 .httpBasic(Customizer.withDefaults()); // Optional: enable basic auth
