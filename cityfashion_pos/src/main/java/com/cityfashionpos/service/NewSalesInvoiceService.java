@@ -13,11 +13,12 @@ import com.cityfashionpos.dto.NewSalesInvoiceResponse;
 import com.cityfashionpos.entity.CustomerEntity;
 import com.cityfashionpos.entity.NewSalesInvoiceEntity;
 import com.cityfashionpos.entity.NewSalesInvoiceItemEntity;
+import com.cityfashionpos.entity.PartyEntity;
 import com.cityfashionpos.entity.TaxRateEntity;
 import com.cityfashionpos.repository.CustomerRepository;
 import com.cityfashionpos.repository.NewSalesInvoiceItemRepository;
 import com.cityfashionpos.repository.NewSalesInvoiceRepository;
-import com.cityfashionpos.service.TaxRateService;
+import com.cityfashionpos.repository.PartyRepository;
 import com.cityfashionpos.utils.NumberToWordsConverter;
 
 @Service
@@ -33,6 +34,9 @@ public class NewSalesInvoiceService {
     private CustomerRepository customerRepository;
 
     @Autowired
+    private PartyRepository partyRepository;
+
+    @Autowired
     private TaxRateService taxRateService;
 
     @Transactional
@@ -44,7 +48,11 @@ public class NewSalesInvoiceService {
             String invoiceNumber = generateInvoiceNumber();
 
             // Create or find customer
-            CustomerEntity customer = createOrFindCustomer(request.getCustomerName(), request.getCustomerPhone());
+            // CustomerEntity customer = createOrFindCustomer(request.getPartyName(),
+            // request.getPartyPhone());
+
+            // PartyEntity party = createOrFindParty(request.getPartyName(),
+            // request.getPartyPhone());
 
             // Calculate totals
             double subtotalAmount = 0.0;
@@ -54,7 +62,7 @@ public class NewSalesInvoiceService {
             // Create invoice entity
             NewSalesInvoiceEntity invoice = new NewSalesInvoiceEntity();
             invoice.setInvoiceNumber(invoiceNumber);
-            invoice.setCustomerId(customer.getId());
+            invoice.setPartyId(request.getPartyId());
             invoice.setInvoiceDate(LocalDate.now());
             invoice.setTotalAmount(request.getTotalAmount());
             invoice.setSubtotalAmount(request.getSubtotalAmount());
@@ -106,7 +114,7 @@ public class NewSalesInvoiceService {
                     // Create invoice item entity
                     NewSalesInvoiceItemEntity invoiceItem = new NewSalesInvoiceItemEntity();
                     invoiceItem.setInvoiceId(invoice.getId());
-                    invoiceItem.setProductId(itemRequest.getProductId());
+                    invoiceItem.setItemId(itemRequest.getItemId());
                     invoiceItem.setQuantity(itemRequest.getQuantity());
                     invoiceItem.setPrice(itemRequest.getPrice());
                     invoiceItem.setDiscountPercent(itemRequest.getDiscount());
@@ -154,8 +162,8 @@ public class NewSalesInvoiceService {
             response.setInvoiceId(invoice.getId());
             response.setInvoiceNumber(invoiceNumber);
             response.setInvoiceDate(invoice.getInvoiceDate());
-            response.setCustomerName(customer.getName());
-            response.setCustomerPhone(customer.getPhone());
+            response.setPartyName(request.getPartyName());
+            response.setPartyPhone(request.getPartyPhone());
             response.setItems(responseItems);
             response.setSubtotalAmount(invoice.getSubtotalAmount());
             response.setTotalDiscountAmount(invoice.getDiscountAmount());
@@ -186,31 +194,33 @@ public class NewSalesInvoiceService {
         return String.format("RS-%05d", latestId + 1);
     }
 
-    private CustomerEntity createOrFindCustomer(String name, String phone) {
-        if (phone != null && !phone.trim().isEmpty()) {
+    private PartyEntity createOrFindParty(String partyName, String phoneNumber) {
+        if (phoneNumber != null && !phoneNumber.trim().isEmpty()) {
             // Try to find existing customer by phone - since findByPhone doesn't exist,
             // we'll search by name
-            List<CustomerEntity> existingCustomers = customerRepository.findByNameContainingIgnoreCase(phone);
-            if (!existingCustomers.isEmpty()) {
+            List<PartyEntity> existingParties = partyRepository.findByPartyNameContainingIgnoreCase(phoneNumber);
+            if (!existingParties.isEmpty()) {
                 // Find exact phone match
-                for (CustomerEntity customer : existingCustomers) {
-                    if (phone.equals(customer.getPhone())) {
+                for (PartyEntity party : existingParties) {
+                    if (phoneNumber.equals(party.getPhoneNumber())) {
                         // Update name if it has changed
-                        if (name != null && !name.trim().isEmpty() && !name.equals(customer.getName())) {
-                            customer.setName(name);
-                            customerRepository.save(customer);
+                        if (partyName != null && !partyName.trim().isEmpty()
+                                && !partyName.equals(party.getPartyName())) {
+                            party.setPartyName(partyName);
+                            party.setPhoneNumber(phoneNumber);
+                            partyRepository.save(party);
                         }
-                        return customer;
+                        return party;
                     }
                 }
             }
         }
 
         // Create new customer
-        CustomerEntity newCustomer = new CustomerEntity();
-        newCustomer.setName(name != null ? name : "Customer");
-        newCustomer.setPhone(phone);
-        return customerRepository.save(newCustomer);
+        PartyEntity newParty = new PartyEntity();
+        newParty.setPartyName(partyName != null ? partyName : "Party");
+        newParty.setPhoneNumber(phoneNumber);
+        return partyRepository.save(newParty);
     }
 
 }

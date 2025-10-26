@@ -3,8 +3,9 @@ package com.cityfashionpos.dto;
 import java.util.List;
 
 public class NewSalesInvoiceRequest {
-    private String customerName;
-    private String customerPhone;
+    private Long partyId;
+    private String partyName;
+    private String partyPhone;
     private List<NewSalesInvoiceItemRequest> items;
     private Double receivedAmount;
     private Double totalAmount;
@@ -24,7 +25,7 @@ public class NewSalesInvoiceRequest {
         private Double discount;
         private Double discountAmount;
         private Double total;
-        private Long productId;
+        private Long itemId;
         private Long taxRateId; // Reference to selected tax rate
         private Double taxAmount;
         private Double taxPercent;
@@ -86,12 +87,12 @@ public class NewSalesInvoiceRequest {
             this.total = total;
         }
 
-        public Long getProductId() {
-            return productId;
+        public Long getItemId() {
+            return itemId;
         }
 
-        public void setProductId(Long productId) {
-            this.productId = productId;
+        public void setItemId(Long productId) {
+            this.itemId = productId;
         }
 
         public Long getTaxRateId() {
@@ -127,20 +128,28 @@ public class NewSalesInvoiceRequest {
         }
     }
 
-    public String getCustomerName() {
-        return customerName;
+    public Long getPartyId() {
+        return partyId;
     }
 
-    public void setCustomerName(String customerName) {
-        this.customerName = customerName;
+    public void setPartyId(Long partyId) {
+        this.partyId = partyId;
     }
 
-    public String getCustomerPhone() {
-        return customerPhone;
+    public String getPartyName() {
+        return partyName;
     }
 
-    public void setCustomerPhone(String customerPhone) {
-        this.customerPhone = customerPhone;
+    public void setPartyName(String partyName) {
+        this.partyName = partyName;
+    }
+
+    public String getPartyPhone() {
+        return partyPhone;
+    }
+
+    public void setPartyPhone(String customerPhone) {
+        this.partyPhone = customerPhone;
     }
 
     public List<NewSalesInvoiceItemRequest> getItems() {

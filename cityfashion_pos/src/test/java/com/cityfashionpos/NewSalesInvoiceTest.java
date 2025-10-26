@@ -18,8 +18,8 @@ public class NewSalesInvoiceTest {
 
         NewSalesInvoiceRequest request = createSampleRequest();
         System.out.println("Sample New Sales Invoice Request created:");
-        System.out.println("Customer: " + request.getCustomerName());
-        System.out.println("Phone: " + request.getCustomerPhone());
+        System.out.println("Customer: " + request.getPartyName());
+        System.out.println("Phone: " + request.getPartyPhone());
         System.out.println("Items: " + request.getItems().size());
         System.out.println("Received Amount: " + request.getReceivedAmount());
         System.out.println("Fully Received: " + request.getIsFullyReceived());
@@ -29,8 +29,8 @@ public class NewSalesInvoiceTest {
         NewSalesInvoiceRequest request = new NewSalesInvoiceRequest();
 
         // Set customer information
-        request.setCustomerName("John Doe");
-        request.setCustomerPhone("9876543210");
+        request.setPartyName("John Doe");
+        request.setPartyPhone("9876543210");
 
         // Create sample items
         List<NewSalesInvoiceItemRequest> items = new ArrayList<>();
@@ -43,7 +43,7 @@ public class NewSalesInvoiceTest {
         item1.setPrice(599.00);
         item1.setDiscount(10.0); // 10% discount
         item1.setTotal(1078.20); // (2 * 599) - 10% discount
-        item1.setProductId(101L);
+        item1.setItemId(101L);
         items.add(item1);
 
         // Item 2
@@ -54,7 +54,7 @@ public class NewSalesInvoiceTest {
         item2.setPrice(1299.00);
         item2.setDiscount(15.0); // 15% discount
         item2.setTotal(1104.15); // (1 * 1299) - 15% discount
-        item2.setProductId(102L);
+        item2.setItemId(102L);
         items.add(item2);
 
         request.setItems(items);

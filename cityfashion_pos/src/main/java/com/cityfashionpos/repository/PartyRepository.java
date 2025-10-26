@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import com.cityfashionpos.entity.CustomerEntity;
 import com.cityfashionpos.entity.PartyEntity;
 
 @Repository
@@ -39,4 +40,8 @@ public interface PartyRepository extends JpaRepository<PartyEntity, Long> {
     // Custom query to get all parties with related entities
     @Query("SELECT p FROM PartyEntity p LEFT JOIN FETCH p.gstType LEFT JOIN FETCH p.state WHERE p.isActive = true")
     List<PartyEntity> findAllActivePartiesWithDetails();
+
+    List<PartyEntity> findByPartyNameContainingIgnoreCase(String keyword);
+
+    // PartyEntity findById(Long partyId);
 }

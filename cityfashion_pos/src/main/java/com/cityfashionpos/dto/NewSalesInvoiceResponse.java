@@ -7,8 +7,8 @@ public class NewSalesInvoiceResponse {
     private Long invoiceId;
     private String invoiceNumber;
     private LocalDate invoiceDate;
-    private String customerName;
-    private String customerPhone;
+    private String partyName;
+    private String partyPhone;
     private List<NewSalesInvoiceItemResponse> items;
     private Double subtotalAmount;
     private Double totalDiscountAmount;
@@ -148,20 +148,20 @@ public class NewSalesInvoiceResponse {
         this.invoiceDate = invoiceDate;
     }
 
-    public String getCustomerName() {
-        return customerName;
+    public String getPartyName() {
+        return partyName;
     }
 
-    public void setCustomerName(String customerName) {
-        this.customerName = customerName;
+    public void setPartyName(String customerName) {
+        this.partyName = customerName;
     }
 
-    public String getCustomerPhone() {
-        return customerPhone;
+    public String getPartyPhone() {
+        return partyPhone;
     }
 
-    public void setCustomerPhone(String customerPhone) {
-        this.customerPhone = customerPhone;
+    public void setPartyPhone(String customerPhone) {
+        this.partyPhone = customerPhone;
     }
 
     public List<NewSalesInvoiceItemResponse> getItems() {

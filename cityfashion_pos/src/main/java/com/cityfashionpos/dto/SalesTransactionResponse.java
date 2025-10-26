@@ -14,8 +14,8 @@ public class SalesTransactionResponse {
     private String transactionNumber;
     private Long invoiceId;
     private String invoiceNumber;
-    private Integer customerId;
-    private String customerName;
+    private Long partyId;
+    private String partyName;
     private LocalDate transactionDate;
     private LocalTime transactionTime;
     private BigDecimal totalAmount;
@@ -87,20 +87,20 @@ public class SalesTransactionResponse {
         this.invoiceNumber = invoiceNumber;
     }
 
-    public Integer getCustomerId() {
-        return customerId;
+    public Long getPartyId() {
+        return partyId;
     }
 
-    public void setCustomerId(Integer customerId) {
-        this.customerId = customerId;
+    public void setPartyId(Long partyId) {
+        this.partyId = partyId;
     }
 
-    public String getCustomerName() {
-        return customerName;
+    public String getPartyName() {
+        return partyName;
     }
 
-    public void setCustomerName(String customerName) {
-        this.customerName = customerName;
+    public void setPartyName(String customerName) {
+        this.partyName = customerName;
     }
 
     public LocalDate getTransactionDate() {

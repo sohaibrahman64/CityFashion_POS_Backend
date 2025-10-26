@@ -20,8 +20,8 @@ public interface NewSalesInvoiceRepository extends JpaRepository<NewSalesInvoice
     @Query("SELECT MAX(invoice.invoiceDate) FROM NewSalesInvoiceEntity invoice")
     LocalDate findMaxInvoiceDate();
 
-    @Query("SELECT MAX(invoice.customerId) FROM NewSalesInvoiceEntity invoice")
-    Long findMaxCustomerId();
+    @Query("SELECT MAX(invoice.partyId) FROM NewSalesInvoiceEntity invoice")
+    Long findMaxPartyId();
 
     @Query("SELECT MAX(invoice.totalAmount) FROM NewSalesInvoiceEntity invoice")
     Double findMaxTotalAmount();
@@ -50,8 +50,8 @@ public interface NewSalesInvoiceRepository extends JpaRepository<NewSalesInvoice
     @Query("SELECT MIN(invoice.invoiceDate) FROM NewSalesInvoiceEntity invoice")
     LocalDate findMinInvoiceDate();
 
-    @Query("SELECT MIN(invoice.customerId) FROM NewSalesInvoiceEntity invoice")
-    Long findMinCustomerId();
+    @Query("SELECT MIN(invoice.partyId) FROM NewSalesInvoiceEntity invoice")
+    Long findMinPartyId();
 
     @Query("SELECT MIN(invoice.totalAmount) FROM NewSalesInvoiceEntity invoice")
     Double findMinTotalAmount();

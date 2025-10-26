@@ -53,11 +53,11 @@ public class SalesTransactionServiceTest {
         request.setTotalAmount(new BigDecimal("2000.00"));
         request.setReceivedAmount(new BigDecimal("1500.00"));
         request.setBalanceAmount(new BigDecimal("500.00"));
-        request.setCustomerName("John Doe");
+        request.setPartyName("John Doe");
         request.setTransactionDate(LocalDate.now());
 
         assertNotNull(request.getTotalAmount());
-        assertEquals("John Doe", request.getCustomerName());
+        assertEquals("John Doe", request.getPartyName());
         assertEquals(TransactionType.SALE, request.getTransactionType());
         assertTrue(request.getBalanceAmount().compareTo(BigDecimal.ZERO) > 0);
     }

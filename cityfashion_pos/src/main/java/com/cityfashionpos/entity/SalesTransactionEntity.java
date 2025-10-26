@@ -37,11 +37,11 @@ public class SalesTransactionEntity {
     @Column(name = "invoice_number")
     private String invoiceNumber;
 
-    @Column(name = "customer_id")
-    private Integer customerId;
+    @Column(name = "party_id")
+    private Long partyId;
 
-    @Column(name = "customer_name")
-    private String customerName;
+    @Column(name = "party_name")
+    private String partyName;
 
     @Column(name = "transaction_date", nullable = false)
     private LocalDate transactionDate;
@@ -204,20 +204,20 @@ public class SalesTransactionEntity {
         this.invoiceNumber = invoiceNumber;
     }
 
-    public Integer getCustomerId() {
-        return customerId;
+    public Long getPartyId() {
+        return partyId;
     }
 
-    public void setCustomerId(Integer customerId) {
-        this.customerId = customerId;
+    public void setPartyId(Long partyId) {
+        this.partyId = partyId;
     }
 
-    public String getCustomerName() {
-        return customerName;
+    public String getPartyName() {
+        return partyName;
     }
 
-    public void setCustomerName(String customerName) {
-        this.customerName = customerName;
+    public void setPartyName(String customerName) {
+        this.partyName = customerName;
     }
 
     public LocalDate getTransactionDate() {

@@ -22,8 +22,8 @@ public class NewSalesInvoiceEntity {
     @Column(name = "invoice_date")
     private LocalDate invoiceDate;
 
-    @Column(name = "customer_id")
-    private Integer customerId;
+    @Column(name = "party_id")
+    private Long partyId;
 
     @Column(name = "total_amount")
     private Double totalAmount;
@@ -79,12 +79,12 @@ public class NewSalesInvoiceEntity {
         this.invoiceDate = invoiceDate;
     }
 
-    public Integer getCustomerId() {
-        return customerId;
+    public Long getPartyId() {
+        return partyId;
     }
 
-    public void setCustomerId(Integer customerId) {
-        this.customerId = customerId;
+    public void setPartyId(Long partyId) {
+        this.partyId = partyId;
     }
 
     public Double getTotalAmount() {

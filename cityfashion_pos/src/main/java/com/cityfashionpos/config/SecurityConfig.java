@@ -60,6 +60,10 @@ public class SecurityConfig {
                         .antMatchers("/api/discount-types/**").permitAll()
                         .antMatchers("/api/units/*").permitAll()
                         .antMatchers("/api/units/**").permitAll()
+                        .antMatchers("/api/items/*").permitAll()
+                        .antMatchers("/api/items/**").permitAll()
+                        .antMatchers("/api/item-transactions/*").permitAll()
+                        .antMatchers("/api/item-transactions/**").permitAll()
                         .anyRequest().authenticated() // Protect other endpoints
                 )
                 .httpBasic(Customizer.withDefaults()); // Optional: enable basic auth

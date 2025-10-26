@@ -23,12 +23,13 @@ import com.cityfashionpos.dto.SalesReportResponse;
 import com.cityfashionpos.dto.SalesTransactionRequest;
 import com.cityfashionpos.dto.SalesTransactionResponse;
 import com.cityfashionpos.dto.SalesTransactionSummaryResponse;
-import com.cityfashionpos.entity.CustomerEntity;
 import com.cityfashionpos.entity.NewSalesInvoiceEntity;
+import com.cityfashionpos.entity.PartyEntity;
 import com.cityfashionpos.entity.SalesTransactionEntity;
 import com.cityfashionpos.model.TransactionType;
 import com.cityfashionpos.repository.CustomerRepository;
 import com.cityfashionpos.repository.NewSalesInvoiceRepository;
+import com.cityfashionpos.repository.PartyRepository;
 import com.cityfashionpos.repository.SalesTransactionRepository;
 import com.cityfashionpos.service.SalesTransactionService;
 
@@ -46,6 +47,9 @@ public class SalesTransactionServiceImpl implements SalesTransactionService {
 
     @Autowired
     private CustomerRepository customerRepository;
+
+    @Autowired
+    private PartyRepository partyRepository;
 
     @Override
     public SalesTransactionResponse createSalesTransaction(SalesTransactionRequest request) {
@@ -181,7 +185,7 @@ public class SalesTransactionServiceImpl implements SalesTransactionService {
     @Override
     public List<SalesTransactionResponse> getTransactionsByCustomer(Long customerId) {
         try {
-            List<SalesTransactionEntity> entities = salesTransactionRepository.findByCustomerId(customerId);
+            List<SalesTransactionEntity> entities = salesTransactionRepository.findByPartyId(customerId);
             return entities.stream()
                     .map(entity -> mapEntityToResponse(entity, true, null))
                     .collect(Collectors.toList());
@@ -370,7 +374,7 @@ public class SalesTransactionServiceImpl implements SalesTransactionService {
             transaction.setTransactionNumber(generateTransactionNumber());
             transaction.setInvoiceId(invoice.getId());
             transaction.setInvoiceNumber(invoice.getInvoiceNumber());
-            transaction.setCustomerId(invoice.getCustomerId());
+            transaction.setPartyId(invoice.getPartyId());
             transaction.setTransactionDate(invoice.getInvoiceDate());
             transaction.setTotalAmount(BigDecimal.valueOf(invoice.getTotalAmount()));
             transaction.setReceivedAmount(BigDecimal.valueOf(invoice.getReceivedAmount()));
@@ -380,10 +384,10 @@ public class SalesTransactionServiceImpl implements SalesTransactionService {
             transaction.setTransactionType(TransactionType.SALE);
 
             // Get customer name if available
-            if (invoice.getCustomerId() != null) {
-                Optional<CustomerEntity> customer = customerRepository.findById(invoice.getCustomerId());
-                if (customer.isPresent()) {
-                    transaction.setCustomerName(customer.get().getName());
+            if (invoice.getPartyId() != null) {
+                Optional<PartyEntity> party = partyRepository.findById(invoice.getPartyId());
+                if (party.isPresent()) {
+                    transaction.setPartyName(party.get().getPartyName());
                 }
             }
 
@@ -555,7 +559,7 @@ public class SalesTransactionServiceImpl implements SalesTransactionService {
         SalesReportResponse response = new SalesReportResponse();
         response.setDate(entity.getTransactionDate());
         response.setInvoiceNo(entity.getInvoiceNumber());
-        response.setCustomerName(entity.getCustomerName());
+        response.setCustomerName(entity.getPartyName());
         response.setTransactionType(entity.getTransactionType());
         response.setPaymentMode(entity.getPaymentMode());
         response.setNetAmount(entity.getNetAmount());
@@ -570,8 +574,8 @@ public class SalesTransactionServiceImpl implements SalesTransactionService {
         entity.setTransactionNumber(request.getTransactionNumber());
         entity.setInvoiceId(request.getInvoiceId());
         entity.setInvoiceNumber(request.getInvoiceNumber());
-        entity.setCustomerId(request.getCustomerId());
-        entity.setCustomerName(request.getCustomerName());
+        entity.setPartyId(request.getPartyId());
+        entity.setPartyName(request.getPartyName());
         entity.setTransactionDate(request.getTransactionDate());
         entity.setTransactionTime(request.getTransactionTime());
         entity.setTotalAmount(request.getTotalAmount());
@@ -594,8 +598,8 @@ public class SalesTransactionServiceImpl implements SalesTransactionService {
     }
 
     private void updateEntityFromRequest(SalesTransactionEntity entity, SalesTransactionRequest request) {
-        if (request.getCustomerName() != null) {
-            entity.setCustomerName(request.getCustomerName());
+        if (request.getPartyName() != null) {
+            entity.setPartyName(request.getPartyName());
         }
         if (request.getTotalAmount() != null) {
             entity.setTotalAmount(request.getTotalAmount());
@@ -628,8 +632,8 @@ public class SalesTransactionServiceImpl implements SalesTransactionService {
         response.setTransactionNumber(entity.getTransactionNumber());
         response.setInvoiceId(entity.getInvoiceId());
         response.setInvoiceNumber(entity.getInvoiceNumber());
-        response.setCustomerId(entity.getCustomerId());
-        response.setCustomerName(entity.getCustomerName());
+        response.setPartyId(entity.getPartyId());
+        response.setPartyName(entity.getPartyName());
         response.setTransactionDate(entity.getTransactionDate());
         response.setTransactionTime(entity.getTransactionTime());
         response.setTotalAmount(entity.getTotalAmount());

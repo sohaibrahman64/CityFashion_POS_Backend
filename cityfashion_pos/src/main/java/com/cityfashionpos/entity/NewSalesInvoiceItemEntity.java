@@ -13,8 +13,8 @@ public class NewSalesInvoiceItemEntity {
     @Column(name = "invoice_id")
     private Long invoiceId; // Reference to Invoice
 
-    @Column(name = "product_id")
-    private Long productId; // Reference to Product
+    @Column(name = "item_id")
+    private Long itemId; // Reference to Items
 
     @Column(name = "quantity")
     private Integer quantity;
@@ -53,12 +53,12 @@ public class NewSalesInvoiceItemEntity {
         this.invoiceId = invoiceId;
     }
 
-    public Long getProductId() {
-        return productId;
+    public Long getItemId() {
+        return itemId;
     }
 
-    public void setProductId(Long productId) {
-        this.productId = productId;
+    public void setItemId(Long itemId) {
+        this.itemId = itemId;
     }
 
     public Integer getQuantity() {
