@@ -557,7 +557,9 @@ public class SalesTransactionServiceImpl implements SalesTransactionService {
     // Helper method to map SalesTransactionEntity to SalesReportResponse
     private SalesReportResponse mapToSalesReportResponse(SalesTransactionEntity entity) {
         SalesReportResponse response = new SalesReportResponse();
+        response.setTransactionId(entity.getId());
         response.setDate(entity.getTransactionDate());
+        response.setInvoiceId(entity.getInvoiceId());
         response.setInvoiceNo(entity.getInvoiceNumber());
         response.setCustomerName(entity.getPartyName());
         response.setTransactionType(entity.getTransactionType());

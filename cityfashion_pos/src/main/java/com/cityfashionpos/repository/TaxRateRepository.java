@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface TaxRateRepository extends JpaRepository<TaxRateEntity, Long> {
@@ -33,4 +34,6 @@ public interface TaxRateRepository extends JpaRepository<TaxRateEntity, Long> {
      */
     @Query("SELECT DISTINCT t.label FROM TaxRateEntity t WHERE t.active = true ORDER BY t.label ASC")
     List<String> findDistinctLabelsFromActiveTaxRates();
+
+    Optional<TaxRateEntity> findById(Long id);
 }

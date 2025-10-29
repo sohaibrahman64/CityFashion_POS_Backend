@@ -13,4 +13,6 @@ public interface ItemRepository extends JpaRepository<ItemEntity, Long> {
     Optional<ItemEntity> findByCode(String code);
 
     boolean existsByNameIgnoreCase(String name);
+
+    Optional<ItemEntity> findById(Long id);
 }

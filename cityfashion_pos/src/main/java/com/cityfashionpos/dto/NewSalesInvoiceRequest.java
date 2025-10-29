@@ -2,6 +2,8 @@ package com.cityfashionpos.dto;
 
 import java.util.List;
 
+import com.cityfashionpos.entity.TaxRateEntity;
+
 public class NewSalesInvoiceRequest {
     private Long partyId;
     private String partyName;
@@ -29,7 +31,6 @@ public class NewSalesInvoiceRequest {
         private Long taxRateId; // Reference to selected tax rate
         private Double taxAmount;
         private Double taxPercent;
-        private Double taxRate;
 
         public Long getId() {
             return id;
@@ -119,13 +120,6 @@ public class NewSalesInvoiceRequest {
             this.taxPercent = taxPercent;
         }
 
-        public Double getTaxRate() {
-            return taxRate;
-        }
-
-        public void setTaxRate(Double taxRate) {
-            this.taxRate = taxRate;
-        }
     }
 
     public Long getPartyId() {

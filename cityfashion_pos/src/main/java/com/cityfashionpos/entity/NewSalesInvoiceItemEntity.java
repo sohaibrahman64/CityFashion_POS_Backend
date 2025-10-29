@@ -37,6 +37,9 @@ public class NewSalesInvoiceItemEntity {
     @Column(name = "tax_amount")
     private Double taxAmount;
 
+    @Column(name = "tax_rate_id")
+    private Long taxRateId; // Reference to TaxRateEntity
+
     public Long getId() {
         return id;
     }
@@ -115,6 +118,14 @@ public class NewSalesInvoiceItemEntity {
 
     public void setTaxAmount(Double taxAmount) {
         this.taxAmount = taxAmount;
+    }
+
+    public Long getTaxRateId() {
+        return taxRateId;
+    }
+
+    public void setTaxRateId(Long taxRateId) {
+        this.taxRateId = taxRateId;
     }
 
 }

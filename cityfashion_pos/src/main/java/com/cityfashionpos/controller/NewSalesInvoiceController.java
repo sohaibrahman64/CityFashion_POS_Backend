@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -52,5 +53,18 @@ public class NewSalesInvoiceController {
         response.put("invoiceNumber", nextInvoiceNumber);
 
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/getInvoiceById/{id}")
+    public ResponseEntity<NewSalesInvoiceResponse> getInvoiceById(@PathVariable Long id) {
+        try {
+            NewSalesInvoiceResponse response = newSalesInvoiceService.getSalesInvoiceById(id);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            NewSalesInvoiceResponse errorResponse = new NewSalesInvoiceResponse();
+            errorResponse.setSuccess(false);
+            errorResponse.setMessage("Error processing request: " + e.getMessage());
+            return ResponseEntity.badRequest().body(errorResponse);
+        }
     }
 }

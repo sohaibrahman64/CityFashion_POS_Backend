@@ -11,12 +11,14 @@ import com.cityfashionpos.model.TransactionType;
 public class SalesReportResponse {
 
     private LocalDate date;
+    private Long invoiceId;
     private String invoiceNo;
     private String customerName;
     private TransactionType transactionType;
     private String paymentMode;
     private BigDecimal netAmount;
     private BigDecimal balanceAmount;
+    private Long transactionId;
 
     // Default constructor
     public SalesReportResponse() {
@@ -90,6 +92,22 @@ public class SalesReportResponse {
 
     public void setBalanceAmount(BigDecimal balanceAmount) {
         this.balanceAmount = balanceAmount;
+    }
+
+    public Long getInvoiceId() {
+        return invoiceId;
+    }
+
+    public void setInvoiceId(Long invoiceId) {
+        this.invoiceId = invoiceId;
+    }
+
+    public Long getTransactionId() {
+        return transactionId;
+    }
+
+    public void setTransactionId(Long transactionId) {
+        this.transactionId = transactionId;
     }
 
     @Override

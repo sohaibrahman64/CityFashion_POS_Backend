@@ -11,13 +11,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cityfashionpos.dto.StockAdjustmentRequest;
-import com.cityfashionpos.entity.ProductEntityNew;
+import com.cityfashionpos.entity.ItemEntity;
 import com.cityfashionpos.entity.StockAdjustmentsEntity;
 import com.cityfashionpos.model.AdjustmentType;
 import com.cityfashionpos.model.TransactionType;
+import com.cityfashionpos.repository.ItemRepository;
 import com.cityfashionpos.repository.ProductRepositoryNew;
 import com.cityfashionpos.repository.StockAdjustmentRepository;
 import com.cityfashionpos.response.StockAdjustmentResponse;
+import com.cityfashionpos.service.ItemTransactionService;
 import com.cityfashionpos.service.ProductTransactionService;
 import com.cityfashionpos.service.StockAdjustmentService;
 
@@ -31,13 +33,23 @@ public class StockAdjustmentServiceImpl implements StockAdjustmentService {
 	private ProductRepositoryNew productRepository;
 
 	@Autowired
+	private ItemRepository itemRepository;
+
+	@Autowired
 	private ProductTransactionService productTransactionService;
+
+	@Autowired
+	private ItemTransactionService itemTransactionService;
 
 	@Override
 	public StockAdjustmentResponse createStockAdjustment(StockAdjustmentRequest request) {
 		/// Validate product exists
-		ProductEntityNew product = productRepository.findById(request.getProductId())
-				.orElseThrow(() -> new RuntimeException("Product not found with ID: " + request.getProductId()));
+		// ProductEntityNew product = productRepository.findById(request.getProductId())
+		// .orElseThrow(() -> new RuntimeException("Product not found with ID: " +
+		/// request.getProductId()));
+
+		ItemEntity item = itemRepository.findById(request.getItemId())
+				.orElseThrow(() -> new RuntimeException("Item not found with ID: " + request.getItemId()));
 
 		// Validate adjustment type
 		AdjustmentType adjustmentType;
@@ -49,7 +61,7 @@ public class StockAdjustmentServiceImpl implements StockAdjustmentService {
 
 		// Create stock adjustment entity
 		StockAdjustmentsEntity stockAdjustment = new StockAdjustmentsEntity();
-		stockAdjustment.setProduct(product);
+		stockAdjustment.setItem(item);
 		stockAdjustment.setAdjustmentType(adjustmentType);
 		stockAdjustment.setQuantity(request.getQuantity());
 		stockAdjustment.setAtPrice(request.getAtPrice());
@@ -62,7 +74,7 @@ public class StockAdjustmentServiceImpl implements StockAdjustmentService {
 		StockAdjustmentsEntity savedAdjustment = stockAdjustmentRepository.save(stockAdjustment);
 
 		// Update product stock
-		updateProductStock(product, adjustmentType, request.getQuantity());
+		updateItemStock(item, adjustmentType, request.getQuantity());
 
 		// Create product transaction record
 		try {
@@ -70,8 +82,8 @@ public class StockAdjustmentServiceImpl implements StockAdjustmentService {
 					? TransactionType.STOCK_ADJUSTMENT
 					: TransactionType.STOCK_ADJUSTMENT;
 
-			productTransactionService.createFromStockAdjustment(
-					product.getId(),
+			itemTransactionService.createFromStockAdjustment(
+					item.getId(),
 					transactionType,
 					request.getQuantity().doubleValue(),
 					request.getAtPrice().doubleValue(),
@@ -85,14 +97,14 @@ public class StockAdjustmentServiceImpl implements StockAdjustmentService {
 		}
 
 		// Create response
-		return createResponse(savedAdjustment, product);
+		return createResponse(savedAdjustment, item);
 	}
 
 	/**
 	 * Update product stock based on adjustment
 	 */
-	private void updateProductStock(ProductEntityNew product, AdjustmentType adjustmentType, Integer quantity) {
-		Integer currentStock = product.getOpeningQuantity();
+	private void updateItemStock(ItemEntity item, AdjustmentType adjustmentType, Integer quantity) {
+		Integer currentStock = item.getOpeningQuantity();
 		Integer newStock;
 
 		if (adjustmentType == AdjustmentType.ADD_STOCK) {
@@ -105,18 +117,18 @@ public class StockAdjustmentServiceImpl implements StockAdjustmentService {
 			}
 		}
 
-		product.setOpeningQuantity(newStock);
-		productRepository.save(product);
+		item.setOpeningQuantity(newStock);
+		itemRepository.save(item);
 	}
 
 	@Override
-	public List<StockAdjustmentResponse> getAdjustmentsByProduct(Long productId) {
+	public List<StockAdjustmentResponse> getAdjustmentsByProduct(Long itemId) {
 		List<StockAdjustmentsEntity> adjustments = stockAdjustmentRepository
-				.findByProductIdOrderByAdjustmentDateDesc(productId);
-		ProductEntityNew product = productRepository.findById(productId)
-				.orElseThrow(() -> new RuntimeException("Product not found with ID: " + productId));
+				.findByItemIdOrderByAdjustmentDateDesc(itemId);
+		ItemEntity item = itemRepository.findById(itemId)
+				.orElseThrow(() -> new RuntimeException("Product not found with ID: " + itemId));
 
-		return adjustments.stream().map(adjustment -> createResponse(adjustment, product)).collect(Collectors.toList());
+		return adjustments.stream().map(adjustment -> createResponse(adjustment, item)).collect(Collectors.toList());
 	}
 
 	@Override
@@ -127,7 +139,7 @@ public class StockAdjustmentServiceImpl implements StockAdjustmentService {
 		List<StockAdjustmentsEntity> adjustments = stockAdjustmentRepository.findByDateRange(startDateTime,
 				endDateTime);
 
-		return adjustments.stream().map(adjustment -> createResponse(adjustment, adjustment.getProduct()))
+		return adjustments.stream().map(adjustment -> createResponse(adjustment, adjustment.getItem()))
 				.collect(Collectors.toList());
 	}
 
@@ -136,7 +148,7 @@ public class StockAdjustmentServiceImpl implements StockAdjustmentService {
 		List<StockAdjustmentsEntity> adjustments = stockAdjustmentRepository
 				.findByAdjustmentTypeOrderByAdjustmentDateDesc(adjustmentType);
 
-		return adjustments.stream().map(adjustment -> createResponse(adjustment, adjustment.getProduct()))
+		return adjustments.stream().map(adjustment -> createResponse(adjustment, adjustment.getItem()))
 				.collect(Collectors.toList());
 	}
 
@@ -145,7 +157,7 @@ public class StockAdjustmentServiceImpl implements StockAdjustmentService {
 		StockAdjustmentsEntity adjustment = stockAdjustmentRepository.findById(id)
 				.orElseThrow(() -> new RuntimeException("Stock adjustment not found with ID: " + id));
 
-		return createResponse(adjustment, adjustment.getProduct());
+		return createResponse(adjustment, adjustment.getItem());
 	}
 
 	@Override
@@ -153,14 +165,14 @@ public class StockAdjustmentServiceImpl implements StockAdjustmentService {
 		StockAdjustmentsEntity adjustment = stockAdjustmentRepository.findById(id)
 				.orElseThrow(() -> new RuntimeException("Stock adjustment not found with ID: " + id));
 
-		ProductEntityNew product = adjustment.getProduct();
+		ItemEntity item = adjustment.getItem();
 
 		// Reverse the stock adjustment
 		AdjustmentType reverseType = adjustment.getAdjustmentType() == AdjustmentType.ADD_STOCK
 				? AdjustmentType.REDUCE_STOCK
 				: AdjustmentType.ADD_STOCK;
 
-		updateProductStock(product, reverseType, adjustment.getQuantity());
+		updateItemStock(item, reverseType, adjustment.getQuantity());
 
 		// Delete the adjustment
 		stockAdjustmentRepository.delete(adjustment);
@@ -168,27 +180,27 @@ public class StockAdjustmentServiceImpl implements StockAdjustmentService {
 	}
 
 	@Override
-	public StockAdjustmentSummary getAdjustmentSummary(Long productId, LocalDate startDate, LocalDate endDate) {
+	public StockAdjustmentSummary getAdjustmentSummary(Long itemId, LocalDate startDate, LocalDate endDate) {
 		LocalDateTime startDateTime = startDate.atStartOfDay();
 		LocalDateTime endDateTime = endDate.atTime(LocalTime.MAX);
 
-		Double totalValue = stockAdjustmentRepository.getTotalAdjustmentValueForProduct(productId, startDateTime,
+		Double totalValue = stockAdjustmentRepository.getTotalAdjustmentValueForItem(itemId, startDateTime,
 				endDateTime);
-		Long addStockCount = stockAdjustmentRepository.countByProductAndAdjustmentType(productId, "ADD_STOCK");
-		Long reduceStockCount = stockAdjustmentRepository.countByProductAndAdjustmentType(productId, "REDUCE_STOCK");
+		Long addStockCount = stockAdjustmentRepository.countByProductAndAdjustmentType(itemId, "ADD_STOCK");
+		Long reduceStockCount = stockAdjustmentRepository.countByProductAndAdjustmentType(itemId, "REDUCE_STOCK");
 
-		return new StockAdjustmentSummary(productId,
+		return new StockAdjustmentSummary(itemId,
 				totalValue != null ? BigDecimal.valueOf(totalValue) : BigDecimal.ZERO, addStockCount, reduceStockCount);
 	}
 
 	/**
 	 * Create response DTO from entity
 	 */
-	private StockAdjustmentResponse createResponse(StockAdjustmentsEntity adjustment, ProductEntityNew product) {
+	private StockAdjustmentResponse createResponse(StockAdjustmentsEntity adjustment, ItemEntity item) {
 		StockAdjustmentResponse response = new StockAdjustmentResponse();
 		response.setId(adjustment.getId());
-		response.setProductId(product.getId());
-		response.setProductName(product.getName());
+		response.setProductId(item.getId());
+		response.setProductName(item.getName());
 		response.setAdjustmentType(adjustment.getAdjustmentType().getDisplayName());
 		response.setQuantity(adjustment.getQuantity());
 		response.setAtPrice(adjustment.getAtPrice());
@@ -197,7 +209,7 @@ public class StockAdjustmentServiceImpl implements StockAdjustmentService {
 		response.setCreatedAt(adjustment.getCreatedAt());
 		response.setCreatedBy(adjustment.getCreatedBy());
 		response.setTotalValue(adjustment.getTotalValue());
-		response.setNewStockQuantity(product.getOpeningQuantity());
+		response.setNewStockQuantity(item.getOpeningQuantity());
 
 		return response;
 	}

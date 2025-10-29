@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.hibernate.cache.spi.support.AbstractReadWriteAccess.Item;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -161,6 +163,23 @@ public class ItemController {
             response.put("items", items);
             response.put("success", true);
             response.put("count", items.size());
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("message", "Error retrieving products: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+
+    @PutMapping("/updateItemQuantity")
+    public ResponseEntity<Map<String, Object>> updateItemQuantity(@RequestParam Long id,
+            @RequestParam Integer quantity, @RequestParam String transactionType) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            List<ItemResponseDTO> updatedItems = itemService.updateItemQuantity(id, quantity, transactionType);
+            response.put("items", updatedItems);
+            response.put("success", true);
+            response.put("count", updatedItems.size());
             return ResponseEntity.ok(response);
         } catch (Exception e) {
             response.put("success", false);

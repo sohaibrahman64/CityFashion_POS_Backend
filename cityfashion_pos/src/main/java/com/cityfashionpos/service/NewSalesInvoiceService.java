@@ -3,6 +3,7 @@ package com.cityfashionpos.service;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,15 +11,17 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.cityfashionpos.dto.NewSalesInvoiceRequest;
 import com.cityfashionpos.dto.NewSalesInvoiceResponse;
-import com.cityfashionpos.entity.CustomerEntity;
+import com.cityfashionpos.entity.ItemEntity;
 import com.cityfashionpos.entity.NewSalesInvoiceEntity;
 import com.cityfashionpos.entity.NewSalesInvoiceItemEntity;
 import com.cityfashionpos.entity.PartyEntity;
 import com.cityfashionpos.entity.TaxRateEntity;
 import com.cityfashionpos.repository.CustomerRepository;
+import com.cityfashionpos.repository.ItemRepository;
 import com.cityfashionpos.repository.NewSalesInvoiceItemRepository;
 import com.cityfashionpos.repository.NewSalesInvoiceRepository;
 import com.cityfashionpos.repository.PartyRepository;
+import com.cityfashionpos.repository.TaxRateRepository;
 import com.cityfashionpos.utils.NumberToWordsConverter;
 
 @Service
@@ -31,7 +34,13 @@ public class NewSalesInvoiceService {
     private NewSalesInvoiceItemRepository invoiceItemRepository;
 
     @Autowired
+    private TaxRateRepository taxRateRepository;
+
+    @Autowired
     private CustomerRepository customerRepository;
+
+    @Autowired
+    private ItemRepository itemRepository;
 
     @Autowired
     private PartyRepository partyRepository;
@@ -126,6 +135,8 @@ public class NewSalesInvoiceService {
                     // invoiceItem.setTaxRate(itemRequest.getTaxRate());
                     invoiceItem.setTaxPercent(itemRequest.getTaxPercent());
 
+                    invoiceItem.setTaxRateId(itemRequest.getTaxRateId());
+
                     // Save invoice item
                     invoiceItemRepository.save(invoiceItem);
 
@@ -141,7 +152,8 @@ public class NewSalesInvoiceService {
                     responseItem.setTotal(itemRequest.getTotal());
                     responseItem.setTaxAmount(itemRequest.getTaxAmount());
                     responseItem.setTaxPercent(itemRequest.getTaxPercent());
-                    responseItem.setTaxRate(itemRequest.getTaxRate());
+                    responseItem.setTaxRate(invoiceItemRepository.findByTaxRateId(invoiceItem.getTaxRateId())
+                            .get());
 
                     responseItems.add(responseItem);
                 }
@@ -221,6 +233,67 @@ public class NewSalesInvoiceService {
         newParty.setPartyName(partyName != null ? partyName : "Party");
         newParty.setPhoneNumber(phoneNumber);
         return partyRepository.save(newParty);
+    }
+
+    public NewSalesInvoiceResponse getSalesInvoiceById(Long invoiceId) {
+        NewSalesInvoiceResponse response = new NewSalesInvoiceResponse();
+
+        try {
+            // Fetch invoice entity
+            NewSalesInvoiceEntity invoice = invoiceRepository.findById(invoiceId)
+                    .orElseThrow(() -> new IllegalArgumentException("Invoice not found with ID: " + invoiceId));
+
+            List<NewSalesInvoiceItemEntity> invoiceItems = invoiceItemRepository.findByInvoiceId(invoiceId);
+            List<NewSalesInvoiceResponse.NewSalesInvoiceItemResponse> responseItems = new ArrayList<>();
+            for (NewSalesInvoiceItemEntity newSalesInvoiceItemEntity : invoiceItems) {
+                NewSalesInvoiceResponse.NewSalesInvoiceItemResponse responseItem = new NewSalesInvoiceResponse.NewSalesInvoiceItemResponse();
+                Optional<ItemEntity> itemEntity = itemRepository.findById(newSalesInvoiceItemEntity.getItemId());
+                responseItem.setId(newSalesInvoiceItemEntity.getId());
+                responseItem.setItemName(itemEntity.get().getName()); // Placeholder, can be enhanced later
+                responseItem.setHsnCode("HSN Code"); // Placeholder, can be enhanced later
+                responseItem.setQuantity(newSalesInvoiceItemEntity.getQuantity());
+                responseItem.setPrice(newSalesInvoiceItemEntity.getPrice());
+                responseItem.setDiscount(newSalesInvoiceItemEntity.getDiscountPercent());
+                responseItem.setDiscountAmount(newSalesInvoiceItemEntity.getDiscountAmount());
+                responseItem.setTotal(newSalesInvoiceItemEntity.getTotal());
+                responseItem.setTaxAmount(newSalesInvoiceItemEntity.getTaxAmount());
+                responseItem.setTaxPercent(newSalesInvoiceItemEntity.getTaxPercent());
+                // responseItem.setTaxRate(newSalesInvoiceItemEntity.getTaxRate());
+                // responseItem.setTaxRate(invoiceItemRepository.findByTaxRateId(newSalesInvoiceItemEntity.getTaxRateId())
+                // .get());
+                responseItem.setTaxRate(taxRateRepository.findById(newSalesInvoiceItemEntity.getTaxRateId()).get());
+
+                responseItems.add(responseItem);
+            }
+            // Fetch party details
+            PartyEntity party = partyRepository.findById(invoice.getPartyId())
+                    .orElseThrow(
+                            () -> new IllegalArgumentException("Party not found with ID: " + invoice.getPartyId()));
+            // Prepare response
+            response.setInvoiceId(invoice.getId());
+            response.setInvoiceNumber(invoice.getInvoiceNumber());
+            response.setInvoiceDate(invoice.getInvoiceDate());
+            response.setParty(partyRepository.findById(invoice.getPartyId()).get());
+            response.setPartyName(party.getPartyName());
+            response.setPartyPhone(party.getPhoneNumber());
+            response.setItems(responseItems);
+            response.setSubtotalAmount(invoice.getSubtotalAmount());
+            response.setTotalDiscountAmount(invoice.getDiscountAmount());
+            response.setTotalAmount(invoice.getTotalAmount());
+            response.setReceivedAmount(invoice.getReceivedAmount());
+            response.setBalanceAmount(invoice.getBalanceAmount());
+            response.setDiscountAmount(invoice.getDiscountAmount());
+            response.setTotalTaxAmount(invoice.getTotalTaxAmount());
+            response.setTaxableAmount(invoice.getTaxableAmount());
+            response.setAmountInWords(invoice.getAmountInWords());
+            response.setSuccess(true);
+            response.setMessage("Sales invoice fetched successfully");
+        } catch (Exception e) {
+            response.setSuccess(false);
+            response.setMessage("Error fetching sales invoice: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return response;
     }
 
 }

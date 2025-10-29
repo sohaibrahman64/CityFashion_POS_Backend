@@ -20,4 +20,6 @@ public interface ItemService {
     void deleteItem(Long id);
 
     List<ItemResponseDTO> getAllItems();
+
+    List<ItemResponseDTO> updateItemQuantity(Long id, Integer quantity, String transactionType);
 }

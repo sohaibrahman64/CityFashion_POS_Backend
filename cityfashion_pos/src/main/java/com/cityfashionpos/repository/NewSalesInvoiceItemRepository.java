@@ -1,12 +1,14 @@
 package com.cityfashionpos.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.cityfashionpos.entity.NewSalesInvoiceItemEntity;
+import com.cityfashionpos.entity.TaxRateEntity;
 
 public interface NewSalesInvoiceItemRepository extends JpaRepository<NewSalesInvoiceItemEntity, Long> {
     List<NewSalesInvoiceItemEntity> findByInvoiceId(Long invoiceId);
@@ -22,4 +24,6 @@ public interface NewSalesInvoiceItemRepository extends JpaRepository<NewSalesInv
 
     @Query("SELECT SUM(item.total) - SUM(item.discountAmount) - SUM(item.taxPercent) FROM NewSalesInvoiceItemEntity item WHERE item.invoiceId = :invoiceId")
     Double calculateTotalAmountAfterTax(@Param("invoiceId") Long invoiceId);
+
+    Optional<TaxRateEntity> findByTaxRateId(Long id);
 }

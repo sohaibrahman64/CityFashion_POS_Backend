@@ -3,10 +3,14 @@ package com.cityfashionpos.dto;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.cityfashionpos.entity.PartyEntity;
+import com.cityfashionpos.entity.TaxRateEntity;
+
 public class NewSalesInvoiceResponse {
     private Long invoiceId;
     private String invoiceNumber;
     private LocalDate invoiceDate;
+    private PartyEntity party;
     private String partyName;
     private String partyPhone;
     private List<NewSalesInvoiceItemResponse> items;
@@ -33,7 +37,7 @@ public class NewSalesInvoiceResponse {
         private Double total;
         private Double taxAmount;
         private Double taxPercent;
-        private Double taxRate;
+        private TaxRateEntity taxRate;
 
         public Long getId() {
             return id;
@@ -115,11 +119,11 @@ public class NewSalesInvoiceResponse {
             this.taxPercent = taxPercent;
         }
 
-        public Double getTaxRate() {
+        public TaxRateEntity getTaxRate() {
             return taxRate;
         }
 
-        public void setTaxRate(Double taxRate) {
+        public void setTaxRate(TaxRateEntity taxRate) {
             this.taxRate = taxRate;
         }
     }
@@ -258,5 +262,13 @@ public class NewSalesInvoiceResponse {
 
     public void setSuccess(Boolean success) {
         this.success = success;
+    }
+
+    public PartyEntity getParty() {
+        return party;
+    }
+
+    public void setParty(PartyEntity party) {
+        this.party = party;
     }
 }

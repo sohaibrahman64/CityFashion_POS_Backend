@@ -13,58 +13,54 @@ public interface StockAdjustmentRepository extends JpaRepository<StockAdjustment
     /**
      * Find all adjustments for a specific product
      */
-    List<StockAdjustmentsEntity> findByProductIdOrderByAdjustmentDateDesc(Long productId);
-    
+    List<StockAdjustmentsEntity> findByItemIdOrderByAdjustmentDateDesc(Long itemId);
+
     /**
      * Find adjustments by product and date range
      */
-    @Query("SELECT sa FROM StockAdjustmentsEntity sa WHERE sa.product.id = :productId " +
-           "AND sa.adjustmentDate BETWEEN :startDate AND :endDate " +
-           "ORDER BY sa.adjustmentDate DESC")
+    @Query("SELECT sa FROM StockAdjustmentsEntity sa WHERE sa.item.id = :itemId " +
+            "AND sa.adjustmentDate BETWEEN :startDate AND :endDate " +
+            "ORDER BY sa.adjustmentDate DESC")
     List<StockAdjustmentsEntity> findByProductAndDateRange(
-        @Param("productId") Long productId,
-        @Param("startDate") LocalDateTime startDate,
-        @Param("endDate") LocalDateTime endDate
-    );
-    
+            @Param("itemId") Long itemId,
+            @Param("startDate") LocalDateTime startDate,
+            @Param("endDate") LocalDateTime endDate);
+
     /**
      * Find adjustments by adjustment type
      */
     List<StockAdjustmentsEntity> findByAdjustmentTypeOrderByAdjustmentDateDesc(String adjustmentType);
-    
+
     /**
      * Find adjustments by date range
      */
     @Query("SELECT sa FROM StockAdjustmentsEntity sa WHERE sa.adjustmentDate BETWEEN :startDate AND :endDate " +
-           "ORDER BY sa.adjustmentDate DESC")
+            "ORDER BY sa.adjustmentDate DESC")
     List<StockAdjustmentsEntity> findByDateRange(
-        @Param("startDate") LocalDateTime startDate,
-        @Param("endDate") LocalDateTime endDate
-    );
-    
+            @Param("startDate") LocalDateTime startDate,
+            @Param("endDate") LocalDateTime endDate);
+
     /**
      * Find adjustments by created by user
      */
     List<StockAdjustmentsEntity> findByCreatedByOrderByCreatedAtDesc(String createdBy);
-    
+
     /**
      * Get total adjustments value for a product in a date range
      */
-    @Query("SELECT SUM(sa.totalValue) FROM StockAdjustmentsEntity sa WHERE sa.product.id = :productId " +
-           "AND sa.adjustmentDate BETWEEN :startDate AND :endDate")
-    Double getTotalAdjustmentValueForProduct(
-        @Param("productId") Long productId,
-        @Param("startDate") LocalDateTime startDate,
-        @Param("endDate") LocalDateTime endDate
-    );
-    
+    @Query("SELECT SUM(sa.totalValue) FROM StockAdjustmentsEntity sa WHERE sa.item.id = :itemId " +
+            "AND sa.adjustmentDate BETWEEN :startDate AND :endDate")
+    Double getTotalAdjustmentValueForItem(
+            @Param("itemId") Long itemId,
+            @Param("startDate") LocalDateTime startDate,
+            @Param("endDate") LocalDateTime endDate);
+
     /**
      * Get count of adjustments by type for a product
      */
-    @Query("SELECT COUNT(sa) FROM StockAdjustmentsEntity sa WHERE sa.product.id = :productId " +
-           "AND sa.adjustmentType = :adjustmentType")
+    @Query("SELECT COUNT(sa) FROM StockAdjustmentsEntity sa WHERE sa.item.id = :itemId " +
+            "AND sa.adjustmentType = :adjustmentType")
     Long countByProductAndAdjustmentType(
-        @Param("productId") Long productId,
-        @Param("adjustmentType") String adjustmentType
-    );
+            @Param("item") Long itemId,
+            @Param("adjustmentType") String adjustmentType);
 }

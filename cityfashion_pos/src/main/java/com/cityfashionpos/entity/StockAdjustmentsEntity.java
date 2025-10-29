@@ -27,8 +27,8 @@ public class StockAdjustmentsEntity {
 	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "product_id", nullable = false)
-	private ProductEntityNew product;
+	@JoinColumn(name = "item_id", nullable = false)
+	private ItemEntity item;
 
 	@Enumerated(EnumType.STRING)
 	@Column(name = "adjustment_type", nullable = false)
@@ -60,10 +60,10 @@ public class StockAdjustmentsEntity {
 		this.createdAt = LocalDateTime.now();
 	}
 
-	public StockAdjustmentsEntity(ProductEntityNew product, AdjustmentType adjustmentType, Integer quantity,
+	public StockAdjustmentsEntity(ItemEntity item, AdjustmentType adjustmentType, Integer quantity,
 			BigDecimal atPrice, String description, LocalDateTime adjustmentDate) {
 		this();
-		this.product = product;
+		this.item = item;
 		this.adjustmentType = adjustmentType;
 		this.quantity = quantity;
 		this.atPrice = atPrice;
@@ -88,12 +88,12 @@ public class StockAdjustmentsEntity {
 		this.id = id;
 	}
 
-	public ProductEntityNew getProduct() {
-		return product;
+	public ItemEntity getItem() {
+		return item;
 	}
 
-	public void setProduct(ProductEntityNew product) {
-		this.product = product;
+	public void setItem(ItemEntity item) {
+		this.item = item;
 	}
 
 	public AdjustmentType getAdjustmentType() {

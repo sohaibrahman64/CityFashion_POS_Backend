@@ -1,5 +1,6 @@
 package com.cityfashionpos.service.impl;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -8,8 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cityfashionpos.dto.ItemTransactionDTO;
+import com.cityfashionpos.dto.ProductTransactionDTO;
 import com.cityfashionpos.entity.ItemEntity;
 import com.cityfashionpos.entity.ItemTransactionEntity;
+import com.cityfashionpos.entity.ProductTransactionEntity;
 import com.cityfashionpos.model.TransactionType;
 import com.cityfashionpos.repository.ItemRepository;
 import com.cityfashionpos.repository.ItemTransactionRepository;
@@ -98,67 +101,129 @@ public class ItemTransactionServiceImpl implements ItemTransactionService {
     }
 
     @Override
-    public List<ItemTransactionDTO> getTransactionsByProductAndDateRange(Long productId, LocalDateTime startDate,
+    public List<ItemTransactionDTO> getTransactionsByProductAndDateRange(Long itemId, LocalDateTime startDate,
             LocalDateTime endDate) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getTransactionsByProductAndDateRange'");
+        List<ItemTransactionEntity> entities = itemTransactionRepository.findByItemIdAndDateRange(itemId,
+                startDate, endDate);
+        return entities.stream().map(this::convertToDTO).collect(Collectors.toList());
     }
 
     @Override
     public List<ItemTransactionDTO> getTransactionsByType(TransactionType transactionType) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getTransactionsByType'");
+        List<ItemTransactionEntity> entities = itemTransactionRepository
+                .findByTransactionTypeOrderByTransactionDateDesc(transactionType);
+        return entities.stream().map(this::convertToDTO).collect(Collectors.toList());
     }
 
     @Override
     public List<ItemTransactionDTO> getTransactionsByDateRange(LocalDateTime startDate, LocalDateTime endDate) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getTransactionsByDateRange'");
+        List<ItemTransactionEntity> entities = itemTransactionRepository.findByDateRange(startDate, endDate);
+        return entities.stream().map(this::convertToDTO).collect(Collectors.toList());
     }
 
     @Override
     public ItemTransactionDTO getTransactionById(Long transactionId) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getTransactionById'");
+        ItemTransactionEntity entity = itemTransactionRepository.findById(transactionId)
+                .orElseThrow(() -> new RuntimeException("Transaction not found"));
+        return convertToDTO(entity);
     }
 
     @Override
     public ItemTransactionDTO updateTransaction(Long transactionId, ItemTransactionDTO transactionDTO) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'updateTransaction'");
+        ItemTransactionEntity entity = itemTransactionRepository.findById(transactionId)
+                .orElseThrow(() -> new RuntimeException("Transaction not found"));
+
+        // Update fields
+        if (transactionDTO.getTransactionType() != null) {
+            entity.setTransactionType(transactionDTO.getTransactionType());
+        }
+        if (transactionDTO.getQuantity() != null) {
+            entity.setQuantity(BigDecimal.valueOf(transactionDTO.getQuantity().doubleValue()));
+        }
+        if (transactionDTO.getUnitPrice() != null) {
+            entity.setUnitPrice(BigDecimal.valueOf(transactionDTO.getUnitPrice().doubleValue()));
+        }
+        if (transactionDTO.getDescription() != null) {
+            entity.setDescription(transactionDTO.getDescription());
+        }
+        if (transactionDTO.getNotes() != null) {
+            entity.setNotes(transactionDTO.getNotes());
+        }
+        if (transactionDTO.getStatus() != null) {
+            entity.setStatus(transactionDTO.getStatus());
+        }
+
+        entity.calculateTotalValue();
+
+        ItemTransactionEntity updatedEntity = itemTransactionRepository.save(entity);
+        return convertToDTO(updatedEntity);
     }
 
     @Override
     public void deleteTransaction(Long transactionId) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteTransaction'");
+        if (!itemTransactionRepository.existsById(transactionId)) {
+            throw new RuntimeException("Transaction not found");
+        }
+        itemTransactionRepository.deleteById(transactionId);
     }
 
     @Override
-    public Object getTransactionSummary(Long productId, LocalDateTime startDate, LocalDateTime endDate) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getTransactionSummary'");
+    public Object getTransactionSummary(Long itemId, LocalDateTime startDate, LocalDateTime endDate) {
+        return itemTransactionRepository.getItemTransactionSummary(itemId);
     }
 
     @Override
-    public ItemTransactionDTO createFromStockAdjustment(Long productId, TransactionType type, Double quantity,
+    public ItemTransactionDTO createFromStockAdjustment(Long itemId, TransactionType type, Double quantity,
             Double unitPrice, String description, Long referenceId, String referenceType, String referenceNumber) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'createFromStockAdjustment'");
+        ItemTransactionDTO dto = new ItemTransactionDTO();
+        dto.setItemId(itemId);
+        dto.setTransactionType(type);
+        dto.setQuantity(BigDecimal.valueOf(quantity));
+        dto.setUnitPrice(BigDecimal.valueOf(unitPrice));
+        dto.setDescription(description);
+        dto.setReferenceId(referenceId);
+        dto.setReferenceType(referenceType);
+        dto.setReferenceNumber(referenceNumber);
+        dto.setTransactionDate(LocalDateTime.now());
+        dto.setStatus("COMPLETED");
+
+        return createTransaction(dto);
     }
 
     @Override
-    public ItemTransactionDTO createFromSale(Long productId, Double quantity, Double unitPrice, String description,
+    public ItemTransactionDTO createFromSale(Long itemId, Double quantity, Double unitPrice, String description,
             Long invoiceId, String invoiceNumber) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'createFromSale'");
+        ItemTransactionDTO dto = new ItemTransactionDTO();
+        dto.setItemId(itemId);
+        dto.setTransactionType(TransactionType.SALE);
+        dto.setQuantity(BigDecimal.valueOf(quantity));
+        dto.setUnitPrice(BigDecimal.valueOf(unitPrice));
+        dto.setDescription(description);
+        dto.setReferenceId(invoiceId);
+        dto.setReferenceType("INVOICE");
+        dto.setReferenceNumber(invoiceNumber);
+        dto.setTransactionDate(LocalDateTime.now());
+        dto.setStatus("COMPLETED");
+
+        return createTransaction(dto);
     }
 
     @Override
-    public ItemTransactionDTO createFromPurchase(Long productId, Double quantity, Double unitPrice, String description,
+    public ItemTransactionDTO createFromPurchase(Long itemId, Double quantity, Double unitPrice, String description,
             Long purchaseId, String purchaseNumber) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'createFromPurchase'");
+        ItemTransactionDTO dto = new ItemTransactionDTO();
+        dto.setItemId(itemId);
+        dto.setTransactionType(TransactionType.PURCHASE);
+        dto.setQuantity(BigDecimal.valueOf(quantity));
+        dto.setUnitPrice(BigDecimal.valueOf(unitPrice));
+        dto.setDescription(description);
+        dto.setReferenceId(purchaseId);
+        dto.setReferenceType("PURCHASE");
+        dto.setReferenceNumber(purchaseNumber);
+        dto.setTransactionDate(LocalDateTime.now());
+        dto.setStatus("COMPLETED");
+
+        return createTransaction(dto);
     }
 
     // Helper method to convert Entity to DTO

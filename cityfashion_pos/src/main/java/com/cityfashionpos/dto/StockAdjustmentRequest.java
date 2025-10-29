@@ -6,7 +6,7 @@ import java.time.LocalDate;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class StockAdjustmentRequest {
-	private Long productId;
+	private Long itemId;
 
 	private String adjustmentType; // "ADD_STOCK" or "REDUCE_STOCK"
 
@@ -27,7 +27,7 @@ public class StockAdjustmentRequest {
 
 	public StockAdjustmentRequest(Long productId, String adjustmentType, Integer quantity, BigDecimal atPrice,
 			String description, LocalDate adjustmentDate) {
-		this.productId = productId;
+		this.itemId = productId;
 		this.adjustmentType = adjustmentType;
 		this.quantity = quantity;
 		this.atPrice = atPrice;
@@ -36,12 +36,12 @@ public class StockAdjustmentRequest {
 	}
 
 	// Getters and Setters
-	public Long getProductId() {
-		return productId;
+	public Long getItemId() {
+		return itemId;
 	}
 
-	public void setProductId(Long productId) {
-		this.productId = productId;
+	public void setItemId(Long productId) {
+		this.itemId = productId;
 	}
 
 	public String getAdjustmentType() {

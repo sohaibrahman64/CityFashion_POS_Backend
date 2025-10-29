@@ -18,6 +18,7 @@ import com.cityfashionpos.dto.ItemRequestDTO;
 import com.cityfashionpos.dto.ItemResponseDTO;
 import com.cityfashionpos.entity.ItemEntity;
 import com.cityfashionpos.entity.TaxRateEntity;
+import com.cityfashionpos.model.TransactionType;
 import com.cityfashionpos.repository.ItemRepository;
 import com.cityfashionpos.repository.TaxRateRepository;
 import com.cityfashionpos.service.ItemService;
@@ -207,5 +208,29 @@ public class ItemServiceImpl implements ItemService {
         dto.setLocation(item.getLocation());
         dto.setImagePath(item.getImagePath());
         return dto;
+    }
+
+    @Override
+    public List<ItemResponseDTO> updateItemQuantity(Long id, Integer quantity, String transactionType) {
+        ItemEntity item = itemRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Item not found with id: " + id));
+
+        // Update quantity based on transaction type
+        if (String.valueOf(TransactionType.PURCHASE).equalsIgnoreCase(transactionType)) {
+            item.setOpeningQuantity(item.getOpeningQuantity() + quantity);
+        } else if (String.valueOf(TransactionType.SALE).equalsIgnoreCase(transactionType)) {
+            int newQuantity = item.getOpeningQuantity() - quantity;
+            if (newQuantity < 0) {
+                throw new IllegalArgumentException("Insufficient stock to subtract the requested quantity");
+            }
+            item.setOpeningQuantity(newQuantity);
+        } else {
+            throw new IllegalArgumentException("Invalid transaction type. Use 'SALE' or 'PURCHASE'.");
+        }
+
+        itemRepository.save(item);
+
+        // Return updated item as a list for consistency
+        return List.of(convertToResponseDTO(item));
     }
 }
