@@ -29,6 +29,7 @@ public class NewSalesInvoiceRequest {
         private Double total;
         private Long itemId;
         private Long taxRateId; // Reference to selected tax rate
+        private Long taxRateIndex;
         private Double taxAmount;
         private Double taxPercent;
 
@@ -118,6 +119,14 @@ public class NewSalesInvoiceRequest {
 
         public void setTaxPercent(Double taxPercent) {
             this.taxPercent = taxPercent;
+        }
+
+        public Long getTaxRateIndex() {
+            return taxRateIndex;
+        }
+
+        public void setTaxRateIndex(Long taxRateIndex) {
+            this.taxRateIndex = taxRateIndex;
         }
 
     }

@@ -77,6 +77,9 @@ public class ItemEntity {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
+    @Column(name = "tax_rate_index")
+    private Long taxRateIndex;
+
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now();
@@ -248,5 +251,13 @@ public class ItemEntity {
 
     public LocalDateTime getUpdatedAt() {
         return updatedAt;
+    }
+
+    public Long getTaxRateIndex() {
+        return taxRateIndex;
+    }
+
+    public void setTaxRateIndex(Long taxRateIndex) {
+        this.taxRateIndex = taxRateIndex;
     }
 }

@@ -122,6 +122,7 @@ public class ItemRequestDTO {
         private BigDecimal purchasePrice;
         private String purchasePriceType;
         private Long taxRateId;
+        private Long taxRateIndex;
 
         public BigDecimal getPurchasePrice() {
             return purchasePrice;
@@ -145,6 +146,14 @@ public class ItemRequestDTO {
 
         public void setTaxRateId(Long taxRateId) {
             this.taxRateId = taxRateId;
+        }
+
+        public Long getTaxRateIndex() {
+            return taxRateIndex;
+        }
+
+        public void setTaxRateIndex(Long taxRateIndex) {
+            this.taxRateIndex = taxRateIndex;
         }
     }
 

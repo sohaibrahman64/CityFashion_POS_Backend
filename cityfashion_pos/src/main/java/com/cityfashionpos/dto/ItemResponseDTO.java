@@ -27,6 +27,7 @@ public class ItemResponseDTO {
     Integer minStock;
     String location;
     String imagePath;
+    Long taxRateIndex;
 
     // Getters and Setters
     public Long getId() {
@@ -189,4 +190,11 @@ public class ItemResponseDTO {
         this.imagePath = imagePath;
     }
 
+    public Long getTaxRateIndex() {
+        return taxRateIndex;
+    }
+
+    public void setTaxRateIndex(Long taxRateIndex) {
+        this.taxRateIndex = taxRateIndex;
+    }
 }

@@ -40,6 +40,9 @@ public class NewSalesInvoiceItemEntity {
     @Column(name = "tax_rate_id")
     private Long taxRateId; // Reference to TaxRateEntity
 
+    @Column(name = "tax_rate")
+    private Long tax_rate_index;
+
     public Long getId() {
         return id;
     }

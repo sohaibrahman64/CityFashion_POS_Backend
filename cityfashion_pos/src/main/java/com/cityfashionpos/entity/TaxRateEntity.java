@@ -24,16 +24,20 @@ public class TaxRateEntity {
     @Column(name = "active", nullable = false)
     private Boolean active = true;
 
+    @Column(name = "index")
+    private Long index;
+
     // Default constructor
     public TaxRateEntity() {
     }
 
     // Constructor with parameters
-    public TaxRateEntity(String label, TaxRateType type, BigDecimal rate, Boolean active) {
+    public TaxRateEntity(String label, TaxRateType type, BigDecimal rate, Boolean active, Long index) {
         this.label = label;
         this.type = type;
         this.rate = rate;
         this.active = active;
+        this.index = index;
     }
 
     // Getters and Setters
@@ -75,6 +79,14 @@ public class TaxRateEntity {
 
     public void setActive(Boolean active) {
         this.active = active;
+    }
+
+    public Long getIndex() {
+        return index;
+    }
+
+    public void setIndex(Long index) {
+        this.index = index;
     }
 
     @Override

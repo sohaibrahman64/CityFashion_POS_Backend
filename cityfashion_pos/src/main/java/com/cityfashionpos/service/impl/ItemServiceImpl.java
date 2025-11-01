@@ -128,11 +128,12 @@ public class ItemServiceImpl implements ItemService {
         if (dto.getPurchasePriceTaxes() != null) {
             item.setPurchasePrice(dto.getPurchasePriceTaxes().getPurchasePrice());
             item.setPurchasePriceType(dto.getPurchasePriceTaxes().getPurchasePriceType());
-
+            item.setTaxRateIndex(dto.getPurchasePriceTaxes().getTaxRateIndex());
             if (dto.getPurchasePriceTaxes().getTaxRateId() != null) {
                 TaxRateEntity taxRate = taxRateRepository.findById(dto.getPurchasePriceTaxes().getTaxRateId())
                         .orElseThrow(() -> new IllegalArgumentException("Tax rate not found"));
                 item.setTaxRate(taxRate);
+
             }
         }
 

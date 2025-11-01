@@ -152,7 +152,9 @@ public class NewSalesInvoiceService {
                     responseItem.setTotal(itemRequest.getTotal());
                     responseItem.setTaxAmount(itemRequest.getTaxAmount());
                     responseItem.setTaxPercent(itemRequest.getTaxPercent());
-                    responseItem.setTaxRate(invoiceItemRepository.findByTaxRateId(invoiceItem.getTaxRateId())
+                    // responseItem.setTaxRate(invoiceItemRepository.findByTaxRateId(invoiceItem.getTaxRateId())
+                    // .get());
+                    responseItem.setTaxRate(taxRateRepository.findById(itemRequest.getTaxRateId())
                             .get());
 
                     responseItems.add(responseItem);
@@ -262,7 +264,6 @@ public class NewSalesInvoiceService {
                 // responseItem.setTaxRate(invoiceItemRepository.findByTaxRateId(newSalesInvoiceItemEntity.getTaxRateId())
                 // .get());
                 responseItem.setTaxRate(taxRateRepository.findById(newSalesInvoiceItemEntity.getTaxRateId()).get());
-
                 responseItems.add(responseItem);
             }
             // Fetch party details
