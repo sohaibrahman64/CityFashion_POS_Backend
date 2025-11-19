@@ -93,6 +93,8 @@ public class PartyTransactionServiceImpl implements PartyTransactionService {
 
     private PartiesReportResponse toReportDto(PartyTransactionEntity entity) {
         PartiesReportResponse reportDto = new PartiesReportResponse();
+        reportDto.setId(entity.getId());
+        reportDto.setInvoiceId(entity.getInvoiceId());
         reportDto.setDate(entity.getDate());
         reportDto.setPartyName(entity.getParty().getPartyName());
         reportDto.setInvoiceNumber(entity.getInvoiceNumber());

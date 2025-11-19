@@ -18,6 +18,8 @@ public class PartiesReportResponse {
     private BigDecimal partyTotal;
     private BigDecimal partyBalance;
     private String status;
+    private Long id;
+    private Long invoiceId;
 
     // Default constructor
     public PartiesReportResponse() {
@@ -109,6 +111,22 @@ public class PartiesReportResponse {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getInvoiceId() {
+        return invoiceId;
+    }
+
+    public void setInvoiceId(Long invoiceId) {
+        this.invoiceId = invoiceId;
     }
 
     @Override
