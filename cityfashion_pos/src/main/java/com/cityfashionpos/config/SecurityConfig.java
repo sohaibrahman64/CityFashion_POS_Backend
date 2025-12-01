@@ -64,6 +64,8 @@ public class SecurityConfig {
                         .antMatchers("/api/items/**").permitAll()
                         .antMatchers("/api/item-transactions/*").permitAll()
                         .antMatchers("/api/item-transactions/**").permitAll()
+                        .antMatchers("/api/estimate-quotation/*").permitAll()
+                        .antMatchers("/api/estimate-quotation/**").permitAll()
                         .anyRequest().authenticated() // Protect other endpoints
                 )
                 .httpBasic(Customizer.withDefaults()); // Optional: enable basic auth

@@ -2,22 +2,18 @@ package com.cityfashionpos.dto;
 
 import java.util.List;
 
-public class NewSalesInvoiceRequest {
+public class NewEstimateQuotationRequest {
+
     private Long partyId;
     private String partyName;
     private String partyPhone;
-    private List<NewSalesInvoiceItemRequest> items;
-    private Double receivedAmount;
+    private List<NewEstimateQuotationItemRequest> items;
     private Double totalAmount;
     private Double discountAmount;
-    private Double balanceAmount;
-    private Double subtotalAmount;
-    private String amountInWords;
-    private Boolean isFullyReceived;
     private Double totalTaxAmount;
     private Double taxableAmount;
 
-    public static class NewSalesInvoiceItemRequest {
+    public static class NewEstimateQuotationItemRequest {
         private Long id;
         private String itemName;
         private Integer quantity;
@@ -91,8 +87,8 @@ public class NewSalesInvoiceRequest {
             return itemId;
         }
 
-        public void setItemId(Long productId) {
-            this.itemId = productId;
+        public void setItemId(Long itemId) {
+            this.itemId = itemId;
         }
 
         public Long getTaxRateId() {
@@ -101,6 +97,14 @@ public class NewSalesInvoiceRequest {
 
         public void setTaxRateId(Long taxRateId) {
             this.taxRateId = taxRateId;
+        }
+
+        public Long getTaxRateIndex() {
+            return taxRateIndex;
+        }
+
+        public void setTaxRateIndex(Long taxRateIndex) {
+            this.taxRateIndex = taxRateIndex;
         }
 
         public Double getTaxAmount() {
@@ -118,15 +122,6 @@ public class NewSalesInvoiceRequest {
         public void setTaxPercent(Double taxPercent) {
             this.taxPercent = taxPercent;
         }
-
-        public Long getTaxRateIndex() {
-            return taxRateIndex;
-        }
-
-        public void setTaxRateIndex(Long taxRateIndex) {
-            this.taxRateIndex = taxRateIndex;
-        }
-
     }
 
     public Long getPartyId() {
@@ -149,32 +144,16 @@ public class NewSalesInvoiceRequest {
         return partyPhone;
     }
 
-    public void setPartyPhone(String customerPhone) {
-        this.partyPhone = customerPhone;
+    public void setPartyPhone(String partyPhone) {
+        this.partyPhone = partyPhone;
     }
 
-    public List<NewSalesInvoiceItemRequest> getItems() {
+    public List<NewEstimateQuotationItemRequest> getItems() {
         return items;
     }
 
-    public void setItems(List<NewSalesInvoiceItemRequest> items) {
+    public void setItems(List<NewEstimateQuotationItemRequest> items) {
         this.items = items;
-    }
-
-    public Double getReceivedAmount() {
-        return receivedAmount;
-    }
-
-    public void setReceivedAmount(Double receivedAmount) {
-        this.receivedAmount = receivedAmount;
-    }
-
-    public Boolean getIsFullyReceived() {
-        return isFullyReceived;
-    }
-
-    public void setIsFullyReceived(Boolean isFullyReceived) {
-        this.isFullyReceived = isFullyReceived;
     }
 
     public Double getTotalAmount() {
@@ -191,30 +170,6 @@ public class NewSalesInvoiceRequest {
 
     public void setDiscountAmount(Double discountAmount) {
         this.discountAmount = discountAmount;
-    }
-
-    public Double getBalanceAmount() {
-        return balanceAmount;
-    }
-
-    public void setBalanceAmount(Double balanceAmount) {
-        this.balanceAmount = balanceAmount;
-    }
-
-    public Double getSubtotalAmount() {
-        return subtotalAmount;
-    }
-
-    public void setSubtotalAmount(Double subtotalAmount) {
-        this.subtotalAmount = subtotalAmount;
-    }
-
-    public String getAmountInWords() {
-        return amountInWords;
-    }
-
-    public void setAmountInWords(String amountInWords) {
-        this.amountInWords = amountInWords;
     }
 
     public Double getTotalTaxAmount() {
