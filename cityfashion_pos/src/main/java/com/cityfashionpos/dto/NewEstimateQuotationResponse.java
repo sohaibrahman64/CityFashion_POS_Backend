@@ -21,6 +21,7 @@ public class NewEstimateQuotationResponse {
     private String amountInWords;
     private String message;
     private Boolean success;
+    private Long totalQuantity;
 
     public static class NewEstimateQuotationItemResponse {
         private Long id;
@@ -247,4 +248,13 @@ public class NewEstimateQuotationResponse {
     public void setSuccess(Boolean success) {
         this.success = success;
     }
+
+    public Long getTotalQuantity() {
+        return totalQuantity;
+    }
+
+    public void setTotalQuantity(Long totalQuantity) {
+        this.totalQuantity = totalQuantity;
+    }
+
 }

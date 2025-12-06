@@ -46,6 +46,9 @@ public class NewEstimateQuotationEntity {
     @Column(name = "success")
     private Boolean success;
 
+    @Column(name = "total_quantity")
+    private Long totalQuantity;
+
     public Long getId() {
         return id;
     }
@@ -132,6 +135,14 @@ public class NewEstimateQuotationEntity {
 
     public void setSuccess(Boolean success) {
         this.success = success;
+    }
+
+    public Long getTotalQuantity() {
+        return totalQuantity;
+    }
+
+    public void setTotalQuantity(Long totalQuantity) {
+        this.totalQuantity = totalQuantity;
     }
 
 }

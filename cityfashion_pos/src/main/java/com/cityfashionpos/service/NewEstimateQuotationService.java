@@ -58,6 +58,7 @@ public class NewEstimateQuotationService {
                     .setAmountInWords(NumberToWordsConverter.convertToWords(request.getTotalAmount()));
             estimateQuotation.setMessage("Estimate/Quotation created successfully");
             estimateQuotation.setSuccess(true);
+            estimateQuotation.setTotalQuantity(request.getTotalQuantity());
 
             // Save estimate/quotation first to get ID
             estimateQuotation = estimateQuotationRepository.save(estimateQuotation);
@@ -151,6 +152,7 @@ public class NewEstimateQuotationService {
             response.setAmountInWords(NumberToWordsConverter.convertToWords(totalAmount));
             response.setSuccess(true);
             response.setMessage("Estimate quotation created successfully");
+            response.setTotalQuantity(estimateQuotation.getTotalQuantity());
 
         } catch (Exception e) {
             response.setSuccess(false);
@@ -165,7 +167,7 @@ public class NewEstimateQuotationService {
         if (latestId == null) {
             latestId = 0L;
         }
-        return String.format("RS-%05d", latestId + 1);
+        return String.format("EQ-%05d", latestId + 1);
     }
 
 }

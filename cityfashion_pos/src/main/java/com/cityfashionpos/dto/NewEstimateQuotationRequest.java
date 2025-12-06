@@ -12,6 +12,7 @@ public class NewEstimateQuotationRequest {
     private Double discountAmount;
     private Double totalTaxAmount;
     private Double taxableAmount;
+    private Long totalQuantity;
 
     public static class NewEstimateQuotationItemRequest {
         private Long id;
@@ -188,4 +189,11 @@ public class NewEstimateQuotationRequest {
         this.taxableAmount = taxableAmount;
     }
 
+    public Long getTotalQuantity() {
+        return totalQuantity;
+    }
+
+    public void setTotalQuantity(Long totalQuantity) {
+        this.totalQuantity = totalQuantity;
+    }
 }

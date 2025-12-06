@@ -49,7 +49,7 @@ public class NewEstimateQuotationController {
             latestId = 0L;
         }
 
-        String nextEstimateNumber = String.format("RS-%05d", latestId + 1);
+        String nextEstimateNumber = String.format("EQ-%05d", latestId + 1);
         Map<String, String> response = new HashMap<>();
         response.put("estimateNumber", nextEstimateNumber);
 

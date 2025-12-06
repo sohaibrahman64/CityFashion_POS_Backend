@@ -11,7 +11,4 @@ public class ConfigUtils {
 	public String getSecretKey() {
 		return secretKey;
 	}
-	
-	
-
 }
