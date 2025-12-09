@@ -468,7 +468,7 @@ public class SalesTransactionsController {
      * Returns specific fields: Date, Invoice No, Customer Name, Transaction Type,
      * Payment Mode, Total Amount, Balance Amount
      */
-    @GetMapping("/report")
+    @GetMapping("/getAll")
     public ResponseEntity<List<SalesReportResponse>> getSalesRecordsByDateRange(
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate toDate) {

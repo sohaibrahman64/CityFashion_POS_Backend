@@ -41,8 +41,6 @@ public class NewEstimateQuotationService {
         try {
             // Generate estimate/quotation number
             String estimateQuotationNumber = generateEstimateQuotationNumber();
-            double subtotalAmount = 0.0;
-            double totalDiscountAmount = 0.0;
             double totalAmount = 0.0;
 
             // Create estimate/quotation entity and set fields
@@ -59,6 +57,8 @@ public class NewEstimateQuotationService {
             estimateQuotation.setMessage("Estimate/Quotation created successfully");
             estimateQuotation.setSuccess(true);
             estimateQuotation.setTotalQuantity(request.getTotalQuantity());
+
+            estimateQuotation.setStatus(request.getStatus());
 
             // Save estimate/quotation first to get ID
             estimateQuotation = estimateQuotationRepository.save(estimateQuotation);
@@ -93,8 +93,6 @@ public class NewEstimateQuotationService {
                     double itemTotal = itemSubtotal - itemDiscountAmount;
 
                     // Update running totals
-                    subtotalAmount += itemSubtotal;
-                    totalDiscountAmount += itemDiscountAmount;
                     totalAmount += itemTotal;
 
                     // Create estimate quotation item entity
@@ -153,6 +151,7 @@ public class NewEstimateQuotationService {
             response.setSuccess(true);
             response.setMessage("Estimate quotation created successfully");
             response.setTotalQuantity(estimateQuotation.getTotalQuantity());
+            response.setStatus(estimateQuotation.getStatus());
 
         } catch (Exception e) {
             response.setSuccess(false);

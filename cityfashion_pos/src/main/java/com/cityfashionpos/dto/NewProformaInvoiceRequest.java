@@ -2,12 +2,11 @@ package com.cityfashionpos.dto;
 
 import java.util.List;
 
-public class NewEstimateQuotationRequest {
-
+public class NewProformaInvoiceRequest {
     private Long partyId;
     private String partyName;
     private String partyPhone;
-    private List<NewEstimateQuotationItemRequest> items;
+    private List<NewProformaInvoiceItemRequest> items;
     private Double totalAmount;
     private Double discountAmount;
     private Double totalTaxAmount;
@@ -15,7 +14,7 @@ public class NewEstimateQuotationRequest {
     private Long totalQuantity;
     private String status;
 
-    public static class NewEstimateQuotationItemRequest {
+    public static class NewProformaInvoiceItemRequest {
         private Long id;
         private String itemName;
         private Integer quantity;
@@ -150,11 +149,11 @@ public class NewEstimateQuotationRequest {
         this.partyPhone = partyPhone;
     }
 
-    public List<NewEstimateQuotationItemRequest> getItems() {
+    public List<NewProformaInvoiceItemRequest> getItems() {
         return items;
     }
 
-    public void setItems(List<NewEstimateQuotationItemRequest> items) {
+    public void setItems(List<NewProformaInvoiceItemRequest> items) {
         this.items = items;
     }
 
@@ -205,5 +204,4 @@ public class NewEstimateQuotationRequest {
     public void setStatus(String status) {
         this.status = status;
     }
-
 }

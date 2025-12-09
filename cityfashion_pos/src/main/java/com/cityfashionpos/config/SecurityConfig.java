@@ -68,6 +68,8 @@ public class SecurityConfig {
                         .antMatchers("/api/estimate-quotation/**").permitAll()
                         .antMatchers("/api/estimate-quotation-transactions/*").permitAll()
                         .antMatchers("/api/estimate-quotation-transactions/**").permitAll()
+                        .antMatchers("/api/proforma-invoice/*").permitAll()
+                        .antMatchers("/api/proforma-invoice/**").permitAll()
                         .anyRequest().authenticated() // Protect other endpoints
                 )
                 .httpBasic(Customizer.withDefaults()); // Optional: enable basic auth

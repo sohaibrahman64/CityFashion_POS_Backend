@@ -1,33 +1,42 @@
 package com.cityfashionpos.dto;
 
+import java.time.LocalDate;
 import java.util.List;
 
-public class NewEstimateQuotationRequest {
+import com.cityfashionpos.entity.PartyEntity;
+import com.cityfashionpos.entity.TaxRateEntity;
 
-    private Long partyId;
+public class NewProformaInvoiceResponse {
+    private Long proformaInvoiceId;
+    private String proformaInvoiceNumber;
+    private LocalDate proformaInvoiceDate;
+    private PartyEntity party;
     private String partyName;
     private String partyPhone;
-    private List<NewEstimateQuotationItemRequest> items;
+    private List<NewProformaInvoiceItemResponse> items;
     private Double totalAmount;
-    private Double discountAmount;
+    private Double totalDiscountAmount;
     private Double totalTaxAmount;
     private Double taxableAmount;
+    private String amountInWords;
+    private String message;
+    private Boolean success;
     private Long totalQuantity;
     private String status;
 
-    public static class NewEstimateQuotationItemRequest {
+    public static class NewProformaInvoiceItemResponse {
         private Long id;
+        private Long itemId;
         private String itemName;
         private Integer quantity;
         private Double price;
         private Double discount;
         private Double discountAmount;
         private Double total;
-        private Long itemId;
-        private Long taxRateId; // Reference to selected tax rate
-        private Long taxRateIndex;
         private Double taxAmount;
         private Double taxPercent;
+        private TaxRateEntity taxRate;
+        private String hsnCode;
 
         public Long getId() {
             return id;
@@ -35,6 +44,14 @@ public class NewEstimateQuotationRequest {
 
         public void setId(Long id) {
             this.id = id;
+        }
+
+        public Long getItemId() {
+            return itemId;
+        }
+
+        public void setItemId(Long itemId) {
+            this.itemId = itemId;
         }
 
         public String getItemName() {
@@ -85,30 +102,6 @@ public class NewEstimateQuotationRequest {
             this.total = total;
         }
 
-        public Long getItemId() {
-            return itemId;
-        }
-
-        public void setItemId(Long itemId) {
-            this.itemId = itemId;
-        }
-
-        public Long getTaxRateId() {
-            return taxRateId;
-        }
-
-        public void setTaxRateId(Long taxRateId) {
-            this.taxRateId = taxRateId;
-        }
-
-        public Long getTaxRateIndex() {
-            return taxRateIndex;
-        }
-
-        public void setTaxRateIndex(Long taxRateIndex) {
-            this.taxRateIndex = taxRateIndex;
-        }
-
         public Double getTaxAmount() {
             return taxAmount;
         }
@@ -124,14 +117,57 @@ public class NewEstimateQuotationRequest {
         public void setTaxPercent(Double taxPercent) {
             this.taxPercent = taxPercent;
         }
+
+        public TaxRateEntity getTaxRate() {
+            return taxRate;
+        }
+
+        public void setTaxRate(TaxRateEntity taxRate) {
+            this.taxRate = taxRate;
+        }
+
+        public String getHsnCode() {
+            return hsnCode;
+        }
+
+        public void setHsnCode(String hsnCode) {
+            this.hsnCode = hsnCode;
+        }
+
     }
 
-    public Long getPartyId() {
-        return partyId;
+    // Getters and Setters for NewEstimateQuotationResponse fields
+
+    public Long getProformaInvoiceId() {
+        return proformaInvoiceId;
     }
 
-    public void setPartyId(Long partyId) {
-        this.partyId = partyId;
+    public void setProformaInvoiceId(Long estimateQuotationId) {
+        this.proformaInvoiceId = estimateQuotationId;
+    }
+
+    public String getProformaInvoiceNumber() {
+        return proformaInvoiceNumber;
+    }
+
+    public void setProformaInvoiceNumber(String estimateQuotationNumber) {
+        this.proformaInvoiceNumber = estimateQuotationNumber;
+    }
+
+    public LocalDate getProformaInvoiceDate() {
+        return proformaInvoiceDate;
+    }
+
+    public void setProformaInvoiceDate(LocalDate estimateQuotationDate) {
+        this.proformaInvoiceDate = estimateQuotationDate;
+    }
+
+    public PartyEntity getParty() {
+        return party;
+    }
+
+    public void setParty(PartyEntity party) {
+        this.party = party;
     }
 
     public String getPartyName() {
@@ -150,11 +186,11 @@ public class NewEstimateQuotationRequest {
         this.partyPhone = partyPhone;
     }
 
-    public List<NewEstimateQuotationItemRequest> getItems() {
+    public List<NewProformaInvoiceItemResponse> getItems() {
         return items;
     }
 
-    public void setItems(List<NewEstimateQuotationItemRequest> items) {
+    public void setItems(List<NewProformaInvoiceItemResponse> items) {
         this.items = items;
     }
 
@@ -166,12 +202,12 @@ public class NewEstimateQuotationRequest {
         this.totalAmount = totalAmount;
     }
 
-    public Double getDiscountAmount() {
-        return discountAmount;
+    public Double getTotalDiscountAmount() {
+        return totalDiscountAmount;
     }
 
-    public void setDiscountAmount(Double discountAmount) {
-        this.discountAmount = discountAmount;
+    public void setTotalDiscountAmount(Double totalDiscountAmount) {
+        this.totalDiscountAmount = totalDiscountAmount;
     }
 
     public Double getTotalTaxAmount() {
@@ -190,6 +226,30 @@ public class NewEstimateQuotationRequest {
         this.taxableAmount = taxableAmount;
     }
 
+    public String getAmountInWords() {
+        return amountInWords;
+    }
+
+    public void setAmountInWords(String amountInWords) {
+        this.amountInWords = amountInWords;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public Boolean getSuccess() {
+        return success;
+    }
+
+    public void setSuccess(Boolean success) {
+        this.success = success;
+    }
+
     public Long getTotalQuantity() {
         return totalQuantity;
     }
@@ -205,5 +265,4 @@ public class NewEstimateQuotationRequest {
     public void setStatus(String status) {
         this.status = status;
     }
-
 }

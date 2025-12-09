@@ -22,6 +22,7 @@ public class NewEstimateQuotationResponse {
     private String message;
     private Boolean success;
     private Long totalQuantity;
+    private String status;
 
     public static class NewEstimateQuotationItemResponse {
         private Long id;
@@ -255,6 +256,14 @@ public class NewEstimateQuotationResponse {
 
     public void setTotalQuantity(Long totalQuantity) {
         this.totalQuantity = totalQuantity;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
 }

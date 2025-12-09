@@ -10,17 +10,18 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "new_estimate_quotation")
-public class NewEstimateQuotationEntity {
+@Table(name = "new_proforma_invoice")
+public class NewProformaInvoiceEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "estimate_quotation_number")
-    private String estimateQuotationNumber;
+    @Column(name = "proforma_invoice_number")
+    private String proformaInvoiceNumber;
 
-    @Column(name = "estimate_quotation_date")
-    private LocalDate estimateQuotationDate;
+    @Column(name = "proforma_invoice_date")
+    private LocalDate proformaInvoiceDate;
 
     @Column(name = "party_id")
     private Long partyId;
@@ -60,20 +61,20 @@ public class NewEstimateQuotationEntity {
         this.id = id;
     }
 
-    public String getEstimateQuotationNumber() {
-        return estimateQuotationNumber;
+    public String getProformaInvoiceNumber() {
+        return proformaInvoiceNumber;
     }
 
-    public void setEstimateQuotationNumber(String estimateQuotationNumber) {
-        this.estimateQuotationNumber = estimateQuotationNumber;
+    public void setProformaInvoiceNumber(String proformaInvoiceNumber) {
+        this.proformaInvoiceNumber = proformaInvoiceNumber;
     }
 
-    public LocalDate getEstimateQuotationDate() {
-        return estimateQuotationDate;
+    public LocalDate getProformaInvoiceDate() {
+        return proformaInvoiceDate;
     }
 
-    public void setEstimateQuotationDate(LocalDate estimateQuotationDate) {
-        this.estimateQuotationDate = estimateQuotationDate;
+    public void setProformaInvoiceDate(LocalDate proformaInvoiceDate) {
+        this.proformaInvoiceDate = proformaInvoiceDate;
     }
 
     public Long getPartyId() {
@@ -155,4 +156,5 @@ public class NewEstimateQuotationEntity {
     public void setStatus(String status) {
         this.status = status;
     }
+
 }

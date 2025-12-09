@@ -43,4 +43,5 @@ public interface NewEstimateQuotationRepository extends JpaRepository<NewEstimat
 
     @Query("SELECT MAX(e.success) FROM NewEstimateQuotationEntity e")
     String findMaxSuccess();
+
 }
