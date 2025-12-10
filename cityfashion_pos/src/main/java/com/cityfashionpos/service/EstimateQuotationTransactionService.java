@@ -10,41 +10,41 @@ import com.cityfashionpos.dto.EstimateQuotationTransactionResponse;
 
 public interface EstimateQuotationTransactionService {
 
-    /**
-     * Create a new estimate quotation transaction
-     */
-    EstimateQuotationTransactionResponse createEstimateQuotationTransaction(
-            EstimateQuotationTransactionRequest request);
+        /**
+         * Create a new estimate quotation transaction
+         */
+        EstimateQuotationTransactionResponse createEstimateQuotationTransaction(
+                        EstimateQuotationTransactionRequest request);
 
-    /**
-     * Get all sales transaction
-     */
-    List<EstimateQuotationTransactionResponse> getAllEstimateQuotationTransactions();
+        /**
+         * Get all estimate quotation transaction
+         */
+        List<EstimateQuotationTransactionResponse> getAllEstimateQuotationTransactions();
 
-    /**
-     * Get estimate quotation transaction by transaction number
-     */
-    String generateEstimateQuotationTransactionNumber();
+        /**
+         * Get estimate quotation transaction by transaction number
+         */
+        String generateEstimateQuotationTransactionNumber();
 
-    /**
-     * Get total estimate quotation amount for a date range
-     */
-    Map<String, BigDecimal> getTotalEstimateQuotationAmountsByDateRange(LocalDate fromDate, LocalDate toDate);
+        /**
+         * Get total estimate quotation amount for a date range
+         */
+        Map<String, BigDecimal> getTotalEstimateQuotationAmountsByDateRange(LocalDate fromDate, LocalDate toDate);
 
-    /**
-     * Get total Converted and Open Estimate Quotation amount
-     */
-    Map<String, BigDecimal> getTotalOpenAndConvertedAmounts();
+        /**
+         * Get total Converted and Open Estimate Quotation amount
+         */
+        Map<String, BigDecimal> getTotalOpenAndConvertedAmounts();
 
-    /**
-     * Calculate percentage change vs last month
-     */
-    BigDecimal calculatePercentageChangeVsLastMonth(BigDecimal currentAmount, BigDecimal lastMonthAmount);
+        /**
+         * Calculate percentage change vs last month
+         */
+        BigDecimal calculatePercentageChangeVsLastMonth(BigDecimal currentAmount, BigDecimal lastMonthAmount);
 
-    /**
-     * Get Estimate Quotation transaction records by date range
-     */
-    List<EstimateQuotationTransactionResponse> getEstimateQuotationTransactionByDateRange(LocalDate fromDate,
-            LocalDate toDate);
+        /**
+         * Get Estimate Quotation transaction records by date range
+         */
+        List<EstimateQuotationTransactionResponse> getEstimateQuotationTransactionByDateRange(LocalDate fromDate,
+                        LocalDate toDate);
 
 }

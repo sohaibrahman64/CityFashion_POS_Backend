@@ -20,30 +20,29 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.cityfashionpos.dto.EstimateQuotationTransactionRequest;
-import com.cityfashionpos.dto.EstimateQuotationTransactionResponse;
-import com.cityfashionpos.service.EstimateQuotationTransactionService;
+import com.cityfashionpos.dto.ProformaInvoiceTransactionRequest;
+import com.cityfashionpos.dto.ProformaInvoiceTransactionResponse;
+import com.cityfashionpos.service.ProformaInvoiceTransactionService;
 
 @RestController
-@RequestMapping("/api/estimate-quotation-transactions")
+@RequestMapping("/api/proforma-invoice-transactions")
 @CrossOrigin(origins = "*")
-public class EstimateQuotationTransactionController {
-
-    private static final Logger logger = LoggerFactory.getLogger(EstimateQuotationTransactionController.class);
+public class ProformaInvoiceTransactionController {
+    private static final Logger logger = LoggerFactory.getLogger(ProformaInvoiceTransactionController.class);
 
     @Autowired
-    private EstimateQuotationTransactionService estimateQuotationTransactionService;
+    private ProformaInvoiceTransactionService proformaInvoiceTransactionService;
 
     /**
      * Create a new estimate quotation transaction
      */
     @PostMapping("/create")
-    public ResponseEntity<EstimateQuotationTransactionResponse> createEstimateQuotationTransaction(
-            @RequestBody EstimateQuotationTransactionRequest request) {
+    public ResponseEntity<ProformaInvoiceTransactionResponse> createProformaInvoiceTransaction(
+            @RequestBody ProformaInvoiceTransactionRequest request) {
         try {
-            logger.info("Creating Estimate Quotation transaction for amount: {}", request.getTotalAmount());
-            EstimateQuotationTransactionResponse response = estimateQuotationTransactionService
-                    .createEstimateQuotationTransaction(request);
+            logger.info("Creating Proforma Invoice transaction for amount: {}", request.getTotalAmount());
+            ProformaInvoiceTransactionResponse response = proformaInvoiceTransactionService
+                    .createProformaInvoiceTransaction(request);
 
             if (response.isSuccess()) {
                 return ResponseEntity.ok(response);
@@ -51,9 +50,9 @@ public class EstimateQuotationTransactionController {
                 return ResponseEntity.badRequest().body(response);
             }
         } catch (Exception e) {
-            logger.error("Error creating estimate quotation transaction: {}", e.getMessage(), e);
-            EstimateQuotationTransactionResponse errorResponse = new EstimateQuotationTransactionResponse(false,
-                    "Error creating estimate quotation transaction: " + e.getMessage());
+            logger.error("Error creating sales transaction: {}", e.getMessage(), e);
+            ProformaInvoiceTransactionResponse errorResponse = new ProformaInvoiceTransactionResponse(false,
+                    "Error creating proforma invoice transaction: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
         }
     }
@@ -62,18 +61,18 @@ public class EstimateQuotationTransactionController {
      * Get total estimate quotation amount
      */
     @GetMapping("/totals")
-    public ResponseEntity<Map<String, Object>> getTotalEstimateQuotationAmount(
+    public ResponseEntity<Map<String, Object>> getTotalProformaInvoiceAmount(
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate toDate) {
         try {
             Map<String, BigDecimal> totals;
             // If both date parameters are provided, use date range query
             if (fromDate != null && toDate != null) {
-                totals = estimateQuotationTransactionService.getTotalEstimateQuotationAmountsByDateRange(fromDate,
+                totals = proformaInvoiceTransactionService.getTotalProformaInvoiceAmountsByDateRange(fromDate,
                         toDate);
             } else {
                 // Otherwise, use the original method for all-time totals
-                totals = estimateQuotationTransactionService.getTotalOpenAndConvertedAmounts();
+                totals = proformaInvoiceTransactionService.getTotalOpenAndConvertedAmounts();
             }
 
             Map<String, Object> response = new HashMap<>();
@@ -97,16 +96,16 @@ public class EstimateQuotationTransactionController {
      * Party Name, Amount, Balance, and Status
      */
     @GetMapping("/getAll")
-    public ResponseEntity<List<EstimateQuotationTransactionResponse>> getEstimateTransactionRecordsByDateRange(
+    public ResponseEntity<List<ProformaInvoiceTransactionResponse>> getProformaInvoiceRecordsByDateRange(
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate toDate) {
         try {
-            logger.info("Fetching all estimate quotation transaction records from {} to {}", fromDate, toDate);
-            List<EstimateQuotationTransactionResponse> estimateQuotationTransactionRecords = estimateQuotationTransactionService
-                    .getEstimateQuotationTransactionByDateRange(fromDate, toDate);
-            return ResponseEntity.ok(estimateQuotationTransactionRecords);
+            logger.info("Fetching all proforma invoice transaction records from {} to {}", fromDate, toDate);
+            List<ProformaInvoiceTransactionResponse> proformaInvoiceTransactionRecords = proformaInvoiceTransactionService
+                    .getProformaInvoiceTransactionByDateRange(fromDate, toDate);
+            return ResponseEntity.ok(proformaInvoiceTransactionRecords);
         } catch (Exception e) {
-            logger.error("Error fetching all estimate quotation transaction records from {} to {}: {}", fromDate,
+            logger.error("Error fetching all proforma invoice transaction records from {} to {}: {}", fromDate,
                     toDate, e.getMessage(),
                     e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(List.of());
