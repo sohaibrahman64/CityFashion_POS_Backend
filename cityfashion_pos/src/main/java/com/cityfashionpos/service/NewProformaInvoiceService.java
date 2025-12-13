@@ -47,7 +47,7 @@ public class NewProformaInvoiceService {
             NewProformaInvoiceEntity proformaInvoiceEntity = new NewProformaInvoiceEntity();
             proformaInvoiceEntity.setProformaInvoiceNumber(proformaInvoiceNumber);
             proformaInvoiceEntity.setPartyId(request.getPartyId());
-            proformaInvoiceEntity.setProformaInvoiceDate(LocalDate.now());
+            proformaInvoiceEntity.setProformaInvoiceDate(LocalDate.now().toString());
             proformaInvoiceEntity.setTotalAmount(request.getTotalAmount());
             proformaInvoiceEntity.setDiscountAmount(request.getDiscountAmount());
             proformaInvoiceEntity.setTotalTaxAmount(request.getTotalTaxAmount());
@@ -136,7 +136,7 @@ public class NewProformaInvoiceService {
             proformaInvoiceRepository.save(proformaInvoiceEntity);
             response.setProformaInvoiceId(proformaInvoiceEntity.getId());
             response.setProformaInvoiceNumber(proformaInvoiceNumber);
-            response.setProformaInvoiceDate(proformaInvoiceEntity.getProformaInvoiceDate());
+            response.setProformaInvoiceDate(LocalDate.parse(proformaInvoiceEntity.getProformaInvoiceDate()));
             response.setPartyName(request.getPartyName());
             response.setPartyPhone(request.getPartyPhone());
             response.setItems(responseItems);

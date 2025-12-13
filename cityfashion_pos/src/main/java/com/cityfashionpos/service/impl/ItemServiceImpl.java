@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -83,14 +84,14 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    @Transactional(readOnly = true)
+    @Transactional
     public ItemEntity getItemById(Long id) {
         return itemRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Item not found with id: " + id));
     }
 
     @Override
-    @Transactional(readOnly = true)
+    @Transactional
     public ItemEntity getItemByCode(String code) {
         return itemRepository.findByCode(code)
                 .orElseThrow(() -> new IllegalArgumentException("Item not found with code: " + code));
@@ -141,7 +142,7 @@ public class ItemServiceImpl implements ItemService {
         if (dto.getStock() != null) {
             item.setOpeningQuantity(dto.getStock().getOpeningQuantity());
             item.setAtPrice(dto.getStock().getAtPrice());
-            item.setAsOfDate(dto.getStock().getAsOfDate());
+            item.setAsOfDate(dto.getStock().getAsOfDate().toString());
             item.setMinStock(dto.getStock().getMinStock());
             item.setLocation(dto.getStock().getLocation());
         }
@@ -179,7 +180,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    @Transactional(readOnly = true)
+    @Transactional
     public List<ItemResponseDTO> getAllItems() {
         List<ItemEntity> items = itemRepository.findAll();
         return items.stream().map(this::convertToResponseDTO).collect(Collectors.toList());
@@ -204,7 +205,9 @@ public class ItemServiceImpl implements ItemService {
         }
         dto.setOpeningQuantity(item.getOpeningQuantity());
         dto.setAtPrice(item.getAtPrice());
-        dto.setAsOfDate(item.getAsOfDate());
+        if (item.getAsOfDate() != null) {
+            dto.setAsOfDate(LocalDate.parse(item.getAsOfDate()));
+        }
         dto.setMinStock(item.getMinStock());
         dto.setLocation(item.getLocation());
         dto.setImagePath(item.getImagePath());

@@ -18,20 +18,20 @@ public class TaxTypeServiceImpl implements TaxTypeService {
     private TaxTypeRepository taxTypeRepository;
 
     @Override
-    @Transactional(readOnly = true)
+    @Transactional
     public List<TaxTypeEntity> getAllTaxTypes() {
         return taxTypeRepository.findAllByOrderById();
     }
 
     @Override
-    @Transactional(readOnly = true)
+    @Transactional
     public TaxTypeEntity getTaxTypeById(Long id) {
         Optional<TaxTypeEntity> taxType = taxTypeRepository.findById(id);
         return taxType.orElse(null);
     }
 
     @Override
-    @Transactional(readOnly = true)
+    @Transactional
     public TaxTypeEntity getTaxTypeByCode(String taxTypeCode) {
         return taxTypeRepository.findByTaxTypeCode(taxTypeCode);
     }
@@ -64,7 +64,7 @@ public class TaxTypeServiceImpl implements TaxTypeService {
     }
 
     @Override
-    @Transactional(readOnly = true)
+    @Transactional
     public boolean existsByTaxTypeCode(String taxTypeCode) {
         return taxTypeRepository.existsByTaxTypeCode(taxTypeCode);
     }

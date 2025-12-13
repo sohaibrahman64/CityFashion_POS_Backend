@@ -71,20 +71,20 @@ public class PartyTransactionEntity {
     private String transactionType; // e.g. SALE, PAYMENT, PURCHASE, REFUND
 
     @Column(name = "date", nullable = false)
-    private LocalDateTime date;
+    private String date;
 
     @Column(name = "party_balance", precision = 15, scale = 2, nullable = false)
     private BigDecimal partyBalance;
 
     @Column(name = "created_at", updatable = false)
-    private LocalDateTime createdAt = LocalDateTime.now();
+    private String createdAt = LocalDateTime.now().toString();
 
     @Column(name = "updated_at")
-    private LocalDateTime updatedAt = LocalDateTime.now();
+    private String updatedAt = LocalDateTime.now().toString();
 
     @PreUpdate
     public void onUpdate() {
-        this.updatedAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now().toString();
     }
 
     public Long getId() {
@@ -119,11 +119,11 @@ public class PartyTransactionEntity {
         this.transactionType = transactionType;
     }
 
-    public LocalDateTime getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(LocalDateTime date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
@@ -151,19 +151,19 @@ public class PartyTransactionEntity {
         this.partyBalance = partyBalance;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public String getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
     }
 
-    public LocalDateTime getUpdatedAt() {
+    public String getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(LocalDateTime updatedAt) {
+    public void setUpdatedAt(String updatedAt) {
         this.updatedAt = updatedAt;
     }
 

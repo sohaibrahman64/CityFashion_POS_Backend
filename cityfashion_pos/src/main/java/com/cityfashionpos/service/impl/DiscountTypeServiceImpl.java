@@ -18,20 +18,20 @@ public class DiscountTypeServiceImpl implements DiscountTypeService {
     private DiscountTypeRepository discountTypeRepository;
 
     @Override
-    @Transactional(readOnly = true)
+    @Transactional
     public List<DiscountTypeEntity> getAllDiscountTypes() {
         return discountTypeRepository.findAllByOrderById();
     }
 
     @Override
-    @Transactional(readOnly = true)
+    @Transactional
     public DiscountTypeEntity getDiscountTypeById(Long id) {
         Optional<DiscountTypeEntity> discountType = discountTypeRepository.findById(id);
         return discountType.orElse(null);
     }
 
     @Override
-    @Transactional(readOnly = true)
+    @Transactional
     public DiscountTypeEntity getDiscountTypeByCode(String discountTypeCode) {
         return discountTypeRepository.findByDiscountTypeCode(discountTypeCode);
     }
@@ -64,7 +64,7 @@ public class DiscountTypeServiceImpl implements DiscountTypeService {
     }
 
     @Override
-    @Transactional(readOnly = true)
+    @Transactional
     public boolean existsByDiscountTypeCode(String discountTypeCode) {
         return discountTypeRepository.existsByDiscountTypeCode(discountTypeCode);
     }

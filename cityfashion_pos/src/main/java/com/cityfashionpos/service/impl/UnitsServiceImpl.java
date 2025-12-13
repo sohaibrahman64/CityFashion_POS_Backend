@@ -18,26 +18,26 @@ public class UnitsServiceImpl implements UnitsService {
     private UnitsRepository unitsRepository;
 
     @Override
-    @Transactional(readOnly = true)
+    @Transactional
     public List<UnitsEntity> getAllUnits() {
         return unitsRepository.findAllByOrderById();
     }
 
     @Override
-    @Transactional(readOnly = true)
+    @Transactional
     public UnitsEntity getUnitById(Long id) {
         Optional<UnitsEntity> unit = unitsRepository.findById(id);
         return unit.orElse(null);
     }
 
     @Override
-    @Transactional(readOnly = true)
+    @Transactional
     public UnitsEntity getUnitByName(String unitName) {
         return unitsRepository.findByUnitName(unitName);
     }
 
     @Override
-    @Transactional(readOnly = true)
+    @Transactional
     public UnitsEntity getUnitByAbbr(String unitAbbr) {
         return unitsRepository.findByUnitAbbr(unitAbbr);
     }
@@ -70,13 +70,13 @@ public class UnitsServiceImpl implements UnitsService {
     }
 
     @Override
-    @Transactional(readOnly = true)
+    @Transactional
     public boolean existsByUnitName(String unitName) {
         return unitsRepository.existsByUnitName(unitName);
     }
 
     @Override
-    @Transactional(readOnly = true)
+    @Transactional
     public boolean existsByUnitAbbr(String unitAbbr) {
         return unitsRepository.existsByUnitAbbr(unitAbbr);
     }

@@ -64,14 +64,14 @@ public class ItemTransactionServiceImpl implements ItemTransactionService {
         if (transactionDate == null) {
             transactionDate = LocalDateTime.now();
         }
-        entity.setTransactionDate(transactionDate);
+        entity.setTransactionDate(transactionDate.toString());
 
         // Handle created date - use provided date or current time
         LocalDateTime createdAt = transactionDTO.getCreatedAt();
         if (createdAt == null) {
             createdAt = LocalDateTime.now();
         }
-        entity.setCreatedAt(createdAt);
+        entity.setCreatedAt(createdAt.toString());
 
         entity.setCreatedBy(transactionDTO.getCreatedBy() != null ? transactionDTO.getCreatedBy() : "SYSTEM");
         entity.setNotes(transactionDTO.getNotes());
@@ -240,8 +240,8 @@ public class ItemTransactionServiceImpl implements ItemTransactionService {
         dto.setUnitPrice(entity.getUnitPrice());
         dto.setTotalValue(entity.getTotalAmount());
         dto.setDescription(entity.getDescription());
-        dto.setTransactionDate(entity.getTransactionDate());
-        dto.setCreatedAt(entity.getCreatedAt());
+        dto.setTransactionDate(LocalDateTime.parse(entity.getTransactionDate()));
+        dto.setCreatedAt(LocalDateTime.parse(entity.getCreatedAt()));
         dto.setCreatedBy(entity.getCreatedBy());
         dto.setNotes(entity.getNotes());
         dto.setStatus(entity.getStatus());

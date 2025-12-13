@@ -1,9 +1,19 @@
 package com.cityfashionpos.entity;
 
-import javax.persistence.*;
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "items")
@@ -62,7 +72,7 @@ public class ItemEntity {
     private BigDecimal atPrice = BigDecimal.ZERO;
 
     @Column(name = "as_of_date")
-    private LocalDate asOfDate;
+    private String asOfDate;
 
     @Column(name = "min_stock")
     private Integer minStock = 0;
@@ -72,23 +82,23 @@ public class ItemEntity {
 
     // Audit fields
     @Column(name = "created_at", nullable = false, updatable = false)
-    private LocalDateTime createdAt;
+    private String createdAt;
 
     @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
+    private String updatedAt;
 
-    @Column(name = "tax_rate_index")
+    @Column(name = "tax_rate_idx")
     private Long taxRateIndex;
 
     @PrePersist
     protected void onCreate() {
-        createdAt = LocalDateTime.now();
-        updatedAt = LocalDateTime.now();
+        createdAt = LocalDateTime.now().toString();
+        updatedAt = LocalDateTime.now().toString();
     }
 
     @PreUpdate
     protected void onUpdate() {
-        updatedAt = LocalDateTime.now();
+        updatedAt = LocalDateTime.now().toString();
     }
 
     // Getters and Setters
@@ -221,11 +231,11 @@ public class ItemEntity {
         this.atPrice = atPrice;
     }
 
-    public LocalDate getAsOfDate() {
+    public String getAsOfDate() {
         return asOfDate;
     }
 
-    public void setAsOfDate(LocalDate asOfDate) {
+    public void setAsOfDate(String asOfDate) {
         this.asOfDate = asOfDate;
     }
 
@@ -245,11 +255,11 @@ public class ItemEntity {
         this.location = location;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public String getCreatedAt() {
         return createdAt;
     }
 
-    public LocalDateTime getUpdatedAt() {
+    public String getUpdatedAt() {
         return updatedAt;
     }
 

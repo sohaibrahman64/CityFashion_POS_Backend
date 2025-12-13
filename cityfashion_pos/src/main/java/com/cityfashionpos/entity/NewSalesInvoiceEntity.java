@@ -20,7 +20,7 @@ public class NewSalesInvoiceEntity {
     private String invoiceNumber;
 
     @Column(name = "invoice_date")
-    private LocalDate invoiceDate;
+    private String invoiceDate;
 
     @Column(name = "party_id")
     private Long partyId;
@@ -71,11 +71,11 @@ public class NewSalesInvoiceEntity {
         this.invoiceNumber = invoiceNumber;
     }
 
-    public LocalDate getInvoiceDate() {
+    public String getInvoiceDate() {
         return invoiceDate;
     }
 
-    public void setInvoiceDate(LocalDate invoiceDate) {
+    public void setInvoiceDate(String invoiceDate) {
         this.invoiceDate = invoiceDate;
     }
 

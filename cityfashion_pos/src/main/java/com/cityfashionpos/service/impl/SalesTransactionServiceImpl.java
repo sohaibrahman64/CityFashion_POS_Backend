@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.HashMap;
@@ -171,8 +172,9 @@ public class SalesTransactionServiceImpl implements SalesTransactionService {
     @Override
     public List<SalesTransactionResponse> getTransactionsByDateRange(LocalDate startDate, LocalDate endDate) {
         try {
-            List<SalesTransactionEntity> entities = salesTransactionRepository.findByTransactionDateBetween(startDate,
-                    endDate);
+            List<SalesTransactionEntity> entities = salesTransactionRepository.findByTransactionDateBetween(
+                    startDate.toString(),
+                    endDate.toString());
             return entities.stream()
                     .map(entity -> mapEntityToResponse(entity, true, null))
                     .collect(Collectors.toList());
@@ -276,12 +278,15 @@ public class SalesTransactionServiceImpl implements SalesTransactionService {
     @Override
     public SalesTransactionSummaryResponse getSummaryByDateRange(LocalDate startDate, LocalDate endDate) {
         try {
-            BigDecimal totalSales = salesTransactionRepository.getTotalSalesForDateRange(startDate, endDate);
-            BigDecimal totalReceived = salesTransactionRepository.getTotalReceivedForDateRange(startDate, endDate);
-            BigDecimal totalBalance = salesTransactionRepository.getTotalBalanceForDateRange(startDate, endDate);
+            BigDecimal totalSales = salesTransactionRepository.getTotalSalesForDateRange(startDate.toString(),
+                    endDate.toString());
+            BigDecimal totalReceived = salesTransactionRepository.getTotalReceivedForDateRange(startDate.toString(),
+                    endDate.toString());
+            BigDecimal totalBalance = salesTransactionRepository.getTotalBalanceForDateRange(startDate.toString(),
+                    endDate.toString());
 
             List<SalesTransactionEntity> transactions = salesTransactionRepository
-                    .findByTransactionDateBetween(startDate, endDate);
+                    .findByTransactionDateBetween(startDate.toString(), endDate.toString());
             Long totalCount = (long) transactions.size();
 
             SalesTransactionSummaryResponse summary = new SalesTransactionSummaryResponse();
@@ -375,7 +380,7 @@ public class SalesTransactionServiceImpl implements SalesTransactionService {
             transaction.setInvoiceId(invoice.getId());
             transaction.setInvoiceNumber(invoice.getInvoiceNumber());
             transaction.setPartyId(invoice.getPartyId());
-            transaction.setTransactionDate(invoice.getInvoiceDate());
+            transaction.setTransactionDate(invoice.getInvoiceDate().toString());
             transaction.setTotalAmount(BigDecimal.valueOf(invoice.getTotalAmount()));
             transaction.setReceivedAmount(BigDecimal.valueOf(invoice.getReceivedAmount()));
             transaction.setBalanceAmount(BigDecimal.valueOf(invoice.getBalanceAmount()));
@@ -446,10 +451,12 @@ public class SalesTransactionServiceImpl implements SalesTransactionService {
             BigDecimal totalSalesAmount = totalReceived.add(totalBalance);
 
             // Get last month's totals for comparison
-            BigDecimal lastMonthReceived = salesTransactionRepository.getLastMonthTotalReceived(firstDayLastMonth,
-                    lastDayLastMonth);
-            BigDecimal lastMonthBalance = salesTransactionRepository.getLastMonthTotalBalance(firstDayLastMonth,
-                    lastDayLastMonth);
+            BigDecimal lastMonthReceived = salesTransactionRepository.getLastMonthTotalReceived(
+                    firstDayLastMonth.toString(),
+                    lastDayLastMonth.toString());
+            BigDecimal lastMonthBalance = salesTransactionRepository.getLastMonthTotalBalance(
+                    firstDayLastMonth.toString(),
+                    lastDayLastMonth.toString());
 
             // Ensure last month values are not null, default to 0
             lastMonthReceived = lastMonthReceived != null ? lastMonthReceived : BigDecimal.ZERO;
@@ -484,9 +491,12 @@ public class SalesTransactionServiceImpl implements SalesTransactionService {
     @Override
     public Map<String, BigDecimal> getTotalAmountsByDateRange(LocalDate fromDate, LocalDate toDate) {
         try {
-            BigDecimal totalSales = salesTransactionRepository.getTotalSalesForDateRange(fromDate, toDate);
-            BigDecimal totalReceived = salesTransactionRepository.getTotalReceivedForDateRange(fromDate, toDate);
-            BigDecimal totalBalance = salesTransactionRepository.getTotalBalanceForDateRange(fromDate, toDate);
+            BigDecimal totalSales = salesTransactionRepository.getTotalSalesForDateRange(fromDate.toString(),
+                    toDate.toString());
+            BigDecimal totalReceived = salesTransactionRepository.getTotalReceivedForDateRange(fromDate.toString(),
+                    toDate.toString());
+            BigDecimal totalBalance = salesTransactionRepository.getTotalBalanceForDateRange(fromDate.toString(),
+                    toDate.toString());
 
             LocalDate firstDayLastMonth = fromDate.minusMonths(1).withDayOfMonth(1);
             LocalDate lastDayLastMonth = firstDayLastMonth.withDayOfMonth(firstDayLastMonth.lengthOfMonth());
@@ -496,12 +506,15 @@ public class SalesTransactionServiceImpl implements SalesTransactionService {
             totalReceived = totalReceived != null ? totalReceived : BigDecimal.ZERO;
             totalBalance = totalBalance != null ? totalBalance : BigDecimal.ZERO;
 
-            BigDecimal lastMonthSales = salesTransactionRepository.getTotalSalesForDateRange(firstDayLastMonth,
-                    lastDayLastMonth);
-            BigDecimal lastMonthReceived = salesTransactionRepository.getTotalReceivedForDateRange(firstDayLastMonth,
-                    lastDayLastMonth);
-            BigDecimal lastMonthBalance = salesTransactionRepository.getTotalBalanceForDateRange(firstDayLastMonth,
-                    lastDayLastMonth);
+            BigDecimal lastMonthSales = salesTransactionRepository.getTotalSalesForDateRange(
+                    firstDayLastMonth.toString(),
+                    lastDayLastMonth.toString());
+            BigDecimal lastMonthReceived = salesTransactionRepository.getTotalReceivedForDateRange(
+                    firstDayLastMonth.toString(),
+                    lastDayLastMonth.toString());
+            BigDecimal lastMonthBalance = salesTransactionRepository.getTotalBalanceForDateRange(
+                    firstDayLastMonth.toString(),
+                    lastDayLastMonth.toString());
 
             lastMonthSales = lastMonthSales != null ? lastMonthSales : BigDecimal.ZERO;
             lastMonthReceived = lastMonthReceived != null ? lastMonthReceived : BigDecimal.ZERO;
@@ -537,7 +550,7 @@ public class SalesTransactionServiceImpl implements SalesTransactionService {
             logger.info("Fetching sales records for date range: {} to {}", fromDate, toDate);
 
             List<SalesTransactionEntity> transactions = salesTransactionRepository
-                    .findByTransactionDateBetween(fromDate, toDate);
+                    .findByTransactionDateBetween(fromDate.toString(), toDate.toString());
 
             List<SalesReportResponse> salesRecords = transactions.stream()
                     .map(this::mapToSalesReportResponse)
@@ -558,7 +571,9 @@ public class SalesTransactionServiceImpl implements SalesTransactionService {
     private SalesReportResponse mapToSalesReportResponse(SalesTransactionEntity entity) {
         SalesReportResponse response = new SalesReportResponse();
         response.setTransactionId(entity.getId());
-        response.setDate(entity.getTransactionDate());
+        if (entity.getTransactionDate() != null) {
+            response.setDate(LocalDate.parse(entity.getTransactionDate()));
+        }
         response.setInvoiceId(entity.getInvoiceId());
         response.setInvoiceNo(entity.getInvoiceNumber());
         response.setCustomerName(entity.getPartyName());
@@ -578,8 +593,8 @@ public class SalesTransactionServiceImpl implements SalesTransactionService {
         entity.setInvoiceNumber(request.getInvoiceNumber());
         entity.setPartyId(request.getPartyId());
         entity.setPartyName(request.getPartyName());
-        entity.setTransactionDate(request.getTransactionDate());
-        entity.setTransactionTime(request.getTransactionTime());
+        entity.setTransactionDate(request.getTransactionDate().toString());
+        entity.setTransactionTime(request.getTransactionTime().toString());
         entity.setTotalAmount(request.getTotalAmount());
         entity.setTaxAmount(request.getTaxAmount());
         entity.setDiscountAmount(request.getDiscountAmount());
@@ -622,7 +637,7 @@ public class SalesTransactionServiceImpl implements SalesTransactionService {
             entity.setNotes(request.getNotes());
         }
 
-        entity.setUpdatedAt(LocalDateTime.now());
+        entity.setUpdatedAt(LocalDateTime.now().toString());
         entity.setUpdatedBy(request.getCreatedBy() != null ? request.getCreatedBy() : "system");
     }
 
@@ -636,8 +651,12 @@ public class SalesTransactionServiceImpl implements SalesTransactionService {
         response.setInvoiceNumber(entity.getInvoiceNumber());
         response.setPartyId(entity.getPartyId());
         response.setPartyName(entity.getPartyName());
-        response.setTransactionDate(entity.getTransactionDate());
-        response.setTransactionTime(entity.getTransactionTime());
+        if (entity.getTransactionDate() != null) {
+            response.setTransactionDate(LocalDate.parse(entity.getTransactionDate()));
+        }
+        if (entity.getTransactionTime() != null) {
+            response.setTransactionTime(LocalTime.parse(entity.getTransactionTime()));
+        }
         response.setTotalAmount(entity.getTotalAmount());
         response.setTaxAmount(entity.getTaxAmount());
         response.setDiscountAmount(entity.getDiscountAmount());
@@ -655,8 +674,13 @@ public class SalesTransactionServiceImpl implements SalesTransactionService {
         response.setSalesPersonName(entity.getSalesPersonName());
         response.setNotes(entity.getNotes());
         response.setStatus(entity.getStatus());
-        response.setCreatedAt(entity.getCreatedAt());
-        response.setUpdatedAt(entity.getUpdatedAt());
+        if (entity.getCreatedAt() != null) {
+            response.setCreatedAt(LocalDateTime.parse(entity.getCreatedAt()));
+        }
+
+        if (entity.getUpdatedAt() != null) {
+            response.setUpdatedAt(LocalDateTime.parse(entity.getUpdatedAt()));
+        }
         response.setCreatedBy(entity.getCreatedBy());
         response.setUpdatedBy(entity.getUpdatedBy());
 

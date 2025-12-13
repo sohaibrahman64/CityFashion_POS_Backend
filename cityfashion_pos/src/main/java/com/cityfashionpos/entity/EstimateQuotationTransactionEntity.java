@@ -39,10 +39,10 @@ public class EstimateQuotationTransactionEntity {
     private String partyName;
 
     @Column(name = "transaction_date", nullable = false)
-    private LocalDate transactionDate;
+    private String transactionDate;
 
     @Column(name = "transaction_time", nullable = false)
-    private LocalTime transactionTime;
+    private String transactionTime;
 
     @Column(name = "total_amount", precision = 15, scale = 2, nullable = false)
     private BigDecimal totalAmount = BigDecimal.ZERO;
@@ -91,8 +91,8 @@ public class EstimateQuotationTransactionEntity {
 
     // Default constructor
     public EstimateQuotationTransactionEntity() {
-        this.transactionDate = LocalDate.now();
-        this.transactionTime = LocalTime.now();
+        this.transactionDate = LocalDate.now().toString();
+        this.transactionTime = LocalTime.now().toString();
 
     }
 
@@ -151,19 +151,19 @@ public class EstimateQuotationTransactionEntity {
         this.partyName = partyName;
     }
 
-    public LocalDate getTransactionDate() {
+    public String getTransactionDate() {
         return transactionDate;
     }
 
-    public void setTransactionDate(LocalDate transactionDate) {
+    public void setTransactionDate(String transactionDate) {
         this.transactionDate = transactionDate;
     }
 
-    public LocalTime getTransactionTime() {
+    public String getTransactionTime() {
         return transactionTime;
     }
 
-    public void setTransactionTime(LocalTime transactionTime) {
+    public void setTransactionTime(String transactionTime) {
         this.transactionTime = transactionTime;
     }
 

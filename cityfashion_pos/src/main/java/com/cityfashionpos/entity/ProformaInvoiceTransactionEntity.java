@@ -38,10 +38,10 @@ public class ProformaInvoiceTransactionEntity {
     private String partyName;
 
     @Column(name = "transaction_date", nullable = false)
-    private LocalDate transactionDate;
+    private String transactionDate;
 
     @Column(name = "transaction_time", nullable = false)
-    private LocalTime transactionTime;
+    private String transactionTime;
 
     @Column(name = "total_amount", precision = 15, scale = 2, nullable = false)
     private BigDecimal totalAmount = BigDecimal.ZERO;
@@ -65,10 +65,10 @@ public class ProformaInvoiceTransactionEntity {
     private String status = "OPEN";
 
     @Column(name = "created_at", nullable = false, updatable = false)
-    private LocalDateTime createdAt = LocalDateTime.now();
+    private String createdAt = LocalDateTime.now().toString();
 
     @Column(name = "updated_at", nullable = false)
-    private LocalDateTime updatedAt = LocalDateTime.now();
+    private String updatedAt = LocalDateTime.now().toString();
 
     @Column(name = "created_by")
     private String createdBy = "system";
@@ -85,13 +85,13 @@ public class ProformaInvoiceTransactionEntity {
 
     @PreUpdate
     protected void onUpdate() {
-        updatedAt = LocalDateTime.now();
+        updatedAt = LocalDateTime.now().toString();
     }
 
     // Default constructor
     public ProformaInvoiceTransactionEntity() {
-        this.transactionDate = LocalDate.now();
-        this.transactionTime = LocalTime.now();
+        this.transactionDate = LocalDate.now().toString();
+        this.transactionTime = LocalTime.now().toString();
 
     }
 
@@ -150,19 +150,19 @@ public class ProformaInvoiceTransactionEntity {
         this.partyName = partyName;
     }
 
-    public LocalDate getTransactionDate() {
+    public String getTransactionDate() {
         return transactionDate;
     }
 
-    public void setTransactionDate(LocalDate transactionDate) {
+    public void setTransactionDate(String transactionDate) {
         this.transactionDate = transactionDate;
     }
 
-    public LocalTime getTransactionTime() {
+    public String getTransactionTime() {
         return transactionTime;
     }
 
-    public void setTransactionTime(LocalTime transactionTime) {
+    public void setTransactionTime(String transactionTime) {
         this.transactionTime = transactionTime;
     }
 
@@ -222,19 +222,19 @@ public class ProformaInvoiceTransactionEntity {
         this.status = status;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public String getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
     }
 
-    public LocalDateTime getUpdatedAt() {
+    public String getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(LocalDateTime updatedAt) {
+    public void setUpdatedAt(String updatedAt) {
         this.updatedAt = updatedAt;
     }
 

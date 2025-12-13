@@ -16,16 +16,21 @@ public class UserEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(nullable = false, unique = true)
+	@Column(name = "username", nullable = false, unique = true)
 	private String username;
 
+	@Column(name = "password")
 	private String password;
-	
+
+	@Column(name = "name")
 	private String name;
 
-	@ManyToOne
-	@JoinColumn(name = "role_id")
-	private RoleEntity role;
+	@Column(name = "email")
+	private String email;
+
+	// @ManyToOne
+	// @JoinColumn(name = "role_id")
+	// private RoleEntity role;
 
 	public Long getId() {
 		return id;
@@ -51,13 +56,13 @@ public class UserEntity {
 		this.password = password;
 	}
 
-	public RoleEntity getRole() {
-		return role;
-	}
+	// public RoleEntity getRole() {
+	// return role;
+	// }
 
-	public void setRole(RoleEntity role) {
-		this.role = role;
-	}
+	// public void setRole(RoleEntity role) {
+	// this.role = role;
+	// }
 
 	public String getName() {
 		return name;
@@ -66,4 +71,13 @@ public class UserEntity {
 	public void setName(String name) {
 		this.name = name;
 	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
 }

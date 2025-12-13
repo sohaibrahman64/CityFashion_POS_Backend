@@ -1,5 +1,6 @@
 package com.cityfashionpos.service.impl;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -8,8 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.cityfashionpos.dto.PartyTransactionDTO;
 import com.cityfashionpos.dto.PartiesReportResponse;
+import com.cityfashionpos.dto.PartyTransactionDTO;
 import com.cityfashionpos.entity.PartyEntity;
 import com.cityfashionpos.entity.PartyTransactionEntity;
 import com.cityfashionpos.repository.PartyRepository;
@@ -49,11 +50,11 @@ public class PartyTransactionServiceImpl implements PartyTransactionService {
         entity.setReferenceType(dto.getReferenceType());
         entity.setStatus(dto.getStatus());
         entity.setCreatedBy(dto.getCreatedBy());
-        entity.setCreatedAt(dto.getCreatedAt());
+        entity.setCreatedAt(dto.getCreatedAt().toString());
         entity.setUpdatedBy(dto.getUpdatedBy());
-        entity.setUpdatedAt(dto.getUpdatedAt());
+        entity.setUpdatedAt(dto.getUpdatedAt().toString());
         entity.setTransactionType(dto.getTransactionType());
-        entity.setDate(dto.getDate());
+        entity.setDate(dto.getDate().toString());
         entity.setPartyTotal(dto.getPartyTotal());
         entity.setPartyBalance(dto.getPartyBalance());
 
@@ -80,14 +81,14 @@ public class PartyTransactionServiceImpl implements PartyTransactionService {
         dto.setPartyId(entity.getParty().getId());
         dto.setPartyName(entity.getParty().getPartyName());
         dto.setTransactionType(entity.getTransactionType());
-        dto.setDate(entity.getDate());
+        dto.setDate(LocalDateTime.parse(entity.getDate()));
         dto.setPartyTotal(entity.getPartyTotal());
         dto.setPartyBalance(entity.getPartyBalance());
         dto.setStatus(entity.getStatus());
         dto.setCreatedBy(entity.getCreatedBy());
-        dto.setCreatedAt(entity.getCreatedAt());
+        dto.setCreatedAt(LocalDateTime.parse(entity.getCreatedAt()));
         dto.setUpdatedBy(entity.getUpdatedBy());
-        dto.setUpdatedAt(entity.getUpdatedAt());
+        dto.setUpdatedAt(LocalDateTime.parse(entity.getUpdatedAt()));
         return dto;
     }
 
@@ -95,7 +96,7 @@ public class PartyTransactionServiceImpl implements PartyTransactionService {
         PartiesReportResponse reportDto = new PartiesReportResponse();
         reportDto.setId(entity.getId());
         reportDto.setInvoiceId(entity.getInvoiceId());
-        reportDto.setDate(entity.getDate());
+        reportDto.setDate(LocalDateTime.parse(entity.getDate()));
         reportDto.setPartyName(entity.getParty().getPartyName());
         reportDto.setInvoiceNumber(entity.getInvoiceNumber());
         reportDto.setPurchaseBillNumber(entity.getPurchaseBillNumber());

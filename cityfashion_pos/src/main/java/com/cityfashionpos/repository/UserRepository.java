@@ -11,15 +11,28 @@ import com.cityfashionpos.entity.UserEntity;
 
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
+	/*
+	 * @Query(value = """
+	 * SELECT * FROM users
+	 * WHERE username = :username
+	 * AND CONVERT(AES_DECRYPT(FROM_BASE64(password), :secretKey) USING UTF8MB4) =
+	 * :rawPassword
+	 * """, nativeQuery = true)
+	 * 
+	 * Optional<UserEntity> authenticateUser(@Param("username") String
+	 * username, @Param("rawPassword") String rawPassword,
+	 * 
+	 * @Param("secretKey") String secretKey);
+	 */
+
 	@Query(value = """
 			SELECT * FROM users
 			WHERE username = :username
-			AND CONVERT(AES_DECRYPT(FROM_BASE64(password), :secretKey) USING UTF8MB4) = :rawPassword
+			AND password = :rawPassword
 			""", nativeQuery = true)
-	
-	Optional<UserEntity> authenticateUser(@Param("username") String username, @Param("rawPassword") String rawPassword,
-			@Param("secretKey") String secretKey);
-	
+	Optional<UserEntity> authenticateUser(@Param("username") String username,
+			@Param("rawPassword") String rawPassword);
+
 	Optional<UserEntity> findByUsername(String username);
 
 }

@@ -12,6 +12,11 @@ public class UserDto {
 	public UserDto() {
 	}
 
+	public UserDto(Long id, String username) {
+		this.id = id;
+		this.username = username;
+	}
+
 	public UserDto(Long id, String username, String role) {
 		this.id = id;
 		this.username = username;

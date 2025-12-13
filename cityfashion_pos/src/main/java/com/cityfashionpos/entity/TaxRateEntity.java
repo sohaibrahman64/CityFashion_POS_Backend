@@ -24,7 +24,7 @@ public class TaxRateEntity {
     @Column(name = "active", nullable = false)
     private Boolean active = true;
 
-    @Column(name = "index")
+    @Column(name = "idx")
     private Long index;
 
     // Default constructor

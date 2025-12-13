@@ -1,7 +1,5 @@
 package com.cityfashionpos.entity;
 
-import java.time.LocalDate;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -20,7 +18,7 @@ public class NewEstimateQuotationEntity {
     private String estimateQuotationNumber;
 
     @Column(name = "estimate_quotation_date")
-    private LocalDate estimateQuotationDate;
+    private String estimateQuotationDate;
 
     @Column(name = "party_id")
     private Long partyId;
@@ -68,11 +66,11 @@ public class NewEstimateQuotationEntity {
         this.estimateQuotationNumber = estimateQuotationNumber;
     }
 
-    public LocalDate getEstimateQuotationDate() {
+    public String getEstimateQuotationDate() {
         return estimateQuotationDate;
     }
 
-    public void setEstimateQuotationDate(LocalDate estimateQuotationDate) {
+    public void setEstimateQuotationDate(String estimateQuotationDate) {
         this.estimateQuotationDate = estimateQuotationDate;
     }
 

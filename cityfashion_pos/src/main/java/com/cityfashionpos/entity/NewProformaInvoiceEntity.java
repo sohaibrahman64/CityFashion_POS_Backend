@@ -21,7 +21,7 @@ public class NewProformaInvoiceEntity {
     private String proformaInvoiceNumber;
 
     @Column(name = "proforma_invoice_date")
-    private LocalDate proformaInvoiceDate;
+    private String proformaInvoiceDate;
 
     @Column(name = "party_id")
     private Long partyId;
@@ -69,11 +69,11 @@ public class NewProformaInvoiceEntity {
         this.proformaInvoiceNumber = proformaInvoiceNumber;
     }
 
-    public LocalDate getProformaInvoiceDate() {
+    public String getProformaInvoiceDate() {
         return proformaInvoiceDate;
     }
 
-    public void setProformaInvoiceDate(LocalDate proformaInvoiceDate) {
+    public void setProformaInvoiceDate(String proformaInvoiceDate) {
         this.proformaInvoiceDate = proformaInvoiceDate;
     }
 

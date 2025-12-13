@@ -16,28 +16,30 @@ import com.cityfashionpos.repository.UserRepository;
 import com.cityfashionpos.service.UserService;
 import com.cityfashionpos.utils.AESUtil;
 
-
 @Service
 public class UserServiceImpl implements UserService {
-	private final UserRepository userRepository;
-	private final RoleRepository roleRepository;
+    private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
 
-	@Value("${app.secretkey}")
-	private String secretKey;
+    @Value("${app.secretkey}")
+    private String secretKey;
 
-	public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository) {
-		this.userRepository = userRepository;
-		this.roleRepository = roleRepository;
-	}
-	
+    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository) {
+        this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
+    }
+
     @Override
     public List<UserDto> getAllUsers() {
+        // return userRepository.findAll().stream()
+        // .map(user -> new UserDto(user.getId(), user.getUsername(),
+        // user.getRole().getName()))
+        // .collect(Collectors.toList());
         return userRepository.findAll().stream()
-                .map(user -> new UserDto(user.getId(), user.getUsername(), user.getRole().getName()))
+                .map(user -> new UserDto(user.getId(), user.getUsername()))
                 .collect(Collectors.toList());
     }
-    
-    
+
     @Override
     public UserDto createUser(String username, String rawPassword, String roleName) {
         Optional<RoleEntity> roleOpt = roleRepository.findByName(roleName);
@@ -51,10 +53,10 @@ public class UserServiceImpl implements UserService {
         UserEntity user = new UserEntity();
         user.setUsername(username);
         user.setPassword(encoded);
-        user.setRole(roleOpt.get());
+        // user.setRole(roleOpt.get());
 
         UserEntity saved = userRepository.save(user);
-        return new UserDto(saved.getId(), saved.getUsername(), saved.getRole().getName());
+        return new UserDto(saved.getId(), saved.getUsername());
     }
-    
+
 }

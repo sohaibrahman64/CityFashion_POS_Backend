@@ -72,7 +72,7 @@ public class NewSalesInvoiceService {
             NewSalesInvoiceEntity invoice = new NewSalesInvoiceEntity();
             invoice.setInvoiceNumber(invoiceNumber);
             invoice.setPartyId(request.getPartyId());
-            invoice.setInvoiceDate(LocalDate.now());
+            invoice.setInvoiceDate(LocalDate.now().toString());
             invoice.setTotalAmount(request.getTotalAmount());
             invoice.setSubtotalAmount(request.getSubtotalAmount());
             invoice.setReceivedAmount(request.getReceivedAmount() != null ? request.getReceivedAmount() : 0.0);
@@ -175,7 +175,9 @@ public class NewSalesInvoiceService {
             // Prepare response
             response.setInvoiceId(invoice.getId());
             response.setInvoiceNumber(invoiceNumber);
-            response.setInvoiceDate(invoice.getInvoiceDate());
+            if (invoice.getInvoiceDate() != null) {
+                response.setInvoiceDate(LocalDate.parse(invoice.getInvoiceDate()));
+            }
             response.setPartyName(request.getPartyName());
             response.setPartyPhone(request.getPartyPhone());
             response.setItems(responseItems);
@@ -273,7 +275,9 @@ public class NewSalesInvoiceService {
             // Prepare response
             response.setInvoiceId(invoice.getId());
             response.setInvoiceNumber(invoice.getInvoiceNumber());
-            response.setInvoiceDate(invoice.getInvoiceDate());
+            if (invoice.getInvoiceDate() != null) {
+                response.setInvoiceDate(LocalDate.parse(invoice.getInvoiceDate()));
+            }
             response.setParty(partyRepository.findById(invoice.getPartyId()).get());
             response.setPartyName(party.getPartyName());
             response.setPartyPhone(party.getPhoneNumber());

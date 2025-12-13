@@ -47,7 +47,7 @@ public class NewEstimateQuotationService {
             NewEstimateQuotationEntity estimateQuotation = new NewEstimateQuotationEntity();
             estimateQuotation.setEstimateQuotationNumber(estimateQuotationNumber);
             estimateQuotation.setPartyId(request.getPartyId());
-            estimateQuotation.setEstimateQuotationDate(LocalDate.now());
+            estimateQuotation.setEstimateQuotationDate(LocalDate.now().toString());
             estimateQuotation.setTotalAmount(request.getTotalAmount());
             estimateQuotation.setDiscountAmount(request.getDiscountAmount());
             estimateQuotation.setTotalTaxAmount(request.getTotalTaxAmount());
@@ -138,7 +138,7 @@ public class NewEstimateQuotationService {
             estimateQuotationRepository.save(estimateQuotation);
             response.setEstimateQuotationId(estimateQuotation.getId());
             response.setEstimateQuotationNumber(estimateQuotationNumber);
-            response.setEstimateQuotationDate(estimateQuotation.getEstimateQuotationDate());
+            response.setEstimateQuotationDate(LocalDate.parse(estimateQuotation.getEstimateQuotationDate()));
             response.setPartyName(request.getPartyName());
             response.setPartyPhone(request.getPartyPhone());
             response.setItems(responseItems);

@@ -54,10 +54,10 @@ public class ItemTransactionEntity {
     private String description;
 
     @Column(name = "transaction_date", nullable = false)
-    private LocalDateTime transactionDate;
+    private String transactionDate;
 
     @Column(name = "created_at", nullable = false)
-    private LocalDateTime createdAt;
+    private String createdAt;
 
     @Column(name = "created_by", length = 100)
     private String createdBy;
@@ -81,8 +81,8 @@ public class ItemTransactionEntity {
     String partyName;
 
     public ItemTransactionEntity() {
-        this.createdAt = LocalDateTime.now();
-        this.transactionDate = LocalDateTime.now();
+        this.createdAt = LocalDateTime.now().toString();
+        this.transactionDate = LocalDateTime.now().toString();
     }
 
     public ItemTransactionEntity(ItemEntity item, TransactionType transactionType,
@@ -184,19 +184,19 @@ public class ItemTransactionEntity {
         this.description = description;
     }
 
-    public LocalDateTime getTransactionDate() {
+    public String getTransactionDate() {
         return transactionDate;
     }
 
-    public void setTransactionDate(LocalDateTime transactionDate) {
+    public void setTransactionDate(String transactionDate) {
         this.transactionDate = transactionDate;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public String getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
     }
 

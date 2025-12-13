@@ -18,26 +18,26 @@ public class TaxRateServiceImpl implements TaxRateService {
     private TaxRateRepository taxRateRepository;
 
     @Override
-    @Transactional(readOnly = true)
+    @Transactional
     public List<TaxRateEntity> getAllActiveTaxRates() {
         return taxRateRepository.findAllActiveOrderByRate();
     }
 
     @Override
-    @Transactional(readOnly = true)
+    @Transactional
     public List<TaxRateEntity> getActiveTaxRatesByType(String type) {
         return taxRateRepository.findActiveByTypeOrderByRate(type);
     }
 
     @Override
-    @Transactional(readOnly = true)
+    @Transactional
     public TaxRateEntity getTaxRateById(Long id) {
         Optional<TaxRateEntity> taxRate = taxRateRepository.findById(id);
         return taxRate.orElse(null);
     }
 
     @Override
-    @Transactional(readOnly = true)
+    @Transactional
     public boolean isTaxRateActive(Long id) {
         return taxRateRepository.existsByIdAndActive(id);
     }
@@ -78,7 +78,7 @@ public class TaxRateServiceImpl implements TaxRateService {
     }
 
     @Override
-    @Transactional(readOnly = true)
+    @Transactional
     public List<String> getAllActiveTaxRateLabels() {
         return taxRateRepository.findDistinctLabelsFromActiveTaxRates();
     }
