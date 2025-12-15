@@ -1,6 +1,6 @@
 package com.cityfashionpos.entity;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -52,6 +52,12 @@ public class NewProformaInvoiceEntity {
 
     @Column(name = "status")
     private String status;
+
+    @Column(name = "created_at")
+    private String createdAt = LocalDateTime.now().toString();
+
+    @Column(name = "updated_at")
+    private String updatedAt = LocalDateTime.now().toString();
 
     public Long getId() {
         return id;
@@ -155,6 +161,22 @@ public class NewProformaInvoiceEntity {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public String getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(String updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
 }

@@ -9,19 +9,19 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.cityfashionpos.entity.PaymentModeEntity;
-import com.cityfashionpos.repository.PaymentModeRepository;
+import com.cityfashionpos.entity.PaymentTypesEntity;
+import com.cityfashionpos.repository.PaymentTypesRepository;
 
 @RestController
-@RequestMapping("/api/payment-modes")
+@RequestMapping("/api/payment-types")
 @CrossOrigin(origins = "*")
-public class PaymentModeController {
+public class PaymentTypesController {
 
 	@Autowired
-	private PaymentModeRepository repository;
+	private PaymentTypesRepository repository;
 
-	@GetMapping("/getAllPaymentModes")
-	public ResponseEntity<List<PaymentModeEntity>> getAllModes() {
+	@GetMapping("/getAll")
+	public ResponseEntity<List<PaymentTypesEntity>> getAllModes() {
 		return ResponseEntity.ok(repository.findAll());
 	}
 }

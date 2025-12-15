@@ -21,36 +21,36 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 @Entity
 @Table(name = "purchase")
 public class PurchaseEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "supplier_id")
-    private SupplierEntity supplier;
+	@ManyToOne
+	@JoinColumn(name = "supplier_id")
+	private SupplierEntity supplier;
 
-    @Column(name="bill_number")
-    private String billNumber;
-    
-    @Column(name="purchase_date")
-    private LocalDate purchaseDate;
-    
-    @ManyToOne
-    @JoinColumn(name="payment_mode")
-    private PaymentModeEntity paymentMode;
-    
-    @Column(name="description")
-    private String description;
-    
-    @Column(name="image_path")
-    private String imagePath;
+	@Column(name = "bill_number")
+	private String billNumber;
 
-    @OneToMany(mappedBy = "purchase", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonManagedReference
-    private List<PurchaseItemEntity> items = new ArrayList<>();
-    
-    @Column(name="total_amount")
-    private Double totalAmount;
+	@Column(name = "purchase_date")
+	private LocalDate purchaseDate;
+
+	@ManyToOne
+	@JoinColumn(name = "payment_mode")
+	private PaymentTypesEntity paymentMode;
+
+	@Column(name = "description")
+	private String description;
+
+	@Column(name = "image_path")
+	private String imagePath;
+
+	@OneToMany(mappedBy = "purchase", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JsonManagedReference
+	private List<PurchaseItemEntity> items = new ArrayList<>();
+
+	@Column(name = "total_amount")
+	private Double totalAmount;
 
 	public Long getId() {
 		return id;
@@ -76,7 +76,6 @@ public class PurchaseEntity {
 		this.purchaseDate = purchaseDate;
 	}
 
-
 	public String getDescription() {
 		return description;
 	}
@@ -101,7 +100,6 @@ public class PurchaseEntity {
 		this.billNumber = billNumber;
 	}
 
-
 	public String getImagePath() {
 		return imagePath;
 	}
@@ -118,13 +116,12 @@ public class PurchaseEntity {
 		this.totalAmount = totalAmount;
 	}
 
-	public PaymentModeEntity getPaymentMode() {
+	public PaymentTypesEntity getPaymentMode() {
 		return paymentMode;
 	}
 
-	public void setPaymentMode(PaymentModeEntity paymentMode) {
+	public void setPaymentMode(PaymentTypesEntity paymentMode) {
 		this.paymentMode = paymentMode;
 	}
-	
-}
 
+}

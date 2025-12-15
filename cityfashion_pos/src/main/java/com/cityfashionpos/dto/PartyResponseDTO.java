@@ -19,6 +19,7 @@ public class PartyResponseDTO {
 
     // Credit & Balance fields
     private BigDecimal openingBalance;
+    private BigDecimal updatedBalance;
     private LocalDate asOfDate;
     private String paymentType;
     private String creditLimitType;
@@ -234,5 +235,13 @@ public class PartyResponseDTO {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public BigDecimal getUpdatedBalance() {
+        return updatedBalance;
+    }
+
+    public void setUpdatedBalance(BigDecimal updatedBalance) {
+        this.updatedBalance = updatedBalance;
     }
 }

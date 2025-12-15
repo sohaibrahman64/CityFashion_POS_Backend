@@ -14,13 +14,13 @@ import com.cityfashionpos.repository.CustomerRepository;
 
 @Component
 public class InvoiceMapper {
-	
-	@Autowired
-	CustomerRepository customerRepository;
+
+    @Autowired
+    CustomerRepository customerRepository;
 
     public PastInvoiceResponse toDto(InvoiceEntity invoice) {
         PastInvoiceResponse dto = new PastInvoiceResponse();
-        
+
         dto.setId(invoice.getId());
         dto.setInvoiceNumber(invoice.getInvoiceNumber());
         dto.setInvoiceDate(invoice.getInvoiceDate());
@@ -40,8 +40,7 @@ public class InvoiceMapper {
             dto.setCustomerEmail(customer.getEmail());
             dto.setCustomerAddress(customer.getAddress());
         }
-        
-        
+
         // Set Invoice Items
         List<InvoiceItemResponse> itemResponses = invoice.getItems().stream()
                 .map(InvoiceMapper::mapItem)
@@ -59,7 +58,7 @@ public class InvoiceMapper {
 
     private static InvoiceItemResponse mapItem(InvoiceItemEntity item) {
         InvoiceItemResponse dto = new InvoiceItemResponse();
-        //dto.setProductName(item.getProduct().getName());
+        // dto.setProductName(item.getProduct().getName());
         dto.setQuantity(item.getQuantity());
         dto.setPrice(item.getPrice());
         dto.setTaxPercent(item.getTaxPercent());
@@ -73,7 +72,7 @@ public class InvoiceMapper {
 
     private static PaymentBreakupResponse mapPayment(InvoicePaymentEntity payment) {
         PaymentBreakupResponse dto = new PaymentBreakupResponse();
-        dto.setPaymentMode(payment.getPaymentMode().getModeName());
+        dto.setPaymentMode(payment.getPaymentMode().getPaymentMode());
         dto.setAmount(payment.getAmount());
         return dto;
     }

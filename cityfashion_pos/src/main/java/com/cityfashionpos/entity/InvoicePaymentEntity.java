@@ -14,19 +14,19 @@ import javax.persistence.Table;
 public class InvoicePaymentEntity {
 
 	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "invoice_id")
-    private InvoiceEntity invoiceId;
+	@ManyToOne
+	@JoinColumn(name = "invoice_id")
+	private InvoiceEntity invoiceId;
 
-    @ManyToOne
-    @JoinColumn(name = "payment_mode_id")
-    private PaymentModeEntity paymentMode;
+	@ManyToOne
+	@JoinColumn(name = "payment_mode_id")
+	private PaymentTypesEntity paymentMode;
 
-    @Column(name = "amount_paid")
-    private Double amount;
+	@Column(name = "amount_paid")
+	private Double amount;
 
 	public Long getId() {
 		return id;
@@ -44,11 +44,11 @@ public class InvoicePaymentEntity {
 		this.invoiceId = invoice;
 	}
 
-	public PaymentModeEntity getPaymentMode() {
+	public PaymentTypesEntity getPaymentMode() {
 		return paymentMode;
 	}
 
-	public void setPaymentMode(PaymentModeEntity paymentMode) {
+	public void setPaymentMode(PaymentTypesEntity paymentMode) {
 		this.paymentMode = paymentMode;
 	}
 
@@ -59,5 +59,5 @@ public class InvoicePaymentEntity {
 	public void setAmount(Double amount) {
 		this.amount = amount;
 	}
-    
+
 }

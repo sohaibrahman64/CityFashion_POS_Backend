@@ -174,6 +174,7 @@ public class PartiesController {
         party.setShippingAddress(dto.getShippingAddress());
         party.setEnableShipping(dto.getEnableShipping());
         party.setOpeningBalance(dto.getOpeningBalance());
+        party.setUpdatedBalance(dto.getOpeningBalance());
         party.setAsOfDate(dto.getAsOfDate());
         party.setPaymentType(dto.getPaymentType());
         party.setCreditLimitType(dto.getCreditLimitType());

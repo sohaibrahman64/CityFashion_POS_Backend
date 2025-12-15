@@ -23,7 +23,7 @@ import com.cityfashionpos.entity.InventoryMovementsEntity;
 import com.cityfashionpos.entity.InvoiceEntity;
 import com.cityfashionpos.entity.InvoiceItemEntity;
 import com.cityfashionpos.entity.InvoicePaymentEntity;
-import com.cityfashionpos.entity.PaymentModeEntity;
+import com.cityfashionpos.entity.PaymentTypesEntity;
 import com.cityfashionpos.entity.PaymentStatusEntity;
 import com.cityfashionpos.entity.ProductEntity;
 import com.cityfashionpos.repository.CustomerRepository;
@@ -33,7 +33,7 @@ import com.cityfashionpos.repository.InventoryRepository;
 import com.cityfashionpos.repository.InvoiceItemRepository;
 import com.cityfashionpos.repository.InvoicePaymentRepository;
 import com.cityfashionpos.repository.InvoiceRepository;
-import com.cityfashionpos.repository.PaymentModeRepository;
+import com.cityfashionpos.repository.PaymentTypesRepository;
 import com.cityfashionpos.repository.PaymentStatusRepository;
 import com.cityfashionpos.repository.ProductRepository;
 import com.cityfashionpos.response.InvoiceMapper;
@@ -62,7 +62,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 	private CustomerRepository customerRepository;
 
 	@Autowired
-	private PaymentModeRepository paymentModeRepository;
+	private PaymentTypesRepository paymentModeRepository;
 
 	@Autowired
 	private InvoicePaymentRepository invoicePaymentRepository;
@@ -203,7 +203,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 
 		List<InvoicePrintResponse.PaymentInfo> paymentInfos = payments.stream().map(item -> {
 			InvoicePrintResponse.PaymentInfo info = new InvoicePrintResponse.PaymentInfo();
-			info.setPaymentMode(item.getPaymentMode().getModeName());
+			info.setPaymentMode(item.getPaymentMode().getPaymentMode());
 			info.setAmount(item.getAmount());
 			return info;
 		}).collect(Collectors.toList());
@@ -231,7 +231,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 	private List<InvoicePaymentEntity> setPaymentEntries(InvoiceRequest request, InvoiceEntity savedInvoice) {
 		List<InvoicePaymentEntity> payments = new ArrayList<>();
 		for (InvoiceRequest.PaymentEntry paymentEntry : request.getPayments()) {
-			PaymentModeEntity mode = paymentModeRepository.findById((long) paymentEntry.getPaymentModeId())
+			PaymentTypesEntity mode = paymentModeRepository.findById((long) paymentEntry.getPaymentModeId())
 					.orElseThrow(() -> new RuntimeException("Invalid payment mode"));
 
 			InvoicePaymentEntity payment = new InvoicePaymentEntity();
@@ -294,7 +294,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 
 		List<InvoicePrintResponse.PaymentInfo> paymentInfos = invoice.getPayments().stream().map(item -> {
 			InvoicePrintResponse.PaymentInfo info = new InvoicePrintResponse.PaymentInfo();
-			info.setPaymentMode(item.getPaymentMode().getModeName());
+			info.setPaymentMode(item.getPaymentMode().getPaymentMode());
 			info.setAmount(item.getAmount());
 			return info;
 		}).collect(Collectors.toList());
@@ -319,7 +319,8 @@ public class InvoiceServiceImpl implements InvoiceService {
 		return response;
 	}
 
-	private void createInventoryMovement(ProductEntity product, String invoiceNumber, int quantity, String inventoryMovementType) {
+	private void createInventoryMovement(ProductEntity product, String invoiceNumber, int quantity,
+			String inventoryMovementType) {
 		InventoryMovementTypeEntity inventoryMovementTypeEntity = inventoryMovementsTypeRepository
 				.findByMovementType(inventoryMovementType)
 				.orElseThrow(() -> new IllegalStateException("Movement type not found: " + inventoryMovementType));
@@ -328,7 +329,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 		inventoryMovementEntity.setProduct(product);
 		inventoryMovementEntity.setQuantityChange(quantity);
 		inventoryMovementEntity.setInventoryMovementType(inventoryMovementTypeEntity);
-		inventoryMovementEntity.setReferenceId("Invoice#"+invoiceNumber);
+		inventoryMovementEntity.setReferenceId("Invoice#" + invoiceNumber);
 		inventoryMovementEntity.setMovementDate(LocalDate.now());
 
 		inventoryMovementsRepository.save(inventoryMovementEntity);

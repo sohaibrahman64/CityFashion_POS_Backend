@@ -29,7 +29,7 @@ public class SecurityConfig {
                         .antMatchers("/api/sales/*/*").permitAll()
                         .antMatchers("/api/customers/*").permitAll()
                         .antMatchers("/api/customers/**").permitAll()
-                        .antMatchers("/api/payment-modes/*").permitAll()
+                        .antMatchers("/api/payment-types/*").permitAll()
                         .antMatchers("/api/invoice/*").permitAll()
                         .antMatchers("/api/invoice/**").permitAll()
                         .antMatchers("/api/suppliers/**").permitAll()

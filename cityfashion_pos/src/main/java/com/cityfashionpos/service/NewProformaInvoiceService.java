@@ -1,6 +1,7 @@
 package com.cityfashionpos.service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,8 +58,9 @@ public class NewProformaInvoiceService {
             proformaInvoiceEntity.setMessage("Proforma Invoice created successfully");
             proformaInvoiceEntity.setSuccess(true);
             proformaInvoiceEntity.setTotalQuantity(request.getTotalQuantity());
-
             proformaInvoiceEntity.setStatus(request.getStatus());
+            proformaInvoiceEntity.setCreatedAt(LocalDateTime.now().toString());
+            proformaInvoiceEntity.setUpdatedAt(LocalDateTime.now().toString());
 
             // Save proforma invoice first to get ID
             proformaInvoiceEntity = proformaInvoiceRepository.save(proformaInvoiceEntity);

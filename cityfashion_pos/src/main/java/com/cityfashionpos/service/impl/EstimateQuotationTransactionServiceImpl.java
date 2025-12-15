@@ -3,6 +3,7 @@ package com.cityfashionpos.service.impl;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Collections;
 import java.util.HashMap;
@@ -122,8 +123,8 @@ public class EstimateQuotationTransactionServiceImpl implements EstimateQuotatio
                 response.setTotalQuantity(entity.getTotalQuantity());
                 response.setNotes(entity.getNotes());
                 response.setStatus(entity.getStatus());
-                response.setCreatedAt(entity.getCreatedAt());
-                response.setUpdatedAt(entity.getUpdatedAt());
+                response.setCreatedAt(LocalDateTime.parse(entity.getCreatedAt()));
+                response.setUpdatedAt(LocalDateTime.parse(entity.getUpdatedAt()));
                 response.setCreatedBy(entity.getCreatedBy());
                 response.setUpdatedBy(entity.getUpdatedBy());
 
@@ -153,8 +154,8 @@ public class EstimateQuotationTransactionServiceImpl implements EstimateQuotatio
                 response.setTotalQuantity(entity.getTotalQuantity());
                 response.setNotes(entity.getNotes());
                 response.setStatus(entity.getStatus());
-                response.setCreatedAt(entity.getCreatedAt());
-                response.setUpdatedAt(entity.getUpdatedAt());
+                response.setCreatedAt(LocalDateTime.parse(entity.getCreatedAt()));
+                response.setUpdatedAt(LocalDateTime.parse(entity.getUpdatedAt()));
                 response.setCreatedBy(entity.getCreatedBy());
                 response.setUpdatedBy(entity.getUpdatedBy());
 

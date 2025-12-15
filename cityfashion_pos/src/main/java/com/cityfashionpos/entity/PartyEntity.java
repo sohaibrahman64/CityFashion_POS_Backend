@@ -75,6 +75,9 @@ public class PartyEntity {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt = LocalDateTime.now();
 
+    @Column(name = "updated_balance", precision = 15, scale = 2)
+    private BigDecimal updatedBalance;
+
     // Constructors
     public PartyEntity() {
     }
@@ -223,4 +226,13 @@ public class PartyEntity {
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
+
+    public BigDecimal getUpdatedBalance() {
+        return updatedBalance;
+    }
+
+    public void setUpdatedBalance(BigDecimal updatedBalance) {
+        this.updatedBalance = updatedBalance;
+    }
+
 }
