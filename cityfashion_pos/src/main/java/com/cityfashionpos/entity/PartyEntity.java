@@ -55,7 +55,7 @@ public class PartyEntity {
     private BigDecimal openingBalance;
 
     @Column(name = "as_of_date")
-    private LocalDate asOfDate;
+    private String asOfDate;
 
     @Column(name = "payment_type")
     private String paymentType; // "toPay" or "toReceive"
@@ -70,12 +70,12 @@ public class PartyEntity {
     private Boolean isActive = true;
 
     @Column(name = "created_at", updatable = false)
-    private LocalDateTime createdAt = LocalDateTime.now();
+    private String createdAt = LocalDateTime.now().toString();
 
     @Column(name = "updated_at")
-    private LocalDateTime updatedAt = LocalDateTime.now();
+    private String updatedAt = LocalDateTime.now().toString();
 
-    @Column(name = "updated_balance", precision = 15, scale = 2)
+    @Column(name = "updated_balance")
     private BigDecimal updatedBalance;
 
     // Constructors
@@ -171,11 +171,11 @@ public class PartyEntity {
         this.openingBalance = openingBalance;
     }
 
-    public LocalDate getAsOfDate() {
+    public String getAsOfDate() {
         return asOfDate;
     }
 
-    public void setAsOfDate(LocalDate asOfDate) {
+    public void setAsOfDate(String asOfDate) {
         this.asOfDate = asOfDate;
     }
 
@@ -211,19 +211,19 @@ public class PartyEntity {
         this.isActive = isActive;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public String getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
     }
 
-    public LocalDateTime getUpdatedAt() {
+    public String getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(LocalDateTime updatedAt) {
+    public void setUpdatedAt(String updatedAt) {
         this.updatedAt = updatedAt;
     }
 

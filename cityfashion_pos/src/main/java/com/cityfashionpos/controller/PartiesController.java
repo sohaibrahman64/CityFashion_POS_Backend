@@ -1,5 +1,7 @@
 package com.cityfashionpos.controller;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -175,7 +177,7 @@ public class PartiesController {
         party.setEnableShipping(dto.getEnableShipping());
         party.setOpeningBalance(dto.getOpeningBalance());
         party.setUpdatedBalance(dto.getOpeningBalance());
-        party.setAsOfDate(dto.getAsOfDate());
+        party.setAsOfDate(dto.getAsOfDate().toString());
         party.setPaymentType(dto.getPaymentType());
         party.setCreditLimitType(dto.getCreditLimitType());
         party.setCustomLimit(dto.getCustomLimit());
@@ -207,13 +209,14 @@ public class PartiesController {
         dto.setShippingAddress(party.getShippingAddress());
         dto.setEnableShipping(party.getEnableShipping());
         dto.setOpeningBalance(party.getOpeningBalance());
-        dto.setAsOfDate(party.getAsOfDate());
+        dto.setUpdatedBalance(party.getUpdatedBalance());
+        dto.setAsOfDate(LocalDate.parse(party.getAsOfDate()));
         dto.setPaymentType(party.getPaymentType());
         dto.setCreditLimitType(party.getCreditLimitType());
         dto.setCustomLimit(party.getCustomLimit());
         dto.setIsActive(party.getIsActive());
-        dto.setCreatedAt(party.getCreatedAt());
-        dto.setUpdatedAt(party.getUpdatedAt());
+        dto.setCreatedAt(LocalDateTime.parse(party.getCreatedAt()));
+        dto.setUpdatedAt(LocalDateTime.parse(party.getUpdatedAt()));
 
         // Set GST Type info if present
         if (party.getGstType() != null) {

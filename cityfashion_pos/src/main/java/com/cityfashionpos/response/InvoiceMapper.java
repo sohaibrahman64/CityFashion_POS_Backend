@@ -72,7 +72,7 @@ public class InvoiceMapper {
 
     private static PaymentBreakupResponse mapPayment(InvoicePaymentEntity payment) {
         PaymentBreakupResponse dto = new PaymentBreakupResponse();
-        dto.setPaymentMode(payment.getPaymentMode().getPaymentMode());
+        dto.setPaymentMode(payment.getPaymentMode().getPaymentType());
         dto.setAmount(payment.getAmount());
         return dto;
     }

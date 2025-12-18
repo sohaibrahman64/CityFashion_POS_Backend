@@ -203,7 +203,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 
 		List<InvoicePrintResponse.PaymentInfo> paymentInfos = payments.stream().map(item -> {
 			InvoicePrintResponse.PaymentInfo info = new InvoicePrintResponse.PaymentInfo();
-			info.setPaymentMode(item.getPaymentMode().getPaymentMode());
+			info.setPaymentMode(item.getPaymentMode().getPaymentType());
 			info.setAmount(item.getAmount());
 			return info;
 		}).collect(Collectors.toList());
@@ -294,7 +294,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 
 		List<InvoicePrintResponse.PaymentInfo> paymentInfos = invoice.getPayments().stream().map(item -> {
 			InvoicePrintResponse.PaymentInfo info = new InvoicePrintResponse.PaymentInfo();
-			info.setPaymentMode(item.getPaymentMode().getPaymentMode());
+			info.setPaymentMode(item.getPaymentMode().getPaymentType());
 			info.setAmount(item.getAmount());
 			return info;
 		}).collect(Collectors.toList());

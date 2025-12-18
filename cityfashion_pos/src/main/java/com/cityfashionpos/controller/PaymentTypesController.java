@@ -22,6 +22,7 @@ public class PaymentTypesController {
 
 	@GetMapping("/getAll")
 	public ResponseEntity<List<PaymentTypesEntity>> getAllModes() {
-		return ResponseEntity.ok(repository.findAll());
+		// return ResponseEntity.ok(repository.findAll());
+		return ResponseEntity.ok(repository.getAllPaymentTypes());
 	}
 }

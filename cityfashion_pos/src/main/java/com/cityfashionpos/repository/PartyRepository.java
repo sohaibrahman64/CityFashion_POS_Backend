@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import com.cityfashionpos.entity.CustomerEntity;
 import com.cityfashionpos.entity.PartyEntity;
 
 @Repository
@@ -43,5 +42,5 @@ public interface PartyRepository extends JpaRepository<PartyEntity, Long> {
 
     List<PartyEntity> findByPartyNameContainingIgnoreCase(String keyword);
 
-    // PartyEntity findById(Long partyId);
+    Optional<PartyEntity> findById(Long partyId);
 }

@@ -72,6 +72,8 @@ public class SecurityConfig {
                         .antMatchers("/api/proforma-invoice/**").permitAll()
                         .antMatchers("/api/proforma-invoice-transactions/*").permitAll()
                         .antMatchers("/api/proforma-invoice-transactions/**").permitAll()
+                        .antMatchers("/api/payment-in/*").permitAll()
+                        .antMatchers("/api/payment-in/**").permitAll()
                         .anyRequest().authenticated() // Protect other endpoints
                 )
                 .httpBasic(Customizer.withDefaults()); // Optional: enable basic auth

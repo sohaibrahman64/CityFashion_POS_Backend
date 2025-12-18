@@ -72,7 +72,7 @@ public class PurchaseServiceImpl implements PurchaseService {
 		dto.setSupplierName(entity.getSupplier() != null ? entity.getSupplier().getName() : "");
 		dto.setBillNumber(entity.getBillNumber());
 		dto.setPurchaseDate(entity.getPurchaseDate());
-		dto.setPaymentMode(entity.getPaymentMode() != null ? entity.getPaymentMode().getPaymentMode() : "");
+		dto.setPaymentMode(entity.getPaymentMode() != null ? entity.getPaymentMode().getPaymentType() : "");
 		dto.setDescription(entity.getDescription());
 		dto.setImagePath(entity.getImagePath());
 		dto.setTotalAmount(entity.getTotalAmount());

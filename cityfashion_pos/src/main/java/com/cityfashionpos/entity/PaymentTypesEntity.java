@@ -16,7 +16,7 @@ public class PaymentTypesEntity {
 	private Long id;
 
 	@Column(name = "payment_type", unique = true, nullable = false)
-	private String paymentMode;
+	private String paymentType;
 
 	public Long getId() {
 		return id;
@@ -26,12 +26,12 @@ public class PaymentTypesEntity {
 		this.id = id;
 	}
 
-	public String getPaymentMode() {
-		return paymentMode;
+	public String getPaymentType() {
+		return paymentType;
 	}
 
-	public void setPaymentMode(String modeName) {
-		this.paymentMode = modeName;
+	public void setPaymentType(String modeName) {
+		this.paymentType = modeName;
 	}
 
 }

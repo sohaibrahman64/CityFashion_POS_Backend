@@ -39,8 +39,8 @@ public class PartyServiceImpl implements PartyService {
         }
 
         // Set timestamps
-        party.setCreatedAt(LocalDateTime.now());
-        party.setUpdatedAt(LocalDateTime.now());
+        party.setCreatedAt(LocalDateTime.now().toString());
+        party.setUpdatedAt(LocalDateTime.now().toString());
 
         // Set default values if not provided
         if (party.getIsActive() == null) {
@@ -111,7 +111,7 @@ public class PartyServiceImpl implements PartyService {
         existingParty.setPaymentType(updatedParty.getPaymentType());
         existingParty.setCreditLimitType(updatedParty.getCreditLimitType());
         existingParty.setCustomLimit(updatedParty.getCustomLimit());
-        existingParty.setUpdatedAt(LocalDateTime.now());
+        existingParty.setUpdatedAt(LocalDateTime.now().toString());
 
         return partyRepository.save(existingParty);
     }
@@ -124,7 +124,7 @@ public class PartyServiceImpl implements PartyService {
 
         // Soft delete
         party.setIsActive(false);
-        party.setUpdatedAt(LocalDateTime.now());
+        party.setUpdatedAt(LocalDateTime.now().toString());
         partyRepository.save(party);
     }
 
