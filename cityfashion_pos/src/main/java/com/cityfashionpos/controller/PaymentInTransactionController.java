@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,29 +19,28 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.cityfashionpos.dto.ProformaInvoiceTransactionRequest;
-import com.cityfashionpos.dto.ProformaInvoiceTransactionResponse;
-import com.cityfashionpos.service.ProformaInvoiceTransactionService;
+import com.cityfashionpos.dto.PaymentInTransactionRequest;
+import com.cityfashionpos.dto.PaymentInTransactionResponse;
+import com.cityfashionpos.service.PaymentInTransactionService;
 
 @RestController
-@RequestMapping("/api/proforma-invoice-transactions")
-@CrossOrigin(origins = "*")
-public class ProformaInvoiceTransactionController {
-    private static final Logger logger = LoggerFactory.getLogger(ProformaInvoiceTransactionController.class);
+@RequestMapping("/api/payment-in-transactions")
+public class PaymentInTransactionController {
+    private static final Logger logger = LoggerFactory.getLogger(PaymentInTransactionController.class);
 
     @Autowired
-    private ProformaInvoiceTransactionService proformaInvoiceTransactionService;
+    private PaymentInTransactionService paymentInTransactionService;
 
-    /**
-     * Create a new estimate quotation transaction
+    /*
+     * Create a new payment in transaction
      */
     @PostMapping("/create")
-    public ResponseEntity<ProformaInvoiceTransactionResponse> createProformaInvoiceTransaction(
-            @RequestBody ProformaInvoiceTransactionRequest request) {
+    public ResponseEntity<PaymentInTransactionResponse> createPaymentInTransaction(
+            @RequestBody PaymentInTransactionRequest request) {
         try {
-            logger.info("Creating Proforma Invoice transaction for amount: {}", request.getTotalAmount());
-            ProformaInvoiceTransactionResponse response = proformaInvoiceTransactionService
-                    .createProformaInvoiceTransaction(request);
+            logger.info("Creating Payment In transaction for amount: {}", request.getReceivedAmount());
+            PaymentInTransactionResponse response = paymentInTransactionService
+                    .createPaymentInTransaction(request);
 
             if (response.isSuccess()) {
                 return ResponseEntity.ok(response);
@@ -50,29 +48,29 @@ public class ProformaInvoiceTransactionController {
                 return ResponseEntity.badRequest().body(response);
             }
         } catch (Exception e) {
-            logger.error("Error creating sales transaction: {}", e.getMessage(), e);
-            ProformaInvoiceTransactionResponse errorResponse = new ProformaInvoiceTransactionResponse(false,
-                    "Error creating proforma invoice transaction: " + e.getMessage());
+            logger.error("Error creating payment in transaction: {}", e.getMessage(), e);
+            PaymentInTransactionResponse errorResponse = new PaymentInTransactionResponse(false,
+                    "Error creating payment in transaction: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
         }
     }
 
     /**
-     * Get total proforma invoice amount
+     * Get total payment in amount
      */
     @GetMapping("/totals")
-    public ResponseEntity<Map<String, Object>> getTotalProformaInvoiceAmount(
+    public ResponseEntity<Map<String, Object>> getTotalPaymentInAmount(
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate toDate) {
         try {
             Map<String, BigDecimal> totals;
             // If both date parameters are provided, use date range query
             if (fromDate != null && toDate != null) {
-                totals = proformaInvoiceTransactionService.getTotalProformaInvoiceAmountsByDateRange(fromDate,
+                totals = paymentInTransactionService.getTotalPaymentInAmountsByDateRange(fromDate,
                         toDate);
             } else {
                 // Otherwise, use the original method for all-time totals
-                totals = proformaInvoiceTransactionService.getTotalOpenAndConvertedAmounts();
+                totals = paymentInTransactionService.getTotalReceivedAmount();
             }
 
             Map<String, Object> response = new HashMap<>();
@@ -91,25 +89,24 @@ public class ProformaInvoiceTransactionController {
     }
 
     /**
-     * Get all proforma invoice transaction records by
+     * Get all payment in transaction records by
      * date range. Returns specific fields: Date, Reference Number,
      * Party Name, Amount, Balance, and Status
      */
     @GetMapping("/getAll")
-    public ResponseEntity<List<ProformaInvoiceTransactionResponse>> getProformaInvoiceRecordsByDateRange(
+    public ResponseEntity<List<PaymentInTransactionResponse>> getPaymentInRecordsByDateRange(
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate toDate) {
         try {
-            logger.info("Fetching all proforma invoice transaction records from {} to {}", fromDate, toDate);
-            List<ProformaInvoiceTransactionResponse> proformaInvoiceTransactionRecords = proformaInvoiceTransactionService
-                    .getProformaInvoiceTransactionByDateRange(fromDate, toDate);
-            return ResponseEntity.ok(proformaInvoiceTransactionRecords);
+            logger.info("Fetching all payment in transaction records from {} to {}", fromDate, toDate);
+            List<PaymentInTransactionResponse> paymentInTransactionRecords = paymentInTransactionService
+                    .getPaymentInTransactionByDateRange(fromDate, toDate);
+            return ResponseEntity.ok(paymentInTransactionRecords);
         } catch (Exception e) {
-            logger.error("Error fetching all proforma invoice transaction records from {} to {}: {}", fromDate,
+            logger.error("Error fetching all payment in transaction records from {} to {}: {}", fromDate,
                     toDate, e.getMessage(),
                     e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(List.of());
         }
     }
-
 }

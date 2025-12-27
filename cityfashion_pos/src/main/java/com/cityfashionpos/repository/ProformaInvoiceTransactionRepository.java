@@ -1,7 +1,6 @@
 package com.cityfashionpos.repository;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -20,7 +19,7 @@ public interface ProformaInvoiceTransactionRepository extends JpaRepository<Prof
         Long findMaxTransactionId();
 
         /**
-         * Calculate total estimate quotation amount for a date range of current month
+         * Calculate total proforma invoice amount for a date range of current month
          */
 
         @Query("SELECT COALESCE(SUM(pit.totalAmount), 0) FROM ProformaInvoiceTransactionEntity pit WHERE pit.transactionDate BETWEEN :startDate AND :endDate")
@@ -49,7 +48,7 @@ public interface ProformaInvoiceTransactionRepository extends JpaRepository<Prof
         BigDecimal getTotalOpenAmount();
 
         /**
-         * Calculate total converted estimate quotation amount for current month
+         * Calculate total converted proforma invoice amount for current month
          * 
          */
 

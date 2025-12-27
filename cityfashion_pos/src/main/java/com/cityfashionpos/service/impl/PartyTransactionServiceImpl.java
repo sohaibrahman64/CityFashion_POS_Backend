@@ -107,4 +107,11 @@ public class PartyTransactionServiceImpl implements PartyTransactionService {
         reportDto.setStatus(entity.getStatus());
         return reportDto;
     }
+
+    @Override
+    public List<PartiesReportResponse> getPartialOrUnpaidTransactions(Long partyId) {
+        return partyTransactionRepository.findPartialOrUnpaid(partyId).stream()
+                .map(this::toReportDto)
+                .collect(Collectors.toList());
+    }
 }

@@ -29,7 +29,7 @@ import com.cityfashionpos.service.ProformaInvoiceTransactionService;
 @Service
 @Transactional
 public class ProformaInvoiceTransactionImpl implements ProformaInvoiceTransactionService {
-        private static final Logger logger = LoggerFactory.getLogger(EstimateQuotationTransactionServiceImpl.class);
+        private static final Logger logger = LoggerFactory.getLogger(ProformaInvoiceTransactionImpl.class);
 
         @Autowired
         private ProformaInvoiceTransactionRepository proformaInvoiceTransactionRepository;
@@ -140,7 +140,7 @@ public class ProformaInvoiceTransactionImpl implements ProformaInvoiceTransactio
                         logger.error("Error calculating totals for date range {} to {}: {}", fromDate, toDate,
                                         e.getMessage(), e);
                         Map<String, BigDecimal> errorMap = new HashMap<>();
-                        errorMap.put("totalEstimateQuotationAmount", BigDecimal.ZERO);
+                        errorMap.put("totalProformaInvoiceAmount", BigDecimal.ZERO);
                         errorMap.put("totalOpenAmount", BigDecimal.ZERO);
                         errorMap.put("totalConvertedAmount", BigDecimal.ZERO);
                         return errorMap;

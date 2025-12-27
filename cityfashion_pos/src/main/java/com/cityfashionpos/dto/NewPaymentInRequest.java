@@ -1,6 +1,7 @@
 package com.cityfashionpos.dto;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 public class NewPaymentInRequest {
     private String partyName;
@@ -10,7 +11,7 @@ public class NewPaymentInRequest {
     private String receiptNumber;
     private BigDecimal receivedAmount;
     private Long paymentTypeId;
-    private String receivedDate;
+    private String receivedDate = LocalDate.now().toString();
     private String description;
 
     public String getPartyName() {

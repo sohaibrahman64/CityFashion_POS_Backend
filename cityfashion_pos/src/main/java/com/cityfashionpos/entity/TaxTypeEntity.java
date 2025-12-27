@@ -17,10 +17,10 @@ public class TaxTypeEntity {
     private String taxTypeCode;
 
     @Column(name = "created_at", nullable = false)
-    private LocalDateTime createdAt;
+    private String createdAt;
 
     @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
+    private String updatedAt;
 
     // Default constructor
     public TaxTypeEntity() {
@@ -30,8 +30,8 @@ public class TaxTypeEntity {
     public TaxTypeEntity(String taxType, String taxTypeCode) {
         this.taxType = taxType;
         this.taxTypeCode = taxTypeCode;
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = LocalDateTime.now();
+        this.createdAt = LocalDateTime.now().toString();
+        this.updatedAt = LocalDateTime.now().toString();
     }
 
     // Getters and Setters
@@ -59,31 +59,31 @@ public class TaxTypeEntity {
         this.taxTypeCode = taxTypeCode;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public String getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
     }
 
-    public LocalDateTime getUpdatedAt() {
+    public String getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(LocalDateTime updatedAt) {
+    public void setUpdatedAt(String updatedAt) {
         this.updatedAt = updatedAt;
     }
 
     @PrePersist
     protected void onCreate() {
-        createdAt = LocalDateTime.now();
-        updatedAt = LocalDateTime.now();
+        createdAt = LocalDateTime.now().toString();
+        updatedAt = LocalDateTime.now().toString();
     }
 
     @PreUpdate
     protected void onUpdate() {
-        updatedAt = LocalDateTime.now();
+        updatedAt = LocalDateTime.now().toString();
     }
 
     @Override

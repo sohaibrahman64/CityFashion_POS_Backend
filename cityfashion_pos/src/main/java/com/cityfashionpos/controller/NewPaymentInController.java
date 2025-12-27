@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cityfashionpos.dto.NewPaymentInRequest;
 import com.cityfashionpos.dto.NewPaymentInResponse;
-import com.cityfashionpos.dto.NewProformaInvoiceResponse;
 import com.cityfashionpos.repository.NewPaymentInRepository;
 import com.cityfashionpos.service.NewPaymentInService;
 

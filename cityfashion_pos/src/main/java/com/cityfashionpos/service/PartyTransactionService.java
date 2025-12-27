@@ -12,4 +12,6 @@ public interface PartyTransactionService {
     List<PartyTransactionDTO> getTransactionsByParty(Long partyId);
 
     List<PartiesReportResponse> getPartiesReport(Long partyId);
+
+    List<PartiesReportResponse> getPartialOrUnpaidTransactions(Long partyId);
 }

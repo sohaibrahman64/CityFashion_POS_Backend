@@ -65,4 +65,14 @@ public class PartyTransactionController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(List.of());
         }
     }
+
+    @GetMapping("/partial-or-unpaid")
+    public ResponseEntity<List<PartiesReportResponse>> getPartialOrUnpaidTransactions(@RequestParam Long partyId) {
+        try {
+            List<PartiesReportResponse> transactions = partyTransactionService.getPartialOrUnpaidTransactions(partyId);
+            return ResponseEntity.ok(transactions);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(List.of());
+        }
+    }
 }

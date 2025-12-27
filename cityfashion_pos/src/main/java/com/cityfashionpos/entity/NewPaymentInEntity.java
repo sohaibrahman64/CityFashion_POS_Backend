@@ -27,8 +27,8 @@ public class NewPaymentInEntity {
     @JoinColumn(name = "party_id")
     private PartyEntity party;
 
-    @Column(name = "payment_in_date")
-    private String paymentDate;
+    @Column(name = "payment_in_received_date")
+    private String paymentReceivedDate;
 
     @ManyToOne
     @JoinColumn(name = "payment_type")
@@ -36,9 +36,6 @@ public class NewPaymentInEntity {
 
     @Column(name = "payment_in_received_amount")
     private BigDecimal receivedAmount;
-
-    @Column(name = "payment_in_received_date")
-    private String receivedDate;
 
     @Column(name = "description")
     private String description;
@@ -73,12 +70,12 @@ public class NewPaymentInEntity {
         this.party = party;
     }
 
-    public String getPaymentDate() {
-        return paymentDate;
+    public String getPaymentReceivedDate() {
+        return paymentReceivedDate;
     }
 
-    public void setPaymentDate(String paymentDate) {
-        this.paymentDate = paymentDate;
+    public void setPaymentReceivedDate(String paymentDate) {
+        this.paymentReceivedDate = paymentDate;
     }
 
     public PaymentTypesEntity getPaymentType() {
@@ -119,14 +116,6 @@ public class NewPaymentInEntity {
 
     public void setUpdatedAt(String updatedAt) {
         this.updatedAt = updatedAt;
-    }
-
-    public String getReceivedDate() {
-        return receivedDate;
-    }
-
-    public void setReceivedDate(String receivedDate) {
-        this.receivedDate = receivedDate;
     }
 
 }

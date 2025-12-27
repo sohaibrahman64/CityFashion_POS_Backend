@@ -107,6 +107,7 @@ public class PartyServiceImpl implements PartyService {
         existingParty.setShippingAddress(updatedParty.getShippingAddress());
         existingParty.setEnableShipping(updatedParty.getEnableShipping());
         existingParty.setOpeningBalance(updatedParty.getOpeningBalance());
+        existingParty.setUpdatedBalance(updatedParty.getOpeningBalance());
         existingParty.setAsOfDate(updatedParty.getAsOfDate());
         existingParty.setPaymentType(updatedParty.getPaymentType());
         existingParty.setCreditLimitType(updatedParty.getCreditLimitType());

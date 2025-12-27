@@ -37,10 +37,10 @@ public class PartyTransactionEntity {
     @Column(name = "description", length = 500)
     private String description;
 
-    @Column(name = "invoice_id", nullable = true)
+    @Column(name = "invoice_id")
     private Long invoiceId;
 
-    @Column(name = "purchase_id", nullable = true)
+    @Column(name = "purchase_id")
     private Long purchaseId;
 
     @Column(name = "purchase_bill_number", length = 100)
@@ -49,7 +49,7 @@ public class PartyTransactionEntity {
     @Column(name = "party_phone", length = 10)
     private String partyPhone;
 
-    @Column(name = "reference_id", nullable = false)
+    @Column(name = "reference_id")
     private Long referenceId;
 
     @Column(name = "reference_number", length = 100)
@@ -67,16 +67,16 @@ public class PartyTransactionEntity {
     @Column(name = "updated_by", length = 100)
     private String updatedBy;
 
-    @Column(name = "transaction_type", nullable = false)
+    @Column(name = "transaction_type")
     private String transactionType; // e.g. SALE, PAYMENT, PURCHASE, REFUND
 
-    @Column(name = "date", nullable = false)
+    @Column(name = "date")
     private String date;
 
-    @Column(name = "party_balance", precision = 15, scale = 2, nullable = false)
+    @Column(name = "party_balance", precision = 15, scale = 2)
     private BigDecimal partyBalance;
 
-    @Column(name = "created_at", updatable = false)
+    @Column(name = "created_at")
     private String createdAt = LocalDateTime.now().toString();
 
     @Column(name = "updated_at")

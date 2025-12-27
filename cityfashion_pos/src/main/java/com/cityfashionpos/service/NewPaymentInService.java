@@ -37,8 +37,6 @@ public class NewPaymentInService {
 
         try {
             NewPaymentInEntity paymentInEntity = new NewPaymentInEntity();
-            // Optional<PartyEntity> party = partyRepository.findById(request.getPartyId());
-            // party.ifPresent(paymentInEntity::setParty);
             Optional<PartyEntity> partyOpt = partyRepository.findById(request.getPartyId());
             if (partyOpt.isPresent()) {
                 PartyEntity party = partyOpt.get();
@@ -54,13 +52,13 @@ public class NewPaymentInService {
                 partyRepository.save(party);
             }
 
-            paymentInEntity.setPaymentDate(request.getReceivedDate());
+            paymentInEntity.setPaymentReceivedDate(request.getReceivedDate());
             paymentInEntity.setReceiptNumber(request.getReceiptNumber());
             paymentInEntity.setDescription(request.getDescription());
             paymentInEntity.setReceivedAmount(request.getReceivedAmount());
             Optional<PaymentTypesEntity> paymentTypes = paymentTypesRepository.findById(request.getPaymentTypeId());
             paymentTypes.ifPresent(paymentInEntity::setPaymentType);
-            paymentInEntity.setPaymentDate(LocalDate.now().toString());
+            // paymentInEntity.setPaymentReceivedDate(LocalDate.now().toString());
             paymentInEntity.setCreatedAt(LocalDateTime.now().toString());
             paymentInEntity.setUpdatedAt(LocalDateTime.now().toString());
 
@@ -86,7 +84,7 @@ public class NewPaymentInService {
             response.setDescription(paymentInEntity.getDescription());
             response.setReceivedAmount(paymentInEntity.getReceivedAmount());
             response.setReceiptNumber(paymentInEntity.getReceiptNumber());
-            response.setReceivedDate(paymentInEntity.getReceivedDate());
+            response.setReceivedDate(paymentInEntity.getPaymentReceivedDate());
             response.setSuccess(true);
             response.setMessage("Payment In Transaction recorded successfully");
         } catch (Exception e) {
