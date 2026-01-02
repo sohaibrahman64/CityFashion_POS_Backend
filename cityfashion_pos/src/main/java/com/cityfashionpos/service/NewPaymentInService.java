@@ -1,7 +1,6 @@
 package com.cityfashionpos.service;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -12,9 +11,12 @@ import org.springframework.stereotype.Service;
 
 import com.cityfashionpos.dto.NewPaymentInRequest;
 import com.cityfashionpos.dto.NewPaymentInResponse;
+import com.cityfashionpos.entity.LinkPaymentInTxnEntity;
 import com.cityfashionpos.entity.NewPaymentInEntity;
 import com.cityfashionpos.entity.PartyEntity;
 import com.cityfashionpos.entity.PaymentTypesEntity;
+import com.cityfashionpos.repository.LinkPaymentInItemRepository;
+import com.cityfashionpos.repository.LinkPaymentInTxnRepository;
 import com.cityfashionpos.repository.NewPaymentInRepository;
 import com.cityfashionpos.repository.PartyRepository;
 import com.cityfashionpos.repository.PaymentTypesRepository;
@@ -30,6 +32,12 @@ public class NewPaymentInService {
 
     @Autowired
     private PaymentTypesRepository paymentTypesRepository;
+
+    @Autowired
+    private LinkPaymentInTxnRepository linkPaymentInTxnRepository;
+
+    @Autowired
+    private LinkPaymentInItemRepository linkPaymentInItemsRepository;
 
     @Transactional
     public NewPaymentInResponse createNewPaymentIn(NewPaymentInRequest request) {
@@ -52,13 +60,22 @@ public class NewPaymentInService {
                 partyRepository.save(party);
             }
 
+            Optional<LinkPaymentInTxnEntity> linkPaymentInTxnOpt = linkPaymentInTxnRepository
+                    .findById(request.getLinkPaymentInTxnId());
+
+            if (linkPaymentInTxnOpt.isPresent()) {
+                LinkPaymentInTxnEntity linkPaymentInTxn = linkPaymentInTxnOpt.get();
+                paymentInEntity.setLinkPaymentInTxn(linkPaymentInTxn);
+            }
+
             paymentInEntity.setPaymentReceivedDate(request.getReceivedDate());
             paymentInEntity.setReceiptNumber(request.getReceiptNumber());
             paymentInEntity.setDescription(request.getDescription());
             paymentInEntity.setReceivedAmount(request.getReceivedAmount());
+            paymentInEntity.setUnusedAmount(request.getUnusedAmount());
+
             Optional<PaymentTypesEntity> paymentTypes = paymentTypesRepository.findById(request.getPaymentTypeId());
             paymentTypes.ifPresent(paymentInEntity::setPaymentType);
-            // paymentInEntity.setPaymentReceivedDate(LocalDate.now().toString());
             paymentInEntity.setCreatedAt(LocalDateTime.now().toString());
             paymentInEntity.setUpdatedAt(LocalDateTime.now().toString());
 
@@ -81,10 +98,21 @@ public class NewPaymentInService {
                 response.setPaymentTypeInfo(paymentTypeInfo);
             }
 
+            if (paymentInEntity.getLinkPaymentInTxn() != null) {
+                NewPaymentInResponse.LinkedPaymentInTxnInfo linkPaymentInTxnInfo = new NewPaymentInResponse.LinkedPaymentInTxnInfo(
+                        paymentInEntity.getLinkPaymentInTxn().getId());
+                linkPaymentInTxnInfo.setLinkPaymentInTxnId(paymentInEntity.getLinkPaymentInTxn().getId());
+                linkPaymentInTxnInfo.setUnusedAmount(paymentInEntity.getLinkPaymentInTxn().getUnusedAmount());
+                linkPaymentInTxnInfo.setLinkedPaymentInItems(linkPaymentInItemsRepository
+                        .findByLinkPaymentInTxnId(paymentInEntity.getLinkPaymentInTxn().getId()));
+                response.setLinkedPaymentInTxnInfo(linkPaymentInTxnInfo);
+            }
+
             response.setDescription(paymentInEntity.getDescription());
             response.setReceivedAmount(paymentInEntity.getReceivedAmount());
             response.setReceiptNumber(paymentInEntity.getReceiptNumber());
             response.setReceivedDate(paymentInEntity.getPaymentReceivedDate());
+            response.setUnusedAmount(paymentInEntity.getUnusedAmount());
             response.setSuccess(true);
             response.setMessage("Payment In Transaction recorded successfully");
         } catch (Exception e) {

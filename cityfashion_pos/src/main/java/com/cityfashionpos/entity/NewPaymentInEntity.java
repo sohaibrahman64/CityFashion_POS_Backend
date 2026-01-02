@@ -20,6 +20,10 @@ public class NewPaymentInEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne
+    @JoinColumn(name = "link_payment_to_txn_id")
+    private LinkPaymentInTxnEntity linkPaymentInTxn;
+
     @Column(name = "receipt_number")
     private String receiptNumber;
 
@@ -37,6 +41,9 @@ public class NewPaymentInEntity {
     @Column(name = "payment_in_received_amount")
     private BigDecimal receivedAmount;
 
+    @Column(name = "unused_amount")
+    private BigDecimal unusedAmount;
+
     @Column(name = "description")
     private String description;
 
@@ -52,6 +59,14 @@ public class NewPaymentInEntity {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public LinkPaymentInTxnEntity getLinkPaymentInTxn() {
+        return linkPaymentInTxn;
+    }
+
+    public void setLinkPaymentInTxn(LinkPaymentInTxnEntity linkPaymentInTxn) {
+        this.linkPaymentInTxn = linkPaymentInTxn;
     }
 
     public String getReceiptNumber() {
@@ -116,6 +131,14 @@ public class NewPaymentInEntity {
 
     public void setUpdatedAt(String updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public BigDecimal getUnusedAmount() {
+        return unusedAmount;
+    }
+
+    public void setUnusedAmount(BigDecimal unusedAmount) {
+        this.unusedAmount = unusedAmount;
     }
 
 }

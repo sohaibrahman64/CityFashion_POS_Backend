@@ -13,6 +13,8 @@ public class NewPaymentInRequest {
     private Long paymentTypeId;
     private String receivedDate = LocalDate.now().toString();
     private String description;
+    private BigDecimal unusedAmount;
+    private Long linkPaymentInTxnId;
 
     public String getPartyName() {
         return partyName;
@@ -88,6 +90,22 @@ public class NewPaymentInRequest {
 
     public void setPaymentTypeId(Long paymentTypeId) {
         this.paymentTypeId = paymentTypeId;
+    }
+
+    public BigDecimal getUnusedAmount() {
+        return unusedAmount;
+    }
+
+    public void setUnusedAmount(BigDecimal unusedAmount) {
+        this.unusedAmount = unusedAmount;
+    }
+
+    public Long getLinkPaymentInTxnId() {
+        return linkPaymentInTxnId;
+    }
+
+    public void setLinkPaymentInTxnId(Long linkPaymentInTxnId) {
+        this.linkPaymentInTxnId = linkPaymentInTxnId;
     }
 
 }

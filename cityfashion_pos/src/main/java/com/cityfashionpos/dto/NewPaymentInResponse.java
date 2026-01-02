@@ -1,12 +1,17 @@
 package com.cityfashionpos.dto;
 
 import java.math.BigDecimal;
+import java.util.List;
+
+import com.cityfashionpos.entity.LinkPaymentInItemEntity;
 
 public class NewPaymentInResponse {
     private PartyInfo partyInfo;
     private PaymentTypeInfo paymentTypeInfo;
+    private LinkedPaymentInTxnInfo linkedPaymentInTxnInfo;
     private String receiptNumber;
     private BigDecimal receivedAmount;
+    private BigDecimal unusedAmount;
     private String paymentType;
     private String receivedDate;
     private String description;
@@ -19,6 +24,53 @@ public class NewPaymentInResponse {
 
     public void setPaymentTypeInfo(PaymentTypeInfo paymentTypeInfo) {
         this.paymentTypeInfo = paymentTypeInfo;
+    }
+
+    public static class LinkedPaymentInTxnInfo {
+        Long linkPaymentInTxnId;
+        BigDecimal linkedAmount;
+        BigDecimal unusedAmount;
+        List<LinkPaymentInItemEntity> linkedPaymentInItems;
+
+        public LinkedPaymentInTxnInfo() {
+        }
+
+        public LinkedPaymentInTxnInfo(Long linkPaymentInTxnId) {
+            this.linkPaymentInTxnId = linkPaymentInTxnId;
+        }
+
+        public Long getLinkPaymentInTxnId() {
+            return linkPaymentInTxnId;
+        }
+
+        public void setLinkPaymentInTxnId(Long linkPaymentInTxnId) {
+            this.linkPaymentInTxnId = linkPaymentInTxnId;
+        }
+
+        public BigDecimal getLinkedAmount() {
+            return linkedAmount;
+        }
+
+        public void setLinkedAmount(BigDecimal linkedAmount) {
+            this.linkedAmount = linkedAmount;
+        }
+
+        public BigDecimal getUnusedAmount() {
+            return unusedAmount;
+        }
+
+        public void setUnusedAmount(BigDecimal unusedAmount) {
+            this.unusedAmount = unusedAmount;
+        }
+
+        public List<LinkPaymentInItemEntity> getLinkedPaymentInItems() {
+            return linkedPaymentInItems;
+        }
+
+        public void setLinkedPaymentInItems(List<LinkPaymentInItemEntity> linkedPaymentInItems) {
+            this.linkedPaymentInItems = linkedPaymentInItems;
+        }
+
     }
 
     public static class PartyInfo {
@@ -184,6 +236,22 @@ public class NewPaymentInResponse {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public BigDecimal getUnusedAmount() {
+        return unusedAmount;
+    }
+
+    public void setUnusedAmount(BigDecimal unusedAmount) {
+        this.unusedAmount = unusedAmount;
+    }
+
+    public LinkedPaymentInTxnInfo getLinkedPaymentInTxnInfo() {
+        return linkedPaymentInTxnInfo;
+    }
+
+    public void setLinkedPaymentInTxnInfo(LinkedPaymentInTxnInfo linkedPaymentInTxnInfo) {
+        this.linkedPaymentInTxnInfo = linkedPaymentInTxnInfo;
     }
 
 }
