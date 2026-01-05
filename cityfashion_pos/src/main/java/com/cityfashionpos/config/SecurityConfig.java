@@ -78,6 +78,8 @@ public class SecurityConfig {
                         .antMatchers("/api/payment-in-transactions/**").permitAll()
                         .antMatchers("/api/link-payment-in-txn/*").permitAll()
                         .antMatchers("/api/link-payment-in-txn/**").permitAll()
+                        .antMatchers("/api/payment-in-history/*").permitAll()
+                        .antMatchers("/api/payment-in-history/**").permitAll()
                         .anyRequest().authenticated() // Protect other endpoints
                 )
                 .httpBasic(Customizer.withDefaults()); // Optional: enable basic auth

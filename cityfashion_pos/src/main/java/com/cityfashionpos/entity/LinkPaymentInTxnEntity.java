@@ -20,10 +20,6 @@ public class LinkPaymentInTxnEntity {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "payment_in_id")
-    private NewPaymentInEntity newPaymentInEntity;
-
-    @ManyToOne
     @JoinColumn(name = "party_id")
     private PartyEntity partyEntity;
 
@@ -77,14 +73,6 @@ public class LinkPaymentInTxnEntity {
 
     public void setUpdatedAt(String updatedAt) {
         this.updatedAt = updatedAt;
-    }
-
-    public NewPaymentInEntity getNewPaymentInEntity() {
-        return newPaymentInEntity;
-    }
-
-    public void setNewPaymentInEntity(NewPaymentInEntity newPaymentInEntity) {
-        this.newPaymentInEntity = newPaymentInEntity;
     }
 
     public PartyEntity getPartyEntity() {

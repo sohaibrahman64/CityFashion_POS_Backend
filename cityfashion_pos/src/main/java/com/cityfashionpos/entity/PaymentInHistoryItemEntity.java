@@ -12,19 +12,16 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "link_payment_in_items")
-public class LinkPaymentInItemEntity {
+@Table(name = "payment_in_history_item")
+public class PaymentInHistoryItemEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "link_payment_in_id")
-    private LinkPaymentInTxnEntity linkPaymentInTxnEntity;
-
-    @ManyToOne
-    @JoinColumn(name = "party_transaction_id")
-    private PartyTransactionEntity partyTransactionEntity;
+    @JoinColumn(name = "payment_in_history_id")
+    private PaymentInHistoryEntity paymentInHistory;
 
     @Column(name = "reference_number")
     private String referenceNumber;
@@ -32,7 +29,11 @@ public class LinkPaymentInItemEntity {
     @Column(name = "linked_amount")
     private BigDecimal linkedAmount;
 
-    // Getters and setters
+    @Column(name = "transaction_type")
+    private String transactionType;
+
+    @Column(name = "transaction_date")
+    private String transactionDate;
 
     public Long getId() {
         return id;
@@ -42,20 +43,12 @@ public class LinkPaymentInItemEntity {
         this.id = id;
     }
 
-    public LinkPaymentInTxnEntity getLinkPaymentInTxnEntity() {
-        return linkPaymentInTxnEntity;
+    public PaymentInHistoryEntity getPaymentInHistory() {
+        return paymentInHistory;
     }
 
-    public void setLinkPaymentInTxnEntity(LinkPaymentInTxnEntity linkPaymentInEntity) {
-        this.linkPaymentInTxnEntity = linkPaymentInEntity;
-    }
-
-    public PartyTransactionEntity getPartyTransactionEntity() {
-        return partyTransactionEntity;
-    }
-
-    public void setPartyTransactionEntity(PartyTransactionEntity partyTransactionEntity) {
-        this.partyTransactionEntity = partyTransactionEntity;
+    public void setPaymentInHistory(PaymentInHistoryEntity paymentInHistory) {
+        this.paymentInHistory = paymentInHistory;
     }
 
     public String getReferenceNumber() {
@@ -73,4 +66,21 @@ public class LinkPaymentInItemEntity {
     public void setLinkedAmount(BigDecimal linkedAmount) {
         this.linkedAmount = linkedAmount;
     }
+
+    public String getTransactionType() {
+        return transactionType;
+    }
+
+    public void setTransactionType(String transactionType) {
+        this.transactionType = transactionType;
+    }
+
+    public String getTransactionDate() {
+        return transactionDate;
+    }
+
+    public void setTransactionDate(String transactionDate) {
+        this.transactionDate = transactionDate;
+    }
+
 }

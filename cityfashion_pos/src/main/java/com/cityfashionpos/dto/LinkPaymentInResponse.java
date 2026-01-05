@@ -17,6 +17,8 @@ public class LinkPaymentInResponse {
         Long partyTransactionId;
         BigDecimal linkedAmount;
         String referenceNumber;
+        String transactionType;
+        String transactionDate;
 
         public Long getPartyTransactionId() {
             return partyTransactionId;
@@ -40,6 +42,22 @@ public class LinkPaymentInResponse {
 
         public void setReferenceNumber(String referenceNumber) {
             this.referenceNumber = referenceNumber;
+        }
+
+        public String getTransactionType() {
+            return transactionType;
+        }
+
+        public void setTransactionType(String transactionType) {
+            this.transactionType = transactionType;
+        }
+
+        public String getTransactionDate() {
+            return transactionDate;
+        }
+
+        public void setTransactionDate(String transactionDate) {
+            this.transactionDate = transactionDate;
         }
     }
 

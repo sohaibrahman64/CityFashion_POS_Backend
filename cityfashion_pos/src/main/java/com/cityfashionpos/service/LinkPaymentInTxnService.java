@@ -11,9 +11,8 @@ import org.springframework.stereotype.Service;
 
 import com.cityfashionpos.dto.LinkPaymentInRequest;
 import com.cityfashionpos.dto.LinkPaymentInResponse;
-import com.cityfashionpos.entity.LinkPaymentInTxnEntity;
 import com.cityfashionpos.entity.LinkPaymentInItemEntity;
-import com.cityfashionpos.entity.NewPaymentInEntity;
+import com.cityfashionpos.entity.LinkPaymentInTxnEntity;
 import com.cityfashionpos.entity.PartyEntity;
 import com.cityfashionpos.entity.PartyTransactionEntity;
 import com.cityfashionpos.repository.LinkPaymentInItemRepository;
@@ -43,13 +42,6 @@ public class LinkPaymentInTxnService {
         LinkPaymentInResponse response = new LinkPaymentInResponse();
         try {
             LinkPaymentInTxnEntity linkPaymentInEntity = new LinkPaymentInTxnEntity();
-            Optional<NewPaymentInEntity> paymentInOpt = request.getPaymentInId() != null
-                    ? paymentInRepository.findById(request.getPaymentInId())
-                    : Optional.empty();
-            if (paymentInOpt.isPresent()) {
-                NewPaymentInEntity paymentIn = paymentInOpt.get();
-                linkPaymentInEntity.setNewPaymentInEntity(paymentIn);
-            }
 
             Optional<PartyEntity> partyOpt = request.getParty().getId() != null
                     ? partyRepository.findById(request.getParty().getId())
@@ -89,6 +81,8 @@ public class LinkPaymentInTxnService {
                 if (partyTransactionOpt.isPresent()) {
                     PartyTransactionEntity partyTransaction = partyTransactionOpt.get();
                     itemResponse.setPartyTransactionId(partyTransaction.getId());
+                    itemResponse.setTransactionType(partyTransaction.getTransactionType());
+                    itemResponse.setTransactionDate(partyTransaction.getDate());
                 }
                 itemResponse.setReferenceNumber(itemRequest.getReferenceNumber());
                 itemResponse.setLinkedAmount(itemRequest.getLinkedAmount());
@@ -103,9 +97,6 @@ public class LinkPaymentInTxnService {
             response.setLinkedAmountItems(responseItems);
             response.setLinkPaymentInTxnId(linkPaymentInEntity.getId());
             response.setPartyId(linkPaymentInEntity.getPartyEntity().getId());
-            response.setPaymentInId(linkPaymentInEntity.getNewPaymentInEntity() != null
-                    ? linkPaymentInEntity.getNewPaymentInEntity().getId()
-                    : null);
             response.setReceivedAmount(linkPaymentInEntity.getReceivedAmount());
             response.setUnusedAmount(linkPaymentInEntity.getUnusedAmount());
 
