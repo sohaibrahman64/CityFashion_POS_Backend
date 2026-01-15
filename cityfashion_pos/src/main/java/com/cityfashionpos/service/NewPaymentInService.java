@@ -2,6 +2,7 @@ package com.cityfashionpos.service;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -11,14 +12,17 @@ import org.springframework.stereotype.Service;
 
 import com.cityfashionpos.dto.NewPaymentInRequest;
 import com.cityfashionpos.dto.NewPaymentInResponse;
+import com.cityfashionpos.entity.LinkPaymentInItemEntity;
 import com.cityfashionpos.entity.LinkPaymentInTxnEntity;
 import com.cityfashionpos.entity.NewPaymentInEntity;
 import com.cityfashionpos.entity.PartyEntity;
+import com.cityfashionpos.entity.PartyTransactionEntity;
 import com.cityfashionpos.entity.PaymentTypesEntity;
 import com.cityfashionpos.repository.LinkPaymentInItemRepository;
 import com.cityfashionpos.repository.LinkPaymentInTxnRepository;
 import com.cityfashionpos.repository.NewPaymentInRepository;
 import com.cityfashionpos.repository.PartyRepository;
+import com.cityfashionpos.repository.PartyTransactionRepository;
 import com.cityfashionpos.repository.PaymentTypesRepository;
 
 @Service
@@ -38,6 +42,9 @@ public class NewPaymentInService {
 
     @Autowired
     private LinkPaymentInItemRepository linkPaymentInItemsRepository;
+
+    @Autowired
+    private PartyTransactionRepository partyTransactionRepository;
 
     @Transactional
     public NewPaymentInResponse createNewPaymentIn(NewPaymentInRequest request) {
@@ -66,6 +73,39 @@ public class NewPaymentInService {
             if (linkPaymentInTxnOpt.isPresent()) {
                 LinkPaymentInTxnEntity linkPaymentInTxn = linkPaymentInTxnOpt.get();
                 paymentInEntity.setLinkPaymentInTxn(linkPaymentInTxn);
+
+                // Query linked payment items by linkPaymentInTxnId
+                List<LinkPaymentInItemEntity> linkedPaymentInItems = linkPaymentInItemsRepository
+                        .findByLinkPaymentInTxnId(request.getLinkPaymentInTxnId());
+
+                // Extract partyTransactionEntity from linked items
+                for (LinkPaymentInItemEntity item : linkedPaymentInItems) {
+                    PartyTransactionEntity partyTransaction = item
+                            .getPartyTransactionEntity();
+                    if (partyTransaction != null) {
+                        BigDecimal partyBalance = partyTransaction.getPartyBalance();
+                        BigDecimal linkedAmount = item.getLinkedAmount();
+
+                        // Check if partyBalance equals linkedAmount
+                        if (partyBalance != null && linkedAmount != null) {
+                            if (partyBalance.compareTo(linkedAmount) == 0) {
+                                // Update partyBalance to 0 and status to "PAID"
+                                partyTransaction.setPartyBalance(BigDecimal.ZERO);
+                                partyTransaction.setStatus("PAID");
+                            } else if (linkedAmount.compareTo(BigDecimal.ZERO) > 0 &&
+                                    linkedAmount.compareTo(partyBalance) < 0) {
+                                // linkedAmount is less than partyBalance
+                                // Update partyBalance with the difference and keep status as "PARTIAL"
+                                BigDecimal remainingBalance = partyBalance.subtract(linkedAmount);
+                                partyTransaction.setPartyBalance(remainingBalance);
+                                partyTransaction.setStatus("PARTIAL");
+                            }
+                        }
+
+                        // Save the updated party transaction
+                        partyTransactionRepository.save(partyTransaction);
+                    }
+                }
             }
 
             paymentInEntity.setPaymentReceivedDate(request.getReceivedDate());

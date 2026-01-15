@@ -2,6 +2,7 @@ package com.cityfashionpos.model;
 
 public enum TransactionType {
     SALE("Sale"),
+    SALES_ORDER("Sales Order"),
     PURCHASE("Purchase"),
     STOCK_ADJUSTMENT("Stock Adjustment"),
     STOCK_TRANSFER("Stock Transfer"),

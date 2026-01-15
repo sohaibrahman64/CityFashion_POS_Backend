@@ -80,6 +80,10 @@ public class SecurityConfig {
                         .antMatchers("/api/link-payment-in-txn/**").permitAll()
                         .antMatchers("/api/payment-in-history/*").permitAll()
                         .antMatchers("/api/payment-in-history/**").permitAll()
+                        .antMatchers("/api/sales-order/*").permitAll()
+                        .antMatchers("/api/sales-order/**").permitAll()
+                        .antMatchers("/api/sales-order-transactions/*").permitAll()
+                        .antMatchers("/api/sales-order-transactions/**").permitAll()
                         .anyRequest().authenticated() // Protect other endpoints
                 )
                 .httpBasic(Customizer.withDefaults()); // Optional: enable basic auth

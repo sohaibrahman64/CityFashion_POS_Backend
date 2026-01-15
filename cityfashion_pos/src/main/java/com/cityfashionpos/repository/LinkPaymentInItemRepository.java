@@ -14,4 +14,7 @@ public interface LinkPaymentInItemRepository extends JpaRepository<LinkPaymentIn
 
     @Query("SELECT item FROM LinkPaymentInItemEntity item WHERE item.linkPaymentInTxnEntity.id = :linkPaymentInTxnId")
     List<LinkPaymentInItemEntity> findByLinkPaymentInTxnId(Long linkPaymentInTxnId);
+
+    @Query("SELECT item FROM LinkPaymentInItemEntity item WHERE item.partyTransactionEntity.id = :partyTransactionId")
+    List<LinkPaymentInItemEntity> findByPartyTransactionId(Long partyTransactionId);
 }
