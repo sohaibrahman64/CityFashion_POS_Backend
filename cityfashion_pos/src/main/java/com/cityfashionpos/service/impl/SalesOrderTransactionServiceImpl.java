@@ -96,8 +96,8 @@ public class SalesOrderTransactionServiceImpl implements SalesOrderTransactionSe
                         BigDecimal totalOverdueAmount = salesOrderTransactionRepository
                                         .getTotalOverdueAmountForDateRange(fromDate.toString(),
                                                         toDate.toString());
-                        BigDecimal totalFulfilledAmount = salesOrderTransactionRepository
-                                        .getTotalFulfilledAmountForDateRange(fromDate.toString(),
+                        BigDecimal totalAdvanceAmount = salesOrderTransactionRepository
+                                        .getTotalAdvanceAmountForDateRange(fromDate.toString(),
                                                         toDate.toString());
 
                         LocalDate firstDayLastMonth = fromDate.minusMonths(1).withDayOfMonth(1);
@@ -108,7 +108,7 @@ public class SalesOrderTransactionServiceImpl implements SalesOrderTransactionSe
                         totalSalesOrderAmount = totalSalesOrderAmount != null ? totalSalesOrderAmount
                                         : BigDecimal.ZERO;
                         totalOverdueAmount = totalOverdueAmount != null ? totalOverdueAmount : BigDecimal.ZERO;
-                        totalFulfilledAmount = totalFulfilledAmount != null ? totalFulfilledAmount : BigDecimal.ZERO;
+                        totalAdvanceAmount = totalAdvanceAmount != null ? totalAdvanceAmount : BigDecimal.ZERO;
 
                         BigDecimal lastMonthSalesOrderAmount = salesOrderTransactionRepository
                                         .getTotalSalesOrderAmountForDateRange(firstDayLastMonth.toString(),
@@ -117,8 +117,8 @@ public class SalesOrderTransactionServiceImpl implements SalesOrderTransactionSe
                                         .getTotalOverdueAmountForDateRange(
                                                         firstDayLastMonth.toString(),
                                                         lastDayLastMonth.toString());
-                        BigDecimal lastMonthFulfilledAmount = salesOrderTransactionRepository
-                                        .getTotalFulfilledAmountForDateRange(
+                        BigDecimal lastMonthAdvanceAmount = salesOrderTransactionRepository
+                                        .getTotalAdvanceAmountForDateRange(
                                                         firstDayLastMonth.toString(),
                                                         lastDayLastMonth.toString());
 
@@ -127,11 +127,11 @@ public class SalesOrderTransactionServiceImpl implements SalesOrderTransactionSe
                                         : BigDecimal.ZERO;
                         lastMonthOverdueAmount = lastMonthOverdueAmount != null ? lastMonthOverdueAmount
                                         : BigDecimal.ZERO;
-                        lastMonthFulfilledAmount = lastMonthFulfilledAmount != null ? lastMonthFulfilledAmount
+                        lastMonthAdvanceAmount = lastMonthAdvanceAmount != null ? lastMonthAdvanceAmount
                                         : BigDecimal.ZERO;
 
                         BigDecimal lastMonthTotalSalesOrderAmount = lastMonthOverdueAmount
-                                        .add(lastMonthFulfilledAmount);
+                                        .add(lastMonthAdvanceAmount);
 
                         // Calculate percentage change
                         BigDecimal percentageData = calculatePercentageChangeVsLastMonth(totalSalesOrderAmount,
@@ -139,12 +139,12 @@ public class SalesOrderTransactionServiceImpl implements SalesOrderTransactionSe
                         Map<String, BigDecimal> totals = new HashMap<>();
                         totals.put("totalSalesOrderAmount", totalSalesOrderAmount);
                         totals.put("totalOverdueAmount", totalOverdueAmount);
-                        totals.put("totalFulfilledAmount", totalFulfilledAmount);
+                        totals.put("totalAdvanceAmount", totalAdvanceAmount);
                         totals.put("percentageChange", percentageData);
 
-                        logger.info("Date range totals from {} to {}: Total: {}, Overdue: {}, Fulfilled: {}",
+                        logger.info("Date range totals from {} to {}: Total: {}, Overdue: {}, Advance: {}",
                                         fromDate, toDate, totalSalesOrderAmount, totalOverdueAmount,
-                                        totalFulfilledAmount);
+                                        totalAdvanceAmount);
                         return totals;
                 } catch (Exception e) {
                         logger.error("Error calculating totals for date range {} to {}: {}", fromDate, toDate,
@@ -152,7 +152,7 @@ public class SalesOrderTransactionServiceImpl implements SalesOrderTransactionSe
                         Map<String, BigDecimal> errorMap = new HashMap<>();
                         errorMap.put("totalSalesOrderAmount", BigDecimal.ZERO);
                         errorMap.put("totalOverdueAmount", BigDecimal.ZERO);
-                        errorMap.put("totalFulfilledAmount", BigDecimal.ZERO);
+                        errorMap.put("totalAdvanceAmount", BigDecimal.ZERO);
                         return errorMap;
                 }
         }
@@ -162,8 +162,8 @@ public class SalesOrderTransactionServiceImpl implements SalesOrderTransactionSe
                 try {
                         // Get current totals (all-time)
                         BigDecimal totalOverdueAmount = salesOrderTransactionRepository.getTotalOverdueAmount();
-                        BigDecimal totalFulfilledAmount = salesOrderTransactionRepository
-                                        .getTotalFulfilledAmount();
+                        BigDecimal totalAdvanceAmount = salesOrderTransactionRepository
+                                        .getTotalAdvanceAmount();
 
                         LocalDate firstDayLastMonth = LocalDate.now().minusMonths(1).withDayOfMonth(1);
                         LocalDate lastDayLastMonth = firstDayLastMonth
@@ -171,29 +171,29 @@ public class SalesOrderTransactionServiceImpl implements SalesOrderTransactionSe
 
                         // Ensure values are not null
                         totalOverdueAmount = totalOverdueAmount != null ? totalOverdueAmount : BigDecimal.ZERO;
-                        totalFulfilledAmount = totalFulfilledAmount != null ? totalFulfilledAmount : BigDecimal.ZERO;
+                        totalAdvanceAmount = totalAdvanceAmount != null ? totalAdvanceAmount : BigDecimal.ZERO;
 
-                        BigDecimal totalSalesOrderAmount = totalOverdueAmount.add(totalFulfilledAmount);
+                        BigDecimal totalSalesOrderAmount = totalOverdueAmount.add(totalAdvanceAmount);
 
                         // Get last month's totals for comparison
                         BigDecimal lastMonthTotalOverdueAmount = salesOrderTransactionRepository
                                         .getLastMonthTotalOverdueAmount(
                                                         firstDayLastMonth.toString(),
                                                         lastDayLastMonth.toString());
-                        BigDecimal lastMonthTotalFulfilledAmount = salesOrderTransactionRepository
-                                        .getLastMonthTotalFulfilledAmount(
+                        BigDecimal lastMonthTotalAdvanceAmount = salesOrderTransactionRepository
+                                        .getLastMonthTotalAdvanceAmount(
                                                         firstDayLastMonth.toString(),
                                                         lastDayLastMonth.toString());
 
                         // Ensure last month values are not null, default to 0
                         lastMonthTotalOverdueAmount = lastMonthTotalOverdueAmount != null ? lastMonthTotalOverdueAmount
                                         : BigDecimal.ZERO;
-                        lastMonthTotalFulfilledAmount = lastMonthTotalFulfilledAmount != null
-                                        ? lastMonthTotalFulfilledAmount
+                        lastMonthTotalAdvanceAmount = lastMonthTotalAdvanceAmount != null
+                                        ? lastMonthTotalAdvanceAmount
                                         : BigDecimal.ZERO;
 
                         BigDecimal lastMonthTotalSalesOrderAmount = lastMonthTotalOverdueAmount
-                                        .add(lastMonthTotalFulfilledAmount);
+                                        .add(lastMonthTotalAdvanceAmount);
                         // Calculate percentage change
                         BigDecimal percentageData = calculatePercentageChangeVsLastMonth(totalSalesOrderAmount,
                                         lastMonthTotalSalesOrderAmount);
@@ -201,12 +201,12 @@ public class SalesOrderTransactionServiceImpl implements SalesOrderTransactionSe
                         Map<String, BigDecimal> totals = new HashMap<>();
                         totals.put("totalSalesOrderAmount", totalSalesOrderAmount);
                         totals.put("totalOverdueAmount", totalOverdueAmount);
-                        totals.put("totalFulfilledAmount", totalFulfilledAmount);
+                        totals.put("totalAdvanceAmount", totalAdvanceAmount);
                         totals.put("percentageChange", percentageData);
 
                         logger.info(
-                                        "Total Sales Order Amount: {}, Total Overdue Amount: {}, Total Fulfilled amount: {}, Last month Sales Order Amount: {}, Percentage change: {}%",
-                                        totalSalesOrderAmount, totalOverdueAmount, totalFulfilledAmount,
+                                        "Total Sales Order Amount: {}, Total Overdue Amount: {}, Total Advance amount: {}, Last month Sales Order Amount: {}, Percentage change: {}%",
+                                        totalSalesOrderAmount, totalOverdueAmount, totalAdvanceAmount,
                                         lastMonthTotalSalesOrderAmount, percentageData);
                         return totals;
                 } catch (Exception e) {

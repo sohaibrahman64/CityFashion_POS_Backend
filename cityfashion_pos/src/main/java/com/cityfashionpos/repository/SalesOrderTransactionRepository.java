@@ -26,8 +26,15 @@ public interface SalesOrderTransactionRepository extends JpaRepository<SalesOrde
         BigDecimal getTotalFulfilledAmountForDateRange(@Param("startDate") String startDate,
                         @Param("endDate") String endDate);
 
+        @Query("SELECT SUM(sot.advanceAmount) FROM SalesOrderTransactionEntity sot WHERE sot.orderDate BETWEEN :startDate AND :endDate")
+        BigDecimal getTotalAdvanceAmountForDateRange(@Param("startDate") String startDate,
+                        @Param("endDate") String endDate);
+
         @Query("SELECT SUM(sot.totalAmount) FROM SalesOrderTransactionEntity sot WHERE sot.balanceAmount = 0")
         BigDecimal getTotalFulfilledAmount();
+
+        @Query("SELECT SUM(sot.advanceAmount) FROM SalesOrderTransactionEntity sot")
+        BigDecimal getTotalAdvanceAmount();
 
         @Query("SELECT SUM(sot.balanceAmount) FROM SalesOrderTransactionEntity sot WHERE sot.balanceAmount > 0")
         BigDecimal getTotalOverdueAmount();
@@ -38,6 +45,10 @@ public interface SalesOrderTransactionRepository extends JpaRepository<SalesOrde
 
         @Query("SELECT SUM(sot.totalAmount - sot.balanceAmount) FROM SalesOrderTransactionEntity sot WHERE sot.orderDate BETWEEN :startDate AND :endDate")
         BigDecimal getLastMonthTotalFulfilledAmount(@Param("startDate") String startDate,
+                        @Param("endDate") String endDate);
+
+        @Query("SELECT SUM(sot.advanceAmount) FROM SalesOrderTransactionEntity sot WHERE sot.orderDate BETWEEN :startDate AND :endDate")
+        BigDecimal getLastMonthTotalAdvanceAmount(@Param("startDate") String startDate,
                         @Param("endDate") String endDate);
 
         @Query("SELECT st FROM SalesOrderTransactionEntity st WHERE st.orderDate BETWEEN :startDate AND :endDate ORDER BY st.orderDate DESC")
