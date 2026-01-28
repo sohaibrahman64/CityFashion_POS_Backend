@@ -1,8 +1,12 @@
 package com.cityfashionpos.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,6 +40,21 @@ public class NewProformaInvoiceController {
             errorResponse.setMessage("Error processing request: " + e.getMessage());
             return ResponseEntity.badRequest().body(errorResponse);
         }
+    }
+
+    @GetMapping("/proforma-invoice-number")
+    public ResponseEntity<Map<String, String>> generateProformaInvoiceNumber() {
+        Long latestId = newProformaInvoiceRepository.findMaxProformaInvoiceId();
+
+        if (latestId == null) {
+            latestId = 0L;
+        }
+
+        String nextProformaInvoiceNumber = String.format("PI-%05d", latestId + 1);
+        Map<String, String> response = new HashMap<>();
+        response.put("proformaInvoiceNumber", nextProformaInvoiceNumber);
+
+        return ResponseEntity.ok(response);
     }
 
 }

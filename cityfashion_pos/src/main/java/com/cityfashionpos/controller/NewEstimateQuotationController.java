@@ -41,7 +41,7 @@ public class NewEstimateQuotationController {
         }
     }
 
-    @GetMapping("estimate-number")
+    @GetMapping("/estimate-number")
     public ResponseEntity<Map<String, String>> generateEstimateNumber() {
         Long latestId = newEstimateQuotationRepository.findMaxEstimateQuotationId();
 

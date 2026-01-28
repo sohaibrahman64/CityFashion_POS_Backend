@@ -65,8 +65,16 @@ public class ProformaInvoiceTransactionImpl implements ProformaInvoiceTransactio
 
         @Override
         public List<ProformaInvoiceTransactionResponse> getAllProformaInvoiceTransactions() {
-                // TODO Auto-generated method stub
-                throw new UnsupportedOperationException("Unimplemented method 'getAllProformaInvoiceTransactions'");
+                try {
+                        List<ProformaInvoiceTransactionEntity> entities = proformaInvoiceTransactionRepository
+                                        .findAll();
+                        return entities.stream()
+                                        .map(entity -> mapEntityToResponse(entity, true, null))
+                                        .collect(Collectors.toList());
+                } catch (Exception e) {
+                        logger.error("Error fetching all delivery challan transactions: {}", e.getMessage(), e);
+                        return List.of();
+                }
         }
 
         @Override

@@ -84,6 +84,10 @@ public class SecurityConfig {
                         .antMatchers("/api/sales-order/**").permitAll()
                         .antMatchers("/api/sales-order-transactions/*").permitAll()
                         .antMatchers("/api/sales-order-transactions/**").permitAll()
+                        .antMatchers("/api/delivery-challan/*").permitAll()
+                        .antMatchers("/api/delivery-challan/**").permitAll()
+                        .antMatchers("/api/delivery-challan-transactions/*").permitAll()
+                        .antMatchers("/api/delivery-challan-transactions/**").permitAll()
                         .anyRequest().authenticated() // Protect other endpoints
                 )
                 .httpBasic(Customizer.withDefaults()); // Optional: enable basic auth
