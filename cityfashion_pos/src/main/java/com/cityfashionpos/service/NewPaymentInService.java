@@ -67,8 +67,11 @@ public class NewPaymentInService {
                 partyRepository.save(party);
             }
 
-            Optional<LinkPaymentInTxnEntity> linkPaymentInTxnOpt = linkPaymentInTxnRepository
-                    .findById(request.getLinkPaymentInTxnId());
+            Optional<LinkPaymentInTxnEntity> linkPaymentInTxnOpt = Optional.empty();
+            if (request.getLinkPaymentInTxnId() != null) {
+                linkPaymentInTxnOpt = linkPaymentInTxnRepository
+                        .findById(request.getLinkPaymentInTxnId());
+            }
 
             if (linkPaymentInTxnOpt.isPresent()) {
                 LinkPaymentInTxnEntity linkPaymentInTxn = linkPaymentInTxnOpt.get();
