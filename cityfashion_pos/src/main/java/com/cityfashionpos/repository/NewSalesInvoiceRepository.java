@@ -1,6 +1,7 @@
 package com.cityfashionpos.repository;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -11,6 +12,9 @@ import com.cityfashionpos.entity.NewSalesInvoiceEntity;
 
 @Repository
 public interface NewSalesInvoiceRepository extends JpaRepository<NewSalesInvoiceEntity, Long> {
+    @Query("SELECT invoice.invoiceNumber FROM NewSalesInvoiceEntity invoice")
+    List<String> findAllInvoiceNumbers();
+
     @Query("SELECT MAX(invoice.id) FROM NewSalesInvoiceEntity invoice")
     Long findMaxInvoiceId();
 

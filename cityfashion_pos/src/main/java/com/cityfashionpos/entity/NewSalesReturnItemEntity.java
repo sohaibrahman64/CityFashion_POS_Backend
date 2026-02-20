@@ -1,31 +1,36 @@
 package com.cityfashionpos.entity;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
-@Table(name = "new_sales_invoice_items")
-public class NewSalesInvoiceItemEntity {
+@Table(name = "new_sales_return_items")
+public class NewSalesReturnItemEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "invoice_id")
-    private Long invoiceId; // Reference to Invoice
+    @Column(name = "sales_return_id")
+    private Long salesReturnId;
 
     @Column(name = "item_id")
-    private Long itemId; // Reference to Items
+    private Long itemId;
 
     @Column(name = "quantity")
     private Integer quantity;
 
     @Column(name = "price")
-    private Double price; // Unit price at the time of sale
+    private Double price;
 
     @Column(name = "total_price")
-    private Double total; // price * quantity
+    private Double total;
 
     @Column(name = "tax_percent", precision = 5, scale = 2)
-    private Double taxPercent; // snapshot of applied rate
+    private Double taxPercent;
 
     @Column(name = "discount_percent")
     private Double discountPercent;
@@ -37,7 +42,7 @@ public class NewSalesInvoiceItemEntity {
     private Double taxAmount;
 
     @Column(name = "tax_rate_id")
-    private Long taxRateId; // Reference to TaxRateEntity
+    private Long taxRateId;
 
     @Column(name = "tax_rate")
     private Long tax_rate_index;
@@ -50,12 +55,12 @@ public class NewSalesInvoiceItemEntity {
         this.id = id;
     }
 
-    public Long getInvoiceId() {
-        return invoiceId;
+    public Long getSalesReturnId() {
+        return salesReturnId;
     }
 
-    public void setInvoiceId(Long invoiceId) {
-        this.invoiceId = invoiceId;
+    public void setSalesReturnId(Long salesReturnId) {
+        this.salesReturnId = salesReturnId;
     }
 
     public Long getItemId() {

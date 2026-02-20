@@ -1,25 +1,29 @@
 package com.cityfashionpos.dto;
 
+import java.time.LocalDate;
 import java.util.List;
 
-public class NewSalesInvoiceRequest {
+public class NewSalesReturnRequest {
+    private Long invoiceId;
+    private String invoiceNumber;
+    private LocalDate invoiceDate;
     private Long partyId;
     private String partyName;
     private String partyPhone;
-    private List<NewSalesInvoiceItemRequest> items;
-    private Double receivedAmount;
+    private List<NewSalesReturnItemRequest> items;
+    private Double paidAmount;
     private Double totalAmount;
     private Double discountAmount;
     private Double balanceAmount;
     private Double subtotalAmount;
     private String amountInWords;
-    private Boolean isFullyReceived;
+    private Boolean isFullyPaid;
     private Double totalTaxAmount;
     private Double taxableAmount;
     private String billingAddress;
     private String shippingAddress;
 
-    public static class NewSalesInvoiceItemRequest {
+    public static class NewSalesReturnItemRequest {
         private Long id;
         private String itemName;
         private Integer quantity;
@@ -28,7 +32,7 @@ public class NewSalesInvoiceRequest {
         private Double discountAmount;
         private Double total;
         private Long itemId;
-        private Long taxRateId; // Reference to selected tax rate
+        private Long taxRateId;
         private Long taxRateIndex;
         private Double taxAmount;
         private Double taxPercent;
@@ -93,8 +97,8 @@ public class NewSalesInvoiceRequest {
             return itemId;
         }
 
-        public void setItemId(Long productId) {
-            this.itemId = productId;
+        public void setItemId(Long itemId) {
+            this.itemId = itemId;
         }
 
         public Long getTaxRateId() {
@@ -128,7 +132,14 @@ public class NewSalesInvoiceRequest {
         public void setTaxRateIndex(Long taxRateIndex) {
             this.taxRateIndex = taxRateIndex;
         }
+    }
 
+    public Long getInvoiceId() {
+        return invoiceId;
+    }
+
+    public void setInvoiceId(Long invoiceId) {
+        this.invoiceId = invoiceId;
     }
 
     public Long getPartyId() {
@@ -151,32 +162,32 @@ public class NewSalesInvoiceRequest {
         return partyPhone;
     }
 
-    public void setPartyPhone(String customerPhone) {
-        this.partyPhone = customerPhone;
+    public void setPartyPhone(String partyPhone) {
+        this.partyPhone = partyPhone;
     }
 
-    public List<NewSalesInvoiceItemRequest> getItems() {
+    public List<NewSalesReturnItemRequest> getItems() {
         return items;
     }
 
-    public void setItems(List<NewSalesInvoiceItemRequest> items) {
+    public void setItems(List<NewSalesReturnItemRequest> items) {
         this.items = items;
     }
 
-    public Double getReceivedAmount() {
-        return receivedAmount;
+    public Double getPaidAmount() {
+        return paidAmount;
     }
 
-    public void setReceivedAmount(Double receivedAmount) {
-        this.receivedAmount = receivedAmount;
+    public void setPaidAmount(Double receivedAmount) {
+        this.paidAmount = receivedAmount;
     }
 
-    public Boolean getIsFullyReceived() {
-        return isFullyReceived;
+    public Boolean getIsFullyPaid() {
+        return isFullyPaid;
     }
 
-    public void setIsFullyReceived(Boolean isFullyReceived) {
-        this.isFullyReceived = isFullyReceived;
+    public void setIsFullyPaid(Boolean isFullyReceived) {
+        this.isFullyPaid = isFullyReceived;
     }
 
     public Double getTotalAmount() {
@@ -249,6 +260,22 @@ public class NewSalesInvoiceRequest {
 
     public void setShippingAddress(String shippingAddress) {
         this.shippingAddress = shippingAddress;
+    }
+
+    public String getInvoiceNumber() {
+        return invoiceNumber;
+    }
+
+    public void setInvoiceNumber(String invoiceNumber) {
+        this.invoiceNumber = invoiceNumber;
+    }
+
+    public LocalDate getInvoiceDate() {
+        return invoiceDate;
+    }
+
+    public void setInvoiceDate(LocalDate invoiceDate) {
+        this.invoiceDate = invoiceDate;
     }
 
 }

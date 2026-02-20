@@ -1,5 +1,7 @@
 package com.cityfashionpos.entity;
 
+import java.time.LocalDateTime;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,11 +10,14 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "new_sales_invoice")
-public class NewSalesInvoiceEntity {
+@Table(name = "new_sales_return")
+public class NewSalesReturnEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "invoice_id")
+    private Long invoiceId;
 
     @Column(name = "invoice_number")
     private String invoiceNumber;
@@ -20,14 +25,20 @@ public class NewSalesInvoiceEntity {
     @Column(name = "invoice_date")
     private String invoiceDate;
 
+    @Column(name = "sales_return_number")
+    private String salesReturnNumber;
+
+    @Column(name = "sales_return_date")
+    private String salesReturnDate;
+
     @Column(name = "party_id")
     private Long partyId;
 
     @Column(name = "total_amount")
     private Double totalAmount;
 
-    @Column(name = "received_amount")
-    private Double receivedAmount;
+    @Column(name = "paid_amount")
+    private Double paidAmount;
 
     @Column(name = "balance_amount")
     private Double balanceAmount;
@@ -59,6 +70,12 @@ public class NewSalesInvoiceEntity {
     @Column(name = "success")
     private Boolean success;
 
+    @Column(name = "created_at")
+    private String createdAt = LocalDateTime.now().toString();
+
+    @Column(name = "updated_at")
+    private String updatedAt = LocalDateTime.now().toString();
+
     public Long getId() {
         return id;
     }
@@ -67,20 +84,28 @@ public class NewSalesInvoiceEntity {
         this.id = id;
     }
 
-    public String getInvoiceNumber() {
-        return invoiceNumber;
+    public Long getInvoiceId() {
+        return invoiceId;
     }
 
-    public void setInvoiceNumber(String invoiceNumber) {
-        this.invoiceNumber = invoiceNumber;
+    public void setInvoiceId(Long invoiceId) {
+        this.invoiceId = invoiceId;
     }
 
-    public String getInvoiceDate() {
-        return invoiceDate;
+    public String getSalesReturnNumber() {
+        return salesReturnNumber;
     }
 
-    public void setInvoiceDate(String invoiceDate) {
-        this.invoiceDate = invoiceDate;
+    public void setSalesReturnNumber(String salesReturnNumber) {
+        this.salesReturnNumber = salesReturnNumber;
+    }
+
+    public String getSalesReturnDate() {
+        return salesReturnDate;
+    }
+
+    public void setSalesReturnDate(String salesReturnDate) {
+        this.salesReturnDate = salesReturnDate;
     }
 
     public Long getPartyId() {
@@ -99,12 +124,12 @@ public class NewSalesInvoiceEntity {
         this.totalAmount = totalAmount;
     }
 
-    public Double getReceivedAmount() {
-        return receivedAmount;
+    public Double getPaidAmount() {
+        return paidAmount;
     }
 
-    public void setReceivedAmount(Double receivedAmount) {
-        this.receivedAmount = receivedAmount;
+    public void setPaidAmount(Double receivedAmount) {
+        this.paidAmount = receivedAmount;
     }
 
     public Double getBalanceAmount() {
@@ -139,6 +164,14 @@ public class NewSalesInvoiceEntity {
         this.taxableAmount = taxableAmount;
     }
 
+    public Double getSubtotalAmount() {
+        return subtotalAmount;
+    }
+
+    public void setSubtotalAmount(Double subtotalAmount) {
+        this.subtotalAmount = subtotalAmount;
+    }
+
     public String getAmountInWords() {
         return amountInWords;
     }
@@ -163,14 +196,6 @@ public class NewSalesInvoiceEntity {
         this.success = success;
     }
 
-    public Double getSubtotalAmount() {
-        return subtotalAmount;
-    }
-
-    public void setSubtotalAmount(Double subtotalAmount) {
-        this.subtotalAmount = subtotalAmount;
-    }
-
     public String getBillingAddress() {
         return billingAddress;
     }
@@ -185,6 +210,38 @@ public class NewSalesInvoiceEntity {
 
     public void setShippingAddress(String shippingAddress) {
         this.shippingAddress = shippingAddress;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public String getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(String updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public String getInvoiceNumber() {
+        return invoiceNumber;
+    }
+
+    public void setInvoiceNumber(String invoiceNumber) {
+        this.invoiceNumber = invoiceNumber;
+    }
+
+    public String getInvoiceDate() {
+        return invoiceDate;
+    }
+
+    public void setInvoiceDate(String invoiceDate) {
+        this.invoiceDate = invoiceDate;
     }
 
 }

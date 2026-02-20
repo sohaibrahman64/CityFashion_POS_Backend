@@ -83,6 +83,8 @@ public class NewSalesInvoiceService {
             invoice.setAmountInWords(NumberToWordsConverter.convertToWords(request.getTotalAmount()));
             invoice.setMessage("Sales invoice created successfully");
             invoice.setSuccess(true);
+            invoice.setBillingAddress(request.getBillingAddress());
+            invoice.setShippingAddress(request.getShippingAddress());
 
             // Save invoice first to get ID
             invoice = invoiceRepository.save(invoice);
@@ -192,6 +194,8 @@ public class NewSalesInvoiceService {
             response.setAmountInWords(NumberToWordsConverter.convertToWords(totalAmount));
             response.setSuccess(true);
             response.setMessage("Sales invoice created successfully");
+            response.setBillingAddress(invoice.getBillingAddress());
+            response.setShippingAddress(invoice.getShippingAddress());
 
         } catch (Exception e) {
             response.setSuccess(false);
@@ -299,6 +303,75 @@ public class NewSalesInvoiceService {
             e.printStackTrace();
         }
         return response;
+    }
+
+    public List<NewSalesInvoiceResponse> getAllSalesInvoices() {
+        List<NewSalesInvoiceResponse> responses = new ArrayList<>();
+
+        try {
+            List<NewSalesInvoiceEntity> invoices = invoiceRepository.findAll();
+
+            for (NewSalesInvoiceEntity invoice : invoices) {
+                NewSalesInvoiceResponse response = new NewSalesInvoiceResponse();
+
+                List<NewSalesInvoiceItemEntity> invoiceItems = invoiceItemRepository.findByInvoiceId(invoice.getId());
+                List<NewSalesInvoiceResponse.NewSalesInvoiceItemResponse> responseItems = new ArrayList<>();
+                for (NewSalesInvoiceItemEntity itemEntity : invoiceItems) {
+                    NewSalesInvoiceResponse.NewSalesInvoiceItemResponse responseItem = new NewSalesInvoiceResponse.NewSalesInvoiceItemResponse();
+                    Optional<ItemEntity> item = itemRepository.findById(itemEntity.getItemId());
+                    responseItem.setId(itemEntity.getId());
+                    responseItem.setItemName(item.isPresent() ? item.get().getName() : null);
+                    responseItem.setHsnCode("HSN Code");
+                    responseItem.setQuantity(itemEntity.getQuantity());
+                    responseItem.setPrice(itemEntity.getPrice());
+                    responseItem.setDiscount(itemEntity.getDiscountPercent());
+                    responseItem.setDiscountAmount(itemEntity.getDiscountAmount());
+                    responseItem.setTotal(itemEntity.getTotal());
+                    responseItem.setTaxAmount(itemEntity.getTaxAmount());
+                    responseItem.setTaxPercent(itemEntity.getTaxPercent());
+                    if (itemEntity.getTaxRateId() != null) {
+                        responseItem.setTaxRate(taxRateRepository.findById(itemEntity.getTaxRateId()).orElse(null));
+                    }
+                    responseItems.add(responseItem);
+                }
+
+                PartyEntity party = null;
+                if (invoice.getPartyId() != null) {
+                    party = partyRepository.findById(invoice.getPartyId()).orElse(null);
+                }
+
+                response.setInvoiceId(invoice.getId());
+                response.setInvoiceNumber(invoice.getInvoiceNumber());
+                if (invoice.getInvoiceDate() != null) {
+                    response.setInvoiceDate(LocalDate.parse(invoice.getInvoiceDate()));
+                }
+                response.setParty(party);
+                if (party != null) {
+                    response.setPartyName(party.getPartyName());
+                    response.setPartyPhone(party.getPhoneNumber());
+                }
+                response.setItems(responseItems);
+                response.setSubtotalAmount(invoice.getSubtotalAmount());
+                response.setTotalDiscountAmount(invoice.getDiscountAmount());
+                response.setTotalAmount(invoice.getTotalAmount());
+                response.setReceivedAmount(invoice.getReceivedAmount());
+                response.setBalanceAmount(invoice.getBalanceAmount());
+                response.setDiscountAmount(invoice.getDiscountAmount());
+                response.setTotalTaxAmount(invoice.getTotalTaxAmount());
+                response.setTaxableAmount(invoice.getTaxableAmount());
+                response.setAmountInWords(invoice.getAmountInWords());
+                response.setBillingAddress(invoice.getBillingAddress());
+                response.setShippingAddress(invoice.getShippingAddress());
+                response.setSuccess(true);
+                response.setMessage("Sales invoice fetched successfully");
+
+                responses.add(response);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return responses;
     }
 
 }

@@ -6,18 +6,21 @@ import java.util.List;
 import com.cityfashionpos.entity.PartyEntity;
 import com.cityfashionpos.entity.TaxRateEntity;
 
-public class NewSalesInvoiceResponse {
+public class NewSalesReturnResponse {
     private Long invoiceId;
     private String invoiceNumber;
     private LocalDate invoiceDate;
+    private Long salesReturnId;
+    private String salesReturnNumber;
+    private LocalDate salesReturnDate;
     private PartyEntity party;
     private String partyName;
     private String partyPhone;
-    private List<NewSalesInvoiceItemResponse> items;
+    private List<NewSalesReturnItemResponse> items;
     private Double subtotalAmount;
     private Double totalDiscountAmount;
     private Double totalAmount;
-    private Double receivedAmount;
+    private Double paidAmount;
     private Double balanceAmount;
     private Double discountAmount;
     private Double totalTaxAmount;
@@ -28,7 +31,7 @@ public class NewSalesInvoiceResponse {
     private String billingAddress;
     private String shippingAddress;
 
-    public static class NewSalesInvoiceItemResponse {
+    public static class NewSalesReturnItemResponse {
         private Long id;
         private String itemName;
         private String hsnCode;
@@ -130,51 +133,59 @@ public class NewSalesInvoiceResponse {
         }
     }
 
-    public Long getInvoiceId() {
-        return invoiceId;
+    public Long getSalesReturnId() {
+        return salesReturnId;
     }
 
-    public void setInvoiceId(Long invoiceId) {
-        this.invoiceId = invoiceId;
+    public void setSalesReturnId(Long salesReturnId) {
+        this.salesReturnId = salesReturnId;
     }
 
-    public String getInvoiceNumber() {
-        return invoiceNumber;
+    public String getSalesReturnNumber() {
+        return salesReturnNumber;
     }
 
-    public void setInvoiceNumber(String invoiceNumber) {
-        this.invoiceNumber = invoiceNumber;
+    public void setSalesReturnNumber(String salesReturnNumber) {
+        this.salesReturnNumber = salesReturnNumber;
     }
 
-    public LocalDate getInvoiceDate() {
-        return invoiceDate;
+    public LocalDate getSalesReturnDate() {
+        return salesReturnDate;
     }
 
-    public void setInvoiceDate(LocalDate invoiceDate) {
-        this.invoiceDate = invoiceDate;
+    public void setSalesReturnDate(LocalDate salesReturnDate) {
+        this.salesReturnDate = salesReturnDate;
+    }
+
+    public PartyEntity getParty() {
+        return party;
+    }
+
+    public void setParty(PartyEntity party) {
+        this.party = party;
     }
 
     public String getPartyName() {
         return partyName;
     }
 
-    public void setPartyName(String customerName) {
-        this.partyName = customerName;
+    public void setPartyName(String partyName) {
+        this.partyName = partyName;
     }
 
     public String getPartyPhone() {
         return partyPhone;
     }
 
-    public void setPartyPhone(String customerPhone) {
-        this.partyPhone = customerPhone;
+    public void setPartyPhone(String partyPhone) {
+        this.partyPhone = partyPhone;
     }
 
-    public List<NewSalesInvoiceItemResponse> getItems() {
+    public List<NewSalesReturnItemResponse> getItems() {
         return items;
     }
 
-    public void setItems(List<NewSalesInvoiceItemResponse> items) {
+    public void setItems(List<NewSalesReturnItemResponse> items) {
         this.items = items;
     }
 
@@ -202,12 +213,12 @@ public class NewSalesInvoiceResponse {
         this.totalAmount = totalAmount;
     }
 
-    public Double getReceivedAmount() {
-        return receivedAmount;
+    public Double getPaidAmount() {
+        return paidAmount;
     }
 
-    public void setReceivedAmount(Double receivedAmount) {
-        this.receivedAmount = receivedAmount;
+    public void setPaidAmount(Double receivedAmount) {
+        this.paidAmount = receivedAmount;
     }
 
     public Double getBalanceAmount() {
@@ -266,14 +277,6 @@ public class NewSalesInvoiceResponse {
         this.success = success;
     }
 
-    public PartyEntity getParty() {
-        return party;
-    }
-
-    public void setParty(PartyEntity party) {
-        this.party = party;
-    }
-
     public String getBillingAddress() {
         return billingAddress;
     }
@@ -288,5 +291,29 @@ public class NewSalesInvoiceResponse {
 
     public void setShippingAddress(String shippingAddress) {
         this.shippingAddress = shippingAddress;
+    }
+
+    public Long getInvoiceId() {
+        return invoiceId;
+    }
+
+    public void setInvoiceId(Long invoiceId) {
+        this.invoiceId = invoiceId;
+    }
+
+    public String getInvoiceNumber() {
+        return invoiceNumber;
+    }
+
+    public void setInvoiceNumber(String invoiceNumber) {
+        this.invoiceNumber = invoiceNumber;
+    }
+
+    public LocalDate getInvoiceDate() {
+        return invoiceDate;
+    }
+
+    public void setInvoiceDate(LocalDate invoiceDate) {
+        this.invoiceDate = invoiceDate;
     }
 }

@@ -1,6 +1,7 @@
 package com.cityfashionpos.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,11 +49,27 @@ public class NewSalesInvoiceController {
         if (latestId == null) {
             latestId = 0L;
         }
-        String nextInvoiceNumber = String.format("RS-%05d", latestId + 1);
+        String nextInvoiceNumber = String.format("INV-%05d", latestId + 1);
         Map<String, String> response = new HashMap<>();
         response.put("invoiceNumber", nextInvoiceNumber);
 
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/invoice-numbers")
+    public ResponseEntity<List<String>> getAllInvoiceNumbers() {
+        List<String> invoiceNumbers = newSalesInvoiceRepository.findAllInvoiceNumbers();
+        return ResponseEntity.ok(invoiceNumbers);
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<NewSalesInvoiceResponse>> getAllInvoices() {
+        try {
+            List<NewSalesInvoiceResponse> response = newSalesInvoiceService.getAllSalesInvoices();
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(null);
+        }
     }
 
     @GetMapping("/getInvoiceById/{id}")
